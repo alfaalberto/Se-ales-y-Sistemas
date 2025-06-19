@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ChevronRight, X, Save, UploadCloud, Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { ChevronRight, X, Save, UploadCloud } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
@@ -103,7 +103,6 @@ export default function SignalVisorPage() {
                             updatedContent = [...section.content, newBlock];
                             toast({ title: "Contenido Añadido", description: "El bloque HTML ha sido añadido a la sección." });
                         }
-                        // Actualiza el activeSection en el estado de la página
                         setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: updatedContent } : undefined);
                         return { ...section, content: updatedContent };
                     }
@@ -127,13 +126,13 @@ export default function SignalVisorPage() {
                     if (section.id === activeSection.id) {
                         const updatedContent = section.content.filter(block => block.id !== blockId);
                         setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: updatedContent } : undefined);
+                        toast({ title: "Contenido Eliminado", description: "El bloque HTML ha sido eliminado." });
                         return { ...section, content: updatedContent };
                     }
                     return section;
                 })
             }));
-            toast({ title: "Contenido Eliminado", description: "El bloque HTML ha sido eliminado." });
-            return newToc;
+            // No es necesario retornar newToc aquí, la actualización de estado se encarga
         });
     };
 
@@ -153,21 +152,20 @@ export default function SignalVisorPage() {
 
                         if (direction === 'up' && blockIndex > 0) {
                             newContent.splice(blockIndex - 1, 0, blockToMove);
-                        } else if (direction === 'down' && blockIndex < newContent.length) {
+                        } else if (direction === 'down' && blockIndex < newContent.length) { // Check against newContent.length (original length - 1 after splice)
                             newContent.splice(blockIndex + 1, 0, blockToMove);
                         } else {
-                            // Re-insert if move is not possible (e.g., already at top/bottom)
-                            newContent.splice(blockIndex, 0, blockToMove);
-                            return section; // No change
+                            newContent.splice(blockIndex, 0, blockToMove); // Re-insert if move is not possible
+                            return section; 
                         }
                         setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: newContent } : undefined);
+                        toast({ title: "Contenido Reordenado", description: `El bloque HTML ha sido movido hacia ${direction === 'up' ? 'arriba' : 'abajo'}.` });
                         return { ...section, content: newContent };
                     }
                     return section;
                 })
             }));
-            toast({ title: "Contenido Reordenado", description: `El bloque HTML ha sido movido hacia ${direction === 'up' ? 'arriba' : 'abajo'}.` });
-            return newToc;
+            return newToc; 
         });
     };
     
@@ -196,7 +194,7 @@ export default function SignalVisorPage() {
     };
 
     const handleSaveToServer = async () => {
-        const serverUrl = 'http://localhost:3001/api/save-slides'; // URL de ejemplo, necesitarás tu propio servidor
+        const serverUrl = 'http://localhost:3001/api/save-slides'; 
         try {
             const response = await fetch(serverUrl, {
                 method: 'POST',
@@ -279,7 +277,7 @@ export default function SignalVisorPage() {
 
             <div
                 className={`
-                    fixed md:relative z-30 h-full transition-all duration-300 ease-in-out overflow-hidden 
+                    fixed md:relative z-30 h-full transition-all duration-300 ease-in-out overflow-y-auto 
                     md:translate-x-0
                     ${isSidebarVisible ? 'translate-x-0 md:w-80 lg:w-96' : '-translate-x-full md:w-0'}
                 `}
@@ -287,7 +285,7 @@ export default function SignalVisorPage() {
                 <Sidebar toc={toc} activeSection={activeSection} onSectionSelect={handleSectionSelect} />
             </div>
 
-            <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0"> {/* Añadido padding-top para móvil para no superponer con botones fijos */}
+            <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0">
                 <ContentView
                     section={activeSection}
                     onNavigate={handleNavigate}
@@ -301,3 +299,5 @@ export default function SignalVisorPage() {
         </div>
     );
 }
+
+    

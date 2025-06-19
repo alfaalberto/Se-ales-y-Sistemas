@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { PlusCircle, ChevronLeft, ChevronRight, MonitorPlay, Minimize } from 'lucide-react';
-import type { SectionType, ContentBlockType } from '@/lib/types';
+import type { SectionType } from '@/lib/types';
 import HtmlBlock from './html-block';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -47,6 +47,19 @@ const ContentView: React.FC<ContentViewProps> = ({
         document.addEventListener('fullscreenchange', handleFullscreenChange);
         return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
     }, []);
+
+    React.useEffect(() => {
+        // Forzar el re-renderizado del MathJax cuando cambia la sección o el contenido
+        if (section && window.MathJax) {
+            // Pequeño retraso para asegurar que el DOM esté actualizado
+            setTimeout(() => {
+                if (contentRef.current && window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                    window.MathJax.typesetPromise([contentRef.current])
+                        .catch((err: any) => console.error('MathJax typesetting failed on section change:', err));
+                }
+            }, 100);
+        }
+    }, [section]);
 
 
     if (!section) {
@@ -129,3 +142,5 @@ const ContentView: React.FC<ContentViewProps> = ({
 };
 
 export default ContentView;
+
+    

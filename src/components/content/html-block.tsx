@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import type { ContentBlockType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { Pencil, Trash2, ArrowUpCircle, ArrowDownCircle, Eye, EyeOff, Code2 } from 'lucide-react';
+import { Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
 
@@ -49,12 +49,17 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, 
                 el.id = newId;
             }
         });
+
         const scripts = tempDiv.getElementsByTagName('script');
-        for (const script of scripts) {
+        for (let i = 0; i < scripts.length; i++) {
+            const script = scripts[i];
             let scriptContent = script.innerHTML;
             idMap.forEach((newId, oldId) => {
                 const regex = new RegExp(`getElementById\\((['"])${oldId}\\1\\)`, 'g');
                 scriptContent = scriptContent.replace(regex, `getElementById('${newId}')`);
+
+                const querySelectorRegex = new RegExp(`querySelector\\((['"])#${oldId}\\1\\)`, 'g');
+                scriptContent = scriptContent.replace(querySelectorRegex, `querySelector('#${newId.replace(/[:.]/g, '\\$&')}')`);
             });
             script.innerHTML = scriptContent;
         }
@@ -91,28 +96,36 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, 
         const runScripts = () => {
             const scriptsToRun = Array.from(container.getElementsByTagName('script'));
             scriptsToRun.forEach(originalScript => {
-                if (originalScript.closest('.content-block') !== container) return; 
+                 if (!originalScript.closest('.content-block-inner')) return;
                 
                 const newScript = document.createElement('script');
+                // Wrap in a try-catch and IIFE for safety and scoping
                 newScript.textContent = `(function() { try { ${originalScript.innerHTML} } catch (e) { console.error('Error executing script for ${instanceId}:', e); } })();`;
                 document.body.appendChild(newScript);
-                document.body.removeChild(newScript);
-                originalScript.remove(); 
+                // It's good practice to remove the script after execution if it's not needed long-term
+                // However, for scripts that set up intervals or event listeners, this might not be desired.
+                // For now, we'll remove it as it's common for one-off setup scripts.
+                document.body.removeChild(newScript); 
+                // Optionally, remove the original script from the static HTML to prevent re-execution on future innerHTML changes if not careful
+                 originalScript.remove(); 
             });
         };
 
         const timerId = setTimeout(() => {
             if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                // Typeset only the specific blockRef to avoid re-typesetting the whole page
                 window.MathJax.typesetPromise([container])
                     .catch((err: any) => console.error('MathJax typesetting failed:', err))
-                    .finally(runScripts);
+                    .finally(runScripts); // Run scripts after MathJax is done
             } else {
-                runScripts();
+                runScripts(); // Run scripts if MathJax is not available or not configured for promises
             }
-        }, 100);
+        }, 100); // Small delay to ensure DOM is fully updated
 
         return () => {
             clearTimeout(timerId);
+            // Potentially clean up charts or other persistent elements if IDs were globally unique
+            // and not scoped to instanceId. For instanceId-scoped elements, React's unmounting handles it.
         };
     }, [htmlString, instanceId]);
 
@@ -130,15 +143,18 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, 
             }
 
             if (placeholderElement) {
+                // Clear previous button if any
                 while (placeholderElement.firstChild) {
                     placeholderElement.removeChild(placeholderElement.firstChild);
                 }
 
                 const button = document.createElement('button');
+                // Using Tailwind classes directly for consistency with the app's styling
                 button.className = "my-2 flex items-center gap-2 px-3 py-1.5 border border-input bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
                 
-                const isVisible = codeBlocksVisibility[preId] !== false;
+                const isVisible = codeBlocksVisibility[preId] !== false; // Default to true if undefined
 
+                // Using SVG strings for icons
                 const eyeIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
                 const eyeOffIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>`;
                 const codeIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-2"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>`;
@@ -148,12 +164,13 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, 
                 button.onclick = () => {
                     setCodeBlocksVisibility(prevVisibilityState => ({
                         ...prevVisibilityState,
-                        [preId]: !(prevVisibilityState[preId] !== false) 
+                        [preId]: !(prevVisibilityState[preId] !== false) // Toggle, defaulting to true if undefined
                     }));
                 };
                 placeholderElement.appendChild(button);
             }
         });
+
     }, [codeBlockData, codeBlocksVisibility, instanceId]);
 
     return (
@@ -197,3 +214,5 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, 
 
 HtmlBlock.displayName = 'HtmlBlock';
 export default HtmlBlock;
+
+    
