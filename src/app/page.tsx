@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ChevronRight, X, Save, UploadCloud } from 'lucide-react';
+import { ChevronRight, X, Save, UploadCloud, Menu } from 'lucide-react'; // Added Menu icon
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
@@ -27,7 +27,8 @@ export default function SignalVisorPage() {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            setIsSidebarVisible(window.innerWidth >= 768);
+            const showSidebar = window.innerWidth >= 768;
+            setIsSidebarVisible(showSidebar);
         }
     }, []);
 
@@ -132,7 +133,6 @@ export default function SignalVisorPage() {
                     return section;
                 })
             }));
-            // No es necesario retornar newToc aquí, la actualización de estado se encarga
         });
     };
 
@@ -152,10 +152,10 @@ export default function SignalVisorPage() {
 
                         if (direction === 'up' && blockIndex > 0) {
                             newContent.splice(blockIndex - 1, 0, blockToMove);
-                        } else if (direction === 'down' && blockIndex < newContent.length) { // Check against newContent.length (original length - 1 after splice)
+                        } else if (direction === 'down' && blockIndex < newContent.length) {
                             newContent.splice(blockIndex + 1, 0, blockToMove);
                         } else {
-                            newContent.splice(blockIndex, 0, blockToMove); // Re-insert if move is not possible
+                            newContent.splice(blockIndex, 0, blockToMove); 
                             return section; 
                         }
                         setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: newContent } : undefined);
@@ -223,6 +223,8 @@ export default function SignalVisorPage() {
         }
     };
 
+    const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
+
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
             <HtmlAddModal 
@@ -241,43 +243,11 @@ export default function SignalVisorPage() {
                     aria-hidden="true"
                 />
             )}
-
-            <div className="fixed top-4 left-4 z-40 flex flex-col space-y-2">
-                <Button
-                    onClick={() => setIsSidebarVisible(!isSidebarVisible)}
-                    className="p-2 bg-sidebar text-sidebar-foreground hover:bg-sidebar-accent rounded-md shadow-lg"
-                    aria-label={isSidebarVisible ? "Cerrar menú" : "Abrir menú"}
-                    variant="ghost"
-                    size="icon"
-                >
-                    {isSidebarVisible ? <X size={24} /> : <ChevronRight size={24} />}
-                </Button>
-                <Button
-                    onClick={handleDownloadBackup}
-                    className="p-2 bg-sidebar text-sidebar-foreground hover:bg-sidebar-accent rounded-md shadow-lg"
-                    aria-label="Descargar respaldo JSON"
-                    variant="ghost"
-                    size="icon"
-                    title="Descargar Respaldo JSON"
-                >
-                    <Save size={24} />
-                </Button>
-                <Button
-                    onClick={handleSaveToServer}
-                    className="p-2 bg-sidebar text-sidebar-foreground hover:bg-sidebar-accent rounded-md shadow-lg"
-                    aria-label="Guardar en servidor local"
-                    variant="ghost"
-                    size="icon"
-                    title="Guardar en Servidor Local (Experimental)"
-                >
-                    <UploadCloud size={24} />
-                </Button>
-            </div>
             
-
             <div
                 className={`
                     fixed md:relative z-30 h-full transition-all duration-300 ease-in-out overflow-y-auto 
+                    bg-sidebar text-sidebar-foreground shadow-lg
                     md:translate-x-0
                     ${isSidebarVisible ? 'translate-x-0 md:w-80 lg:w-96' : '-translate-x-full md:w-0'}
                 `}
@@ -285,7 +255,39 @@ export default function SignalVisorPage() {
                 <Sidebar toc={toc} activeSection={activeSection} onSectionSelect={handleSectionSelect} />
             </div>
 
-            <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0">
+            <div className="flex-1 flex flex-col min-w-0">
+                 {/* Contenedor de botones globales */}
+                 <div className="fixed top-4 right-4 z-50 flex space-x-2">
+                    <Button
+                        onClick={toggleSidebar}
+                        className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
+                        aria-label={isSidebarVisible ? "Ocultar menú lateral" : "Mostrar menú lateral"}
+                        variant="ghost"
+                        size="icon"
+                    >
+                        {isSidebarVisible ? <X size={20} /> : <Menu size={20} />}
+                    </Button>
+                    <Button
+                        onClick={handleDownloadBackup}
+                        className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
+                        aria-label="Descargar respaldo JSON"
+                        variant="ghost"
+                        size="icon"
+                        title="Descargar Respaldo JSON"
+                    >
+                        <Save size={20} />
+                    </Button>
+                    <Button
+                        onClick={handleSaveToServer}
+                        className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
+                        aria-label="Guardar en servidor local"
+                        variant="ghost"
+                        size="icon"
+                        title="Guardar en Servidor Local (Experimental)"
+                    >
+                        <UploadCloud size={20} />
+                    </Button>
+                </div>
                 <ContentView
                     section={activeSection}
                     onNavigate={handleNavigate}
@@ -294,10 +296,11 @@ export default function SignalVisorPage() {
                     onEditBlock={handleOpenEditModal}
                     onDeleteBlock={handleDeleteBlock}
                     onMoveBlock={handleMoveBlock}
+                    isSidebarVisible={isSidebarVisible}
+                    toggleSidebar={toggleSidebar}
                 />
             </div>
         </div>
     );
 }
-
     

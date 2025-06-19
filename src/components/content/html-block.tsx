@@ -163,8 +163,9 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, 
     }, [codeBlockData, codeBlocksVisibility, instanceId]);
 
     return (
-        <div ref={blockRef} className="content-block group relative py-4 border-t-2 border-gray-700 first:pt-0 first:border-none">
-            <div className="absolute top-2 right-2 z-40 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div ref={blockRef} className="content-block relative py-4 border-t-2 border-gray-700 first:pt-0 first:border-none">
+             {/* Botones siempre visibles */}
+            <div className="absolute top-1 right-1 z-40 flex space-x-1 bg-card p-1 rounded-md shadow-md">
                 <Button variant="ghost" size="icon" onClick={onEdit} title="Editar diapositiva" className="h-7 w-7 p-1 text-blue-400 hover:text-blue-300 hover:bg-gray-700">
                     <Pencil size={16} />
                 </Button>
@@ -194,7 +195,7 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, 
                     </AlertDialogContent>
                 </AlertDialog>
             </div>
-            <div className="content-block-inner"> {/* No 'relative' class here */}
+            <div className="content-block-inner relative">
                 {/* El HTML del usuario se inyectará aquí por el primer useEffect */}
             </div>
         </div>
