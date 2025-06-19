@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -21,6 +22,7 @@ export default function SignalVisorPage() {
 
     useEffect(() => {
         // Set sidebar visibility based on screen size on initial mount
+        // Default to visible on desktop, hidden on mobile
         if (typeof window !== 'undefined') {
             setIsSidebarVisible(window.innerWidth >= 768);
         }
@@ -35,6 +37,7 @@ export default function SignalVisorPage() {
 
     const handleSectionSelect = (section: SectionType) => {
         setActiveSection(section);
+        // On mobile, hide sidebar after section selection
         if (typeof window !== 'undefined' && window.innerWidth < 768) {
             setIsSidebarVisible(false);
         }
@@ -53,9 +56,6 @@ export default function SignalVisorPage() {
         if (newIndex !== -1) {
            const newSection = flatSections[newIndex];
            setActiveSection(newSection);
-           // Ensure the chapter of the new section is expanded
-           const chapterNumber = newSection.id.split('.')[0];
-           // This logic might be better inside Sidebar or via a callback to expand chapter
         }
     };
 
@@ -70,7 +70,6 @@ export default function SignalVisorPage() {
                 sections: chapter.sections.map(section => {
                     if (section.id === activeSection.id) {
                         const updatedContent = [...section.content, newBlock];
-                        // Also update activeSection immediately to reflect the change
                         setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: updatedContent } : undefined);
                         return { ...section, content: updatedContent };
                     }
@@ -92,7 +91,7 @@ export default function SignalVisorPage() {
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [activeSection, flatSections, isModalOpen, handleNavigate]); // Added handleNavigate to dependencies
+    }, [activeSection, flatSections, isModalOpen, handleNavigate]);
 
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
@@ -101,14 +100,14 @@ export default function SignalVisorPage() {
             {isSidebarVisible && (
                 <div
                     onClick={() => setIsSidebarVisible(false)}
-                    className="fixed inset-0 bg-black/60 z-20 md:hidden"
+                    className="fixed inset-0 bg-black/60 z-20 md:hidden" // Overlay only for mobile
                     aria-hidden="true"
                 />
             )}
 
             <Button
                 onClick={() => setIsSidebarVisible(!isSidebarVisible)}
-                className="md:hidden fixed top-4 left-4 z-40 p-2 bg-sidebar text-sidebar-foreground hover:bg-sidebar-accent rounded-md shadow-lg"
+                className="fixed top-4 left-4 z-40 p-2 bg-sidebar text-sidebar-foreground hover:bg-sidebar-accent rounded-md shadow-lg" // Removed md:hidden
                 aria-label={isSidebarVisible ? "Cerrar menú" : "Abrir menú"}
                 variant="ghost"
                 size="icon"
@@ -117,14 +116,16 @@ export default function SignalVisorPage() {
             </Button>
 
             <div
-                className={`fixed md:relative z-30 h-full transition-transform duration-300 ease-in-out transform ${
-                    isSidebarVisible ? 'translate-x-0' : '-translate-x-full'
-                } md:translate-x-0`}
+                className={`
+                    fixed md:relative z-30 h-full transition-all duration-300 ease-in-out overflow-hidden 
+                    md:translate-x-0
+                    ${isSidebarVisible ? 'translate-x-0 md:w-80 lg:w-96' : '-translate-x-full md:w-0'}
+                `}
             >
                 <Sidebar toc={toc} activeSection={activeSection} onSectionSelect={handleSectionSelect} />
             </div>
 
-            <div className="flex-1 flex flex-col min-w-0"> {/* min-w-0 is important for flex children to shrink properly */}
+            <div className="flex-1 flex flex-col min-w-0">
                 <ContentView
                     section={activeSection}
                     onNavigate={handleNavigate}
