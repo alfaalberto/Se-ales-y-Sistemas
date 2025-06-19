@@ -168,7 +168,7 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ htmlString }) => {
     }, [codeBlockData, codeBlocksVisibility, instanceId]); // Rerun if data or visibility changes
 
     // The main div that gets its innerHTML set by the first useEffect
-    return <div ref={blockRef} className="content-block mt-8 pt-8 border-t-2 border-gray-700 first:mt-0 first:pt-0 first:border-none"></div>;
+    return <div ref={blockRef} className="content-block py-4 border-t-2 border-gray-700 first:pt-0 first:border-none"></div>;
 });
 
 HtmlBlock.displayName = 'HtmlBlock';
