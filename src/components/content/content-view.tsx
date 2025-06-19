@@ -1,8 +1,9 @@
+
 "use client";
 
 import React from 'react';
-import { PlusCircle, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { SectionType } from '@/lib/types';
+import { PlusCircle, ChevronLeft, ChevronRight, MonitorPlay, Minimize } from 'lucide-react';
+import type { SectionType, ContentBlockType } from '@/lib/types';
 import HtmlBlock from './html-block';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -11,10 +12,43 @@ interface ContentViewProps {
     section?: SectionType;
     onNavigate: (direction: 'prev' | 'next') => void;
     flatSections: SectionType[];
-    onOpenModal: () => void;
+    onOpenAddModal: () => void;
+    onEditBlock: (blockId: string, currentHtml: string) => void;
+    onDeleteBlock: (blockId: string) => void;
+    onMoveBlock: (blockId: string, direction: 'up' | 'down') => void;
 }
 
-const ContentView: React.FC<ContentViewProps> = ({ section, onNavigate, flatSections, onOpenModal }) => {
+const ContentView: React.FC<ContentViewProps> = ({ 
+    section, 
+    onNavigate, 
+    flatSections, 
+    onOpenAddModal,
+    onEditBlock,
+    onDeleteBlock,
+    onMoveBlock
+}) => {
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    const [isFullscreen, setIsFullscreen] = React.useState(false);
+
+    const toggleFullscreen = () => {
+        if (!document.fullscreenElement) {
+            contentRef.current?.requestFullscreen().catch(err => {
+                alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    };
+
+    React.useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
+
     if (!section) {
         return (
             <div className="flex-1 p-8 flex flex-col items-center justify-center text-gray-400 bg-background">
@@ -28,39 +62,61 @@ const ContentView: React.FC<ContentViewProps> = ({ section, onNavigate, flatSect
     }
 
     const currentIndex = flatSections.findIndex(s => s.id === section.id);
-    const isFirst = currentIndex === 0;
-    const isLast = currentIndex === flatSections.length - 1;
+    const isFirstSection = currentIndex === 0;
+    const isLastSection = currentIndex === flatSections.length - 1;
 
     return (
-        <main className="flex-1 flex flex-col bg-background overflow-hidden">
+        <main ref={contentRef} className="flex-1 flex flex-col bg-background overflow-hidden">
             <ScrollArea className="flex-grow p-4 md:p-8">
-                <div className="prose prose-invert max-w-none prose-lg text-gray-300 prose-headings:text-primary prose-strong:text-white prose-a:text-accent">
-                    {section.content.map((block) => (
-                        <HtmlBlock key={block.id} htmlString={block.html} />
+                <div className="max-w-none">
+                    {section.content.map((block, index) => (
+                        <HtmlBlock 
+                            key={block.id} 
+                            block={block}
+                            onEdit={() => onEditBlock(block.id, block.html)}
+                            onDelete={() => onDeleteBlock(block.id)}
+                            onMoveUp={() => onMoveBlock(block.id, 'up')}
+                            onMoveDown={() => onMoveBlock(block.id, 'down')}
+                            isFirst={index === 0}
+                            isLast={index === section.content.length - 1}
+                        />
                     ))}
                 </div>
             </ScrollArea>
-            <div className="p-4 border-t border-border bg-background flex justify-between items-center flex-wrap gap-4 shadow-[-2px_0px_15px_rgba(0,0,0,0.1)]">
+            <div className="p-4 border-t border-border bg-background flex justify-between items-center flex-wrap gap-2 shadow-[-2px_0px_15px_rgba(0,0,0,0.1)]">
                 <Button
                     onClick={() => onNavigate('prev')}
-                    disabled={isFirst}
+                    disabled={isFirstSection}
                     variant="outline"
                     className="text-foreground hover:bg-secondary disabled:opacity-50"
                     aria-label="Sección anterior"
                 >
                     <ChevronLeft size={20} className="mr-2" /> Anterior
                 </Button>
-                <Button
-                    onClick={onOpenModal}
-                    variant="default"
-                    className="bg-accent hover:bg-accent/90 text-accent-foreground"
-                    aria-label="Añadir contenido HTML"
-                >
-                    <PlusCircle size={20} className="mr-2" /> Añadir Contenido HTML
-                </Button>
+                
+                <div className="flex gap-2">
+                    <Button
+                        onClick={onOpenAddModal}
+                        variant="default"
+                        className="bg-accent hover:bg-accent/90 text-accent-foreground"
+                        aria-label="Añadir diapositiva a esta sección"
+                    >
+                        <PlusCircle size={20} className="mr-2" /> Añadir Diapositiva
+                    </Button>
+                    <Button
+                        onClick={toggleFullscreen}
+                        variant="outline"
+                        className="text-foreground hover:bg-secondary"
+                        aria-label={isFullscreen ? "Salir de pantalla completa" : "Ver en pantalla completa"}
+                        title={isFullscreen ? "Salir de pantalla completa" : "Ver en pantalla completa"}
+                    >
+                        {isFullscreen ? <Minimize size={20} /> : <MonitorPlay size={20} />}
+                    </Button>
+                </div>
+
                 <Button
                     onClick={() => onNavigate('next')}
-                    disabled={isLast}
+                    disabled={isLastSection}
                     variant="outline"
                     className="text-foreground hover:bg-secondary disabled:opacity-50"
                     aria-label="Siguiente sección"

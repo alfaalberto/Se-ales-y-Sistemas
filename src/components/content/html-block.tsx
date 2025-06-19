@@ -2,9 +2,20 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
+import type { ContentBlockType } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { Pencil, Trash2, ArrowUpCircle, ArrowDownCircle, Eye, EyeOff, Code2 } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { cn } from '@/lib/utils';
 
 interface HtmlBlockProps {
-    htmlString: string;
+    block: ContentBlockType;
+    onEdit: () => void;
+    onDelete: () => void;
+    onMoveUp: () => void;
+    onMoveDown: () => void;
+    isFirst: boolean;
+    isLast: boolean;
 }
 
 declare global {
@@ -14,24 +25,20 @@ declare global {
     }
 }
 
-const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ htmlString }) => {
+const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, html: htmlString }, onEdit, onDelete, onMoveUp, onMoveDown, isFirst, isLast }) => {
     const blockRef = useRef<HTMLDivElement>(null);
     const instanceId = useRef(`block-${crypto.randomUUID()}`).current;
     
-    // Stores { preId: string, placeholderId: string } for each code block
     const [codeBlockData, setCodeBlockData] = useState<{ preId: string, placeholderId: string }[]>([]);
-    // Stores visibility state for each code block: Record<preId, boolean>
     const [codeBlocksVisibility, setCodeBlocksVisibility] = useState<Record<string, boolean>>({});
 
-    // Effect 1: Parse HTML, inject placeholders for buttons, set up initial state for visibility and refs
     useEffect(() => {
         const container = blockRef.current;
         if (!container) return;
 
         const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = htmlString; // Initial parse of the HTML string
+        tempDiv.innerHTML = htmlString; 
 
-        // --- Start: ID rewriting for MathJax and scripts (existing logic) ---
         const idMap = new Map<string, string>();
         const elementsWithId = tempDiv.querySelectorAll('[id]');
         elementsWithId.forEach(el => {
@@ -51,53 +58,45 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ htmlString }) => {
             });
             script.innerHTML = scriptContent;
         }
-        // --- End: ID rewriting ---
         
-        // Identify <pre> tags and prepare for button injection
         const pres = Array.from(tempDiv.querySelectorAll('pre'));
         const newCodeBlockDataCollector: { preId: string, placeholderId: string }[] = [];
         const initialVisibilityStateCollector: Record<string, boolean> = {};
 
         pres.forEach((pre, index) => {
-            let preId = pre.id; // Use existing ID if available (it would have been prefixed by ID rewriting)
-            if (!preId) { // Or generate a new unique ID for the <pre> tag
+            let preId = pre.id; 
+            if (!preId) { 
                 preId = `${instanceId}__pre-${index}`;
                 pre.id = preId;
             }
             
-            // Create a unique ID for the button's placeholder div
             const placeholderId = `${instanceId}__btn-placeholder-for-${preId.replace(/__/g, '-')}`;
             const placeholderDiv = document.createElement('div');
             placeholderDiv.id = placeholderId;
             
-            // Insert the placeholder div into the DOM right before the <pre> tag
             pre.parentNode?.insertBefore(placeholderDiv, pre);
 
             newCodeBlockDataCollector.push({ preId, placeholderId });
-            initialVisibilityStateCollector[preId] = true; // Default: code blocks are visible
+            initialVisibilityStateCollector[preId] = true; 
         });
         
-        // Set the processed HTML (now including placeholders and rewritten IDs) to the container
-        container.innerHTML = tempDiv.innerHTML;
+        const innerDiv = container.querySelector('.content-block-inner');
+        if (innerDiv) {
+            innerDiv.innerHTML = tempDiv.innerHTML;
+        }
         
-        // Update React state. This will trigger the second useEffect to render the actual buttons.
         setCodeBlockData(newCodeBlockDataCollector);
         setCodeBlocksVisibility(initialVisibilityStateCollector);
 
-        // --- Start: Script execution and MathJax (existing logic) ---
         const runScripts = () => {
             const scriptsToRun = Array.from(container.getElementsByTagName('script'));
             scriptsToRun.forEach(originalScript => {
-                // Ensure the script is part of this HtmlBlock instance before executing
                 if (originalScript.closest('.content-block') !== container) return; 
                 
                 const newScript = document.createElement('script');
-                // Wrap script content in an IIFE with try-catch for safety
                 newScript.textContent = `(function() { try { ${originalScript.innerHTML} } catch (e) { console.error('Error executing script for ${instanceId}:', e); } })();`;
                 document.body.appendChild(newScript);
-                // Clean up by removing the script tag from the body after execution
                 document.body.removeChild(newScript);
-                // Remove the original script tag from the content to prevent re-execution
                 originalScript.remove(); 
             });
         };
@@ -110,68 +109,91 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ htmlString }) => {
             } else {
                 runScripts();
             }
-        }, 100); // Delay for DOM readiness
+        }, 100);
 
         return () => {
             clearTimeout(timerId);
-            // Potential cleanup for dynamically added elements or listeners if htmlString changes
         };
     }, [htmlString, instanceId]);
 
 
-    // Effect 2: Render/update toggle buttons and manage <pre> element visibility
     useEffect(() => {
         const container = blockRef.current;
-        // Only proceed if the container exists and there's data for code blocks
         if (!container || codeBlockData.length === 0) return;
 
         codeBlockData.forEach(({ preId, placeholderId }) => {
             const preElement = container.querySelector(`#${CSS.escape(preId)}`) as HTMLElement | null;
             const placeholderElement = container.querySelector(`#${CSS.escape(placeholderId)}`) as HTMLElement | null;
             
-            // Toggle the display style of the <pre> element based on its visibility state
             if (preElement) {
                 preElement.style.display = codeBlocksVisibility[preId] === false ? 'none' : '';
             }
 
             if (placeholderElement) {
-                // Clear any previous button from the placeholder
                 while (placeholderElement.firstChild) {
                     placeholderElement.removeChild(placeholderElement.firstChild);
                 }
 
                 const button = document.createElement('button');
-                // Apply Tailwind classes for styling. These rely on global CSS and theme variables.
                 button.className = "my-2 flex items-center gap-2 px-3 py-1.5 border border-input bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
                 
-                // Determine visibility (true if not explicitly false, handles undefined initial state)
                 const isVisible = codeBlocksVisibility[preId] !== false;
 
-                // SVG icons (inlined)
-                const eyeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
-                const eyeOffIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>`;
-                const codeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-2"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>`;
-
-                // Set button content with icons and text based on visibility
-                button.innerHTML = `${codeIcon} ${isVisible ? eyeOffIcon : eyeIcon} <span class="ml-1">${isVisible ? 'Ocultar' : 'Mostrar'} Código</span>`;
+                const eyeIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+                const eyeOffIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>`;
+                const codeIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code-2"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>`;
                 
-                // Attach click event listener to toggle visibility state in React
+                button.innerHTML = `${codeIconSvg} ${isVisible ? eyeOffIconSvg : eyeIconSvg} <span class="ml-1">${isVisible ? 'Ocultar' : 'Mostrar'} Código</span>`;
+                
                 button.onclick = () => {
                     setCodeBlocksVisibility(prevVisibilityState => ({
                         ...prevVisibilityState,
-                        [preId]: !(prevVisibilityState[preId] !== false) // Toggle state correctly
+                        [preId]: !(prevVisibilityState[preId] !== false) 
                     }));
                 };
-                placeholderElement.appendChild(button); // Add the button to its placeholder
+                placeholderElement.appendChild(button);
             }
         });
-    }, [codeBlockData, codeBlocksVisibility, instanceId]); // Rerun if data or visibility changes
+    }, [codeBlockData, codeBlocksVisibility, instanceId]);
 
-    // The main div that gets its innerHTML set by the first useEffect
-    return <div ref={blockRef} className="content-block py-4 border-t-2 border-gray-700 first:pt-0 first:border-none"></div>;
+    return (
+        <div ref={blockRef} className="content-block group relative py-4 border-t-2 border-gray-700 first:pt-0 first:border-none">
+            <div className="absolute top-2 right-2 z-10 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <Button variant="ghost" size="icon" onClick={onEdit} title="Editar diapositiva" className="h-7 w-7 p-1 text-blue-400 hover:text-blue-300 hover:bg-gray-700">
+                    <Pencil size={16} />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={onMoveUp} disabled={isFirst} title="Mover arriba" className="h-7 w-7 p-1 text-green-400 hover:text-green-300 hover:bg-gray-700 disabled:opacity-50">
+                    <ArrowUpCircle size={16} />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={onMoveDown} disabled={isLast} title="Mover abajo" className="h-7 w-7 p-1 text-yellow-400 hover:text-yellow-300 hover:bg-gray-700 disabled:opacity-50">
+                    <ArrowDownCircle size={16} />
+                </Button>
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon" title="Eliminar diapositiva" className="h-7 w-7 p-1 text-red-400 hover:text-red-300 hover:bg-gray-700">
+                            <Trash2 size={16} />
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-card border-border text-card-foreground">
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Esta acción no se puede deshacer. Esto eliminará permanentemente la diapositiva.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel className="hover:bg-muted">Cancelar</AlertDialogCancel>
+                            <AlertDialogAction onClick={onDelete} className="bg-destructive hover:bg-destructive/90">Eliminar</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </div>
+            <div className="content-block-inner relative">
+                {/* El HTML del usuario se inyectará aquí por el primer useEffect */}
+            </div>
+        </div>
+    );
 });
 
 HtmlBlock.displayName = 'HtmlBlock';
 export default HtmlBlock;
-
-    
