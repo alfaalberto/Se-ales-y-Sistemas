@@ -30,7 +30,22 @@ export default function SignalVisorPage() {
 
     const { toast } = useToast();
 
-    const flatSections = useMemo(() => toc.flatMap(c => c.sections), [toc]);
+    const flattenSections = (sections: SectionType[]): SectionType[] => {
+        let flatList: SectionType[] = [];
+        sections.forEach(section => {
+            // Create a copy of the section without its subsections to avoid circular references
+            const { subsections, ...sectionWithoutSubs } = section;
+            flatList.push(sectionWithoutSubs as SectionType);
+            if (subsections) {
+                flatList = flatList.concat(flattenSections(subsections));
+            }
+        });
+        return flatList;
+    };
+
+    const flatSections = useMemo(() => {
+        return toc.flatMap(chapter => flattenSections(chapter.sections));
+    }, [toc]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -91,10 +106,24 @@ export default function SignalVisorPage() {
     
         const chapterIndex = toc.findIndex(c => c.sections.some(s => s.id === activeSection.id));
         if (chapterIndex === -1) return;
-        const sectionIndex = toc[chapterIndex].sections.findIndex(s => s.id === activeSection.id);
-        if (sectionIndex === -1) return;
         
-        const blockToEdit = activeSection.content.find(b => b.id === selectedBlockId);
+        // This find logic needs to be recursive now.
+        const findSectionPath = (sections: SectionType[], targetId: string): SectionType | null => {
+            for (const section of sections) {
+                if (section.id === targetId) return section;
+                if (section.subsections) {
+                    const found = findSectionPath(section.subsections, targetId);
+                    if (found) return found;
+                }
+            }
+            return null;
+        }
+        
+        const sectionInToc = findSectionPath(toc[chapterIndex].sections, activeSection.id);
+        if (!sectionInToc) return;
+        
+        const blockToEdit = sectionInToc.content.find(b => b.id === selectedBlockId);
+
         if (!blockToEdit) {
              toast({ title: "Error", description: "Diapositiva seleccionada no encontrada.", variant: "destructive" });
             return;
@@ -102,8 +131,22 @@ export default function SignalVisorPage() {
     
         setModalMode('edit');
         setHtmlToEdit(blockToEdit.html);
-        setEditingBlockInfo({ chapterIndex, sectionIndex, blockId: selectedBlockId });
+        // The editingBlockInfo might need adjustment if we need to reconstruct paths,
+        // but for now, we operate on activeSection directly which is simpler.
+        setEditingBlockInfo({ chapterIndex: -1, sectionIndex: -1, blockId: selectedBlockId }); // Simplified
         setIsModalOpen(true);
+    };
+    
+    const updateTocRecursively = (sections: SectionType[], targetSectionId: string, updateFn: (section: SectionType) => SectionType): SectionType[] => {
+        return sections.map(section => {
+            if (section.id === targetSectionId) {
+                return updateFn(section);
+            }
+            if (section.subsections) {
+                return { ...section, subsections: updateTocRecursively(section.subsections, targetSectionId, updateFn) };
+            }
+            return section;
+        });
     };
     
     const handleSaveFromModal = (htmlContent: string) => {
@@ -113,31 +156,31 @@ export default function SignalVisorPage() {
         }
     
         setToc(currentToc => {
-            const newToc = currentToc.map(chapter => ({
+            const newToc = [...currentToc];
+            const updateFn = (section: SectionType) => {
+                let updatedContent;
+                let newSelectedBlockId = selectedBlockId;
+                if (modalMode === 'edit' && selectedBlockId) {
+                    updatedContent = section.content.map(block =>
+                        block.id === selectedBlockId ? { ...block, html: htmlContent } : block
+                    );
+                    toast({ title: "Contenido Actualizado", description: "El bloque HTML ha sido actualizado." });
+                } else { 
+                    const newBlock: ContentBlockType = { id: crypto.randomUUID(), html: htmlContent };
+                    updatedContent = [...section.content, newBlock];
+                    toast({ title: "Contenido Añadido", description: "El bloque HTML ha sido añadido a la sección." });
+                    newSelectedBlockId = newBlock.id; 
+                }
+                const updatedSection = { ...section, content: updatedContent };
+                setActiveSection(updatedSection); // Update active section directly
+                setSelectedBlockId(newSelectedBlockId);
+                return updatedSection;
+            };
+
+            return newToc.map(chapter => ({
                 ...chapter,
-                sections: chapter.sections.map(section => {
-                    if (section.id === activeSection.id) {
-                        let updatedContent;
-                        let newSelectedBlockId = selectedBlockId;
-                        if (modalMode === 'edit' && editingBlockInfo && editingBlockInfo.blockId) {
-                            updatedContent = section.content.map(block =>
-                                block.id === editingBlockInfo.blockId ? { ...block, html: htmlContent } : block
-                            );
-                            toast({ title: "Contenido Actualizado", description: "El bloque HTML ha sido actualizado." });
-                        } else { 
-                            const newBlock: ContentBlockType = { id: crypto.randomUUID(), html: htmlContent };
-                            updatedContent = [...section.content, newBlock];
-                            toast({ title: "Contenido Añadido", description: "El bloque HTML ha sido añadido a la sección." });
-                            newSelectedBlockId = newBlock.id; 
-                        }
-                        setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: updatedContent } : undefined);
-                        setSelectedBlockId(newSelectedBlockId);
-                        return { ...section, content: updatedContent };
-                    }
-                    return section;
-                })
+                sections: updateTocRecursively(chapter.sections, activeSection.id, updateFn)
             }));
-            return newToc;
         });
         setIsModalOpen(false);
         setEditingBlockInfo(null); 
@@ -151,20 +194,20 @@ export default function SignalVisorPage() {
         }
         
         setToc(currentToc => {
-            const newToc = currentToc.map(chapter => ({
+            const newToc = [...currentToc];
+            const updateFn = (section: SectionType) => {
+                const updatedContent = section.content.filter(block => block.id !== selectedBlockId);
+                const updatedSection = { ...section, content: updatedContent };
+                setActiveSection(updatedSection);
+                toast({ title: "Contenido Eliminado", description: "El bloque HTML ha sido eliminado." });
+                setSelectedBlockId(null);
+                return updatedSection;
+            };
+
+            return newToc.map(chapter => ({
                 ...chapter,
-                sections: chapter.sections.map(section => {
-                    if (section.id === activeSection.id) {
-                        const updatedContent = section.content.filter(block => block.id !== selectedBlockId);
-                        setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: updatedContent } : undefined);
-                        toast({ title: "Contenido Eliminado", description: "El bloque HTML ha sido eliminado." });
-                        setSelectedBlockId(null); 
-                        return { ...section, content: updatedContent };
-                    }
-                    return section;
-                })
+                sections: updateTocRecursively(chapter.sections, activeSection.id, updateFn)
             }));
-            return newToc;
         });
         setIsDeleteDialogOpen(false); 
     };
@@ -176,32 +219,32 @@ export default function SignalVisorPage() {
         }
 
         setToc(currentToc => {
-            const newToc = currentToc.map(chapter => ({
+             const newToc = [...currentToc];
+             const updateFn = (section: SectionType) => {
+                const blockIndex = section.content.findIndex(b => b.id === selectedBlockId);
+                if (blockIndex === -1) return section;
+
+                const newContent = [...section.content];
+                const [blockToMove] = newContent.splice(blockIndex, 1);
+
+                if (direction === 'up' && blockIndex > 0) {
+                    newContent.splice(blockIndex - 1, 0, blockToMove);
+                } else if (direction === 'down' && blockIndex < newContent.length) { 
+                    newContent.splice(blockIndex + 1, 0, blockToMove);
+                } else {
+                    return section; 
+                }
+                
+                const updatedSection = { ...section, content: newContent };
+                setActiveSection(updatedSection);
+                toast({ title: "Contenido Reordenado", description: `El bloque HTML ha sido movido hacia ${direction === 'up' ? 'arriba' : 'abajo'}.` });
+                return updatedSection;
+             };
+
+             return newToc.map(chapter => ({
                 ...chapter,
-                sections: chapter.sections.map(section => {
-                    if (section.id === activeSection.id) {
-                        const blockIndex = section.content.findIndex(b => b.id === selectedBlockId);
-                        if (blockIndex === -1) return section;
-
-                        const newContent = [...section.content];
-                        const [blockToMove] = newContent.splice(blockIndex, 1);
-
-                        if (direction === 'up' && blockIndex > 0) {
-                            newContent.splice(blockIndex - 1, 0, blockToMove);
-                        } else if (direction === 'down' && blockIndex < newContent.length) { 
-                            newContent.splice(blockIndex + 1, 0, blockToMove);
-                        } else {
-                            newContent.splice(blockIndex, 0, blockToMove); 
-                            return section; 
-                        }
-                        setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: newContent } : undefined);
-                        toast({ title: "Contenido Reordenado", description: `El bloque HTML ha sido movido hacia ${direction === 'up' ? 'arriba' : 'abajo'}.` });
-                        return { ...section, content: newContent };
-                    }
-                    return section;
-                })
+                sections: updateTocRecursively(chapter.sections, activeSection.id, updateFn)
             }));
-            return newToc; 
         });
     };
     
@@ -316,115 +359,115 @@ export default function SignalVisorPage() {
                 <Sidebar toc={toc} activeSection={activeSection} onSectionSelect={handleSectionSelect} />
             </div>
             
-            <div className="fixed top-4 right-4 z-50 flex items-center space-x-1">
-                <TooltipProvider delayDuration={100}>
-                    {selectedBlockId && activeSection && (
-                        <>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        onClick={handleOpenEditModalForSelected}
-                                        variant="ghost"
-                                        size="icon"
-                                        className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                    >
-                                        <Pencil size={18} />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent><p>Editar Diapositiva</p></TooltipContent>
-                            </Tooltip>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        onClick={() => handleMoveBlockGlobal('up')}
-                                        disabled={!canMoveUp}
-                                        variant="ghost"
-                                        size="icon"
-                                        className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                    >
-                                        <ArrowUpCircle size={18} />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent><p>Mover Arriba</p></TooltipContent>
-                            </Tooltip>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        onClick={() => handleMoveBlockGlobal('down')}
-                                        disabled={!canMoveDown}
-                                        variant="ghost"
-                                        size="icon"
-                                        className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                    >
-                                        <ArrowDownCircle size={18} />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent><p>Mover Abajo</p></TooltipContent>
-                            </Tooltip>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        onClick={() => setIsDeleteDialogOpen(true)}
-                                        variant="ghost"
-                                        size="icon"
-                                        className="text-destructive hover:bg-destructive/90 hover:text-destructive-foreground"
-                                    >
-                                        <Trash2 size={18} />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent><p>Eliminar Diapositiva</p></TooltipContent>
-                            </Tooltip>
-                             <Separator orientation="vertical" className="h-6 bg-border mx-2" />
-                        </>
-                    )}
-
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button
-                                onClick={handleDownloadBackup}
-                                variant="ghost"
-                                size="icon"
-                                className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                            >
-                                <Save size={18} />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent><p>Descargar Respaldo JSON</p></TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button
-                                onClick={handleSaveToServer}
-                                variant="ghost"
-                                size="icon"
-                                className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                            >
-                                <UploadCloud size={18} />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent><p>Guardar en Servidor Local</p></TooltipContent>
-                    </Tooltip>
-                    
-                    <Separator orientation="vertical" className="h-6 bg-border mx-2" />
-
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button
-                                onClick={toggleSidebar}
-                                variant="ghost"
-                                size="icon"
-                                className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                aria-label={isSidebarVisible ? "Ocultar menú lateral" : "Mostrar menú lateral"}
-                            >
-                                {isSidebarVisible ? <X size={20} /> : <Menu size={20} />}
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent><p>{isSidebarVisible ? "Ocultar Menú" : "Mostrar Menú"}</p></TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </div>
-
             <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0"> 
+                <div className="fixed top-4 right-4 z-50 flex items-center space-x-1">
+                    <TooltipProvider delayDuration={100}>
+                        {selectedBlockId && activeSection && (
+                            <>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            onClick={handleOpenEditModalForSelected}
+                                            variant="ghost"
+                                            size="icon"
+                                            className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                        >
+                                            <Pencil size={18} />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent><p>Editar Diapositiva</p></TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            onClick={() => handleMoveBlockGlobal('up')}
+                                            disabled={!canMoveUp}
+                                            variant="ghost"
+                                            size="icon"
+                                            className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                        >
+                                            <ArrowUpCircle size={18} />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent><p>Mover Arriba</p></TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            onClick={() => handleMoveBlockGlobal('down')}
+                                            disabled={!canMoveDown}
+                                            variant="ghost"
+                                            size="icon"
+                                            className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                        >
+                                            <ArrowDownCircle size={18} />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent><p>Mover Abajo</p></TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            onClick={() => setIsDeleteDialogOpen(true)}
+                                            variant="ghost"
+                                            size="icon"
+                                            className="text-destructive hover:bg-destructive/90 hover:text-destructive-foreground"
+                                        >
+                                            <Trash2 size={18} />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent><p>Eliminar Diapositiva</p></TooltipContent>
+                                </Tooltip>
+                                 <Separator orientation="vertical" className="h-6 bg-border mx-2" />
+                            </>
+                        )}
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    onClick={handleDownloadBackup}
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                >
+                                    <Save size={18} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Descargar Respaldo JSON</p></TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    onClick={handleSaveToServer}
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                >
+                                    <UploadCloud size={18} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Guardar en Servidor Local</p></TooltipContent>
+                        </Tooltip>
+                        
+                        <Separator orientation="vertical" className="h-6 bg-border mx-2" />
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    onClick={toggleSidebar}
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                    aria-label={isSidebarVisible ? "Ocultar menú lateral" : "Mostrar menú lateral"}
+                                >
+                                    {isSidebarVisible ? <X size={20} /> : <Menu size={20} />}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>{isSidebarVisible ? "Ocultar Menú" : "Mostrar Menú"}</p></TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
+                
                 <ContentView
                     section={activeSection}
                     onNavigate={handleNavigate}
@@ -439,8 +482,3 @@ export default function SignalVisorPage() {
         </div>
     );
 }
-    
-
-    
-
-    

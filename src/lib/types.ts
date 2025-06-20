@@ -8,6 +8,7 @@ export interface SectionType {
   id: string;
   title: string;
   content: ContentBlockType[];
+  subsections?: SectionType[];
 }
 
 export interface ChapterType {
