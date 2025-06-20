@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { ChevronRight, X, Save, UploadCloud, Menu, Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
@@ -22,10 +22,11 @@ export default function SignalVisorPage() {
     
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
-    const [editingBlockInfo, setEditingBlockInfo] = useState<{ chapterIndex: number; sectionIndex: number; blockId: string } | null>(null);
+    const [editingBlockInfo, setEditingBlockInfo] = useState<{ blockId: string } | null>(null);
     const [htmlToEdit, setHtmlToEdit] = useState<string>('');
     const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
 
     const { toast } = useToast();
@@ -33,11 +34,9 @@ export default function SignalVisorPage() {
     const flattenSections = (sections: SectionType[]): SectionType[] => {
         let flatList: SectionType[] = [];
         sections.forEach(section => {
-            // Create a copy of the section without its subsections to avoid circular references
-            const { subsections, ...sectionWithoutSubs } = section;
-            flatList.push(sectionWithoutSubs as SectionType);
-            if (subsections) {
-                flatList = flatList.concat(flattenSections(subsections));
+            flatList.push({ ...section, subsections: undefined });
+            if (section.subsections) {
+                flatList = flatList.concat(flattenSections(section.subsections));
             }
         });
         return flatList;
@@ -103,19 +102,17 @@ export default function SignalVisorPage() {
             toast({ title: "Error", description: "Ninguna diapositiva seleccionada para editar.", variant: "destructive" });
             return;
         }
-
-        // Simplified logic: get the block to edit directly from the active section in the state.
+        
         const blockToEdit = activeSection.content.find(b => b.id === selectedBlockId);
 
         if (!blockToEdit) {
-            toast({ title: "Error", description: "Diapositiva seleccionada no encontrada.", variant: "destructive" });
+             toast({ title: "Error", description: "Diapositiva seleccionada no encontrada.", variant: "destructive" });
             return;
         }
     
         setModalMode('edit');
         setHtmlToEdit(blockToEdit.html);
-        // This info is not strictly needed for the simplified update logic, but we set it for consistency.
-        setEditingBlockInfo({ chapterIndex: -1, sectionIndex: -1, blockId: selectedBlockId });
+        setEditingBlockInfo({ blockId: selectedBlockId });
         setIsModalOpen(true);
     };
     
@@ -142,9 +139,9 @@ export default function SignalVisorPage() {
             const updateFn = (section: SectionType) => {
                 let updatedContent;
                 let newSelectedBlockId = selectedBlockId;
-                if (modalMode === 'edit' && selectedBlockId) {
+                if (modalMode === 'edit' && editingBlockInfo) {
                     updatedContent = section.content.map(block =>
-                        block.id === selectedBlockId ? { ...block, html: htmlContent } : block
+                        block.id === editingBlockInfo.blockId ? { ...block, html: htmlContent } : block
                     );
                     toast({ title: "Contenido Actualizado", description: "El bloque HTML ha sido actualizado." });
                 } else { 
@@ -251,39 +248,56 @@ export default function SignalVisorPage() {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        toast({ title: "Descarga Iniciada", description: "El archivo de respaldo signalVisorContent.json se está descargando." });
+        toast({ title: "Descarga Iniciada", description: "El archivo de respaldo se está descargando." });
     };
 
-    const handleSaveToServer = async () => {
-        const serverUrl = 'http://localhost:3001/api/save-slides'; 
-        try {
-            const response = await fetch(serverUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(toc),
-            });
+    const handleTriggerUpload = () => {
+        fileInputRef.current?.click();
+    };
 
-            if (response.ok) {
-                toast({ title: "Guardado en Servidor", description: "Los datos se enviaron correctamente al servidor." });
-            } else {
-                const errorData = await response.text();
-                toast({ 
-                    title: "Error al Guardar en Servidor", 
-                    description: `El servidor respondió con error: ${response.status}. ${errorData}`, 
-                    variant: "destructive" 
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const text = e.target?.result;
+                if (typeof text !== 'string') {
+                    throw new Error("File content is not readable as text.");
+                }
+                const newToc = JSON.parse(text);
+                // TODO: Add validation to ensure it's a valid TOC structure
+                setToc(newToc);
+                toast({
+                    title: "Contenido Cargado",
+                    description: "El contenido del archivo JSON se ha cargado correctamente.",
+                });
+                setActiveSection(undefined);
+                setSelectedBlockId(null);
+            } catch (error) {
+                console.error("Error parsing JSON file:", error);
+                toast({
+                    title: "Error al Cargar",
+                    description: "El archivo no es un JSON válido o tiene un formato incorrecto.",
+                    variant: "destructive",
                 });
             }
-        } catch (error) {
-            toast({ 
-                title: "Error de Conexión", 
-                description: `No se pudo conectar con el servidor en ${serverUrl}. Esta función requiere un servidor local separado que probablemente no está ejecutándose. Para guardar su contenido, use el botón "Descargar Respaldo JSON".`, 
+        };
+        reader.onerror = () => {
+            toast({
+                title: "Error de Lectura",
+                description: "No se pudo leer el archivo seleccionado.",
                 variant: "destructive",
-                duration: 10000
             });
+        };
+        reader.readAsText(file);
+
+        if (event.target) {
+            event.target.value = '';
         }
     };
+
 
     const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
 
@@ -298,6 +312,14 @@ export default function SignalVisorPage() {
 
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept="application/json"
+                className="hidden"
+            />
+            
             <HtmlAddModal 
                 isOpen={isModalOpen} 
                 onClose={() => setIsModalOpen(false)} 
@@ -421,7 +443,7 @@ export default function SignalVisorPage() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    onClick={handleSaveToServer}
+                                    onClick={handleTriggerUpload}
                                     variant="ghost"
                                     size="icon"
                                     className="text-foreground hover:bg-accent hover:text-accent-foreground"
@@ -429,7 +451,7 @@ export default function SignalVisorPage() {
                                     <UploadCloud size={18} />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent><p>Guardar en Servidor Local</p></TooltipContent>
+                            <TooltipContent><p>Cargar Respaldo desde JSON</p></TooltipContent>
                         </Tooltip>
                         
                         <Separator orientation="vertical" className="h-6 bg-border mx-2" />
@@ -464,5 +486,4 @@ export default function SignalVisorPage() {
             </div>
         </div>
     );
-
-    
+}
