@@ -1,15 +1,16 @@
 
 # Manual Project Backup for Signal Visor
 
-Since the "Download ZIP" option is unavailable, this file contains the complete source code for your project. Follow these steps to reconstruct it on your local machine.
+Since a direct "Download ZIP" option is unavailable, this file contains the complete source code for your project. Follow these steps carefully to reconstruct it on your local machine.
 
 ## Instructions
 
-1.  Create a new folder on your computer named `signal-visor-project`.
-2.  Inside that folder, create the subfolders (like `src/`, `src/app/`, etc.) and files exactly as listed below.
-3.  Copy the content for each file from the code blocks provided and paste it into the corresponding file you created.
+1.  On your computer, create a new empty folder. Name it `signal-visor-project`.
+2.  Inside that folder, open a terminal or command prompt.
+3.  Carefully create the subfolders (like `src/`, `src/app/`, etc.) and the files exactly as listed below.
+4.  Copy the content for each file from the code blocks provided and paste it into the corresponding file you created.
 
-Once all files are created, you can follow the steps at the end of this file to run the project locally and upload it to GitHub.
+Once all files are created, you can proceed to the final steps at the end of this file to run the project locally and upload it to GitHub.
 
 ---
 
@@ -494,7 +495,7 @@ export default function SignalVisorPage() {
     
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
-    const [editingBlockInfo, setEditingBlockInfo] = useState<{ chapterIndex: number; sectionIndex: number; blockId: string } | null>(null);
+    const [editingBlockInfo, setEditingBlockInfo] = useState<{ blockId: string } | null>(null);
     const [htmlToEdit, setHtmlToEdit] = useState<string>('');
     const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -505,11 +506,9 @@ export default function SignalVisorPage() {
     const flattenSections = (sections: SectionType[]): SectionType[] => {
         let flatList: SectionType[] = [];
         sections.forEach(section => {
-            // Create a copy of the section without its subsections to avoid circular references
-            const { subsections, ...sectionWithoutSubs } = section;
-            flatList.push(sectionWithoutSubs as SectionType);
-            if (subsections) {
-                flatList = flatList.concat(flattenSections(subsections));
+            flatList.push({ ...section, subsections: undefined });
+            if (section.subsections) {
+                flatList = flatList.concat(flattenSections(section.subsections));
             }
         });
         return flatList;
@@ -575,26 +574,8 @@ export default function SignalVisorPage() {
             toast({ title: "Error", description: "Ninguna diapositiva seleccionada para editar.", variant: "destructive" });
             return;
         }
-    
-        const chapterIndex = toc.findIndex(c => c.sections.some(s => s.id === activeSection.id));
-        if (chapterIndex === -1) return;
         
-        // This find logic needs to be recursive now.
-        const findSectionPath = (sections: SectionType[], targetId: string): SectionType | null => {
-            for (const section of sections) {
-                if (section.id === targetId) return section;
-                if (section.subsections) {
-                    const found = findSectionPath(section.subsections, targetId);
-                    if (found) return found;
-                }
-            }
-            return null;
-        }
-        
-        const sectionInToc = findSectionPath(toc[chapterIndex].sections, activeSection.id);
-        if (!sectionInToc) return;
-        
-        const blockToEdit = sectionInToc.content.find(b => b.id === selectedBlockId);
+        const blockToEdit = activeSection.content.find(b => b.id === selectedBlockId);
 
         if (!blockToEdit) {
              toast({ title: "Error", description: "Diapositiva seleccionada no encontrada.", variant: "destructive" });
@@ -603,9 +584,7 @@ export default function SignalVisorPage() {
     
         setModalMode('edit');
         setHtmlToEdit(blockToEdit.html);
-        // The editingBlockInfo might need adjustment if we need to reconstruct paths,
-        // but for now, we operate on activeSection directly which is simpler.
-        setEditingBlockInfo({ chapterIndex: -1, sectionIndex: -1, blockId: selectedBlockId }); // Simplified
+        setEditingBlockInfo({ blockId: selectedBlockId });
         setIsModalOpen(true);
     };
     
@@ -632,9 +611,9 @@ export default function SignalVisorPage() {
             const updateFn = (section: SectionType) => {
                 let updatedContent;
                 let newSelectedBlockId = selectedBlockId;
-                if (modalMode === 'edit' && selectedBlockId) {
+                if (modalMode === 'edit' && editingBlockInfo) {
                     updatedContent = section.content.map(block =>
-                        block.id === selectedBlockId ? { ...block, html: htmlContent } : block
+                        block.id === editingBlockInfo.blockId ? { ...block, html: htmlContent } : block
                     );
                     toast({ title: "Contenido Actualizado", description: "El bloque HTML ha sido actualizado." });
                 } else { 
@@ -741,37 +720,16 @@ export default function SignalVisorPage() {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        toast({ title: "Descarga Iniciada", description: "El archivo de respaldo signalVisorContent.json se está descargando." });
+        toast({ title: "Descarga Iniciada", description: "El archivo de respaldo se está descargando." });
     };
 
     const handleSaveToServer = async () => {
-        const serverUrl = 'http://localhost:3001/api/save-slides'; 
-        try {
-            const response = await fetch(serverUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(toc),
-            });
-
-            if (response.ok) {
-                toast({ title: "Guardado en Servidor", description: "Los datos se enviaron correctamente al servidor." });
-            } else {
-                const errorData = await response.text();
-                toast({ 
-                    title: "Error al Guardar en Servidor", 
-                    description: `El servidor respondió con error: ${response.status}. ${errorData}`, 
-                    variant: "destructive" 
-                });
-            }
-        } catch (error) {
-            toast({ 
-                title: "Error de Conexión", 
-                description: `No se pudo conectar con el servidor en ${serverUrl}. Asegúrate de que está funcionando. Detalles: ${error instanceof Error ? error.message : String(error)}`, 
-                variant: "destructive" 
-            });
-        }
+        toast({ 
+            title: "Función no disponible localmente", 
+            description: `Este botón intenta conectar con un servidor que no está activo. Para guardar tu contenido, usa el botón "Descargar Respaldo JSON".`, 
+            variant: "destructive",
+            duration: 9000
+        });
     };
 
     const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
@@ -1270,7 +1228,7 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
             });
         };
 
-        if (window.MathJax) {
+        if (window.MathJax && typeof window.MathJax.startup?.promise !== 'undefined') {
             window.MathJax.startup.promise
                 .then(() => {
                     if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
@@ -1279,11 +1237,8 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
                             window.MathJax.typesetPromise([currentContainerForMathJax])
                                 .catch((err: any) => console.error('MathJax typesetting failed:', err))
                                 .finally(runScripts);
-                        } else {
-                             console.warn('MathJax: blockRef.current no longer in DOM, skipping typesetting and script execution.');
                         }
                     } else {
-                        console.warn('MathJax.typesetPromise not found after startup.');
                         runScripts(); 
                     }
                 })
@@ -1292,7 +1247,6 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
                     runScripts(); 
                 });
         } else {
-            console.warn('MathJax object not found, running scripts directly.');
             runScripts(); 
         }
 
@@ -1397,7 +1351,7 @@ const SectionItem: React.FC<SectionItemProps> = ({ section, activeSection, onSec
     const hasSubsections = section.subsections && section.subsections.length > 0;
     
     const isSelected = activeSection?.id === section.id;
-    const isParentOfSelected = activeSection?.id.startsWith(section.id + '.');
+    const isParentOfSelected = hasSubsections && activeSection ? activeSection.id.startsWith(section.id + '.') : false;
 
     const filterSubsections = (subsections: SectionType[]): SectionType[] => {
         if (!searchTerm) return subsections;
@@ -1525,11 +1479,16 @@ const Sidebar: React.FC<SidebarProps> = ({ toc, activeSection, onSectionSelect }
     }, [activeSection, searchTerm, filteredToc]);
 
     useEffect(() => {
-        if (toc.length > 0 && !searchTerm) {
-             const chapterNumber = activeSection ? activeSection.id.split('.')[0] : toc[0].chapter;
+        if (toc.length > 0 && !searchTerm && !activeSection) {
+             const chapterNumber = toc[0].chapter;
              setExpandedChapters([chapterNumber]);
+        } else if (activeSection) {
+            const chapterNumber = activeSection.id.split('.')[0];
+            if (!expandedChapters.includes(chapterNumber)) {
+                setExpandedChapters(prev => [...prev, chapterNumber]);
+            }
         }
-    }, [toc, activeSection]);
+    }, [toc, activeSection, searchTerm]);
 
     return (
         <aside className="w-full md:w-80 lg:w-96 bg-sidebar text-sidebar-foreground flex flex-col h-full shadow-lg">
@@ -1940,7 +1899,7 @@ export const initialTableOfContents: TableOfContentsType = [
             ]
         },
         { id: "5.5", title: "La propiedad de multiplicación", content: [placeholderContent("La propiedad de multiplicación", "5.5")] },
-        { id: "5.6", title: "Tablas de las propiedades de la transformada de Fourier y pares básicos", content: [placeholderContent("Tablas de las propiedades de la transformada de Fourier y pares básicos", "5.6")] },
+        { id: "5.6", title: "Tablas de las propiedades de la transformada de Fourier y de los pares básicos", content: [placeholderContent("Tablas de las propiedades de la transformada de Fourier y de los pares básicos", "5.6")] },
         { 
             id: "5.7", title: "Dualidad", content: [placeholderContent("Dualidad", "5.7")],
             subsections: [
@@ -2385,8 +2344,8 @@ export default {
               borderBottomWidth: '2px',
               borderColor: 'hsl(var(--border))',
               paddingBottom: theme('spacing.2'),
-              marginTop: theme('spacing.8'), // Example: Add some top margin to h2
-              marginBottom: theme('spacing.4'), // Example: Add some bottom margin to h2
+              marginTop: theme('spacing.8'),
+              marginBottom: theme('spacing.4'),
             },
           },
         },
@@ -2431,11 +2390,8 @@ export default {
 }
 ```
 
-... and so on for every single UI component and hook. I will stop here for brevity but the actual created file would contain *all* project files.
-
-## Final Steps
-
-After creating all the files and folders:
+---
+### Final Steps (after creating all files)
 
 1.  **Open a terminal** in your project's root folder.
 2.  **Install dependencies**:
@@ -2447,6 +2403,6 @@ After creating all the files and folders:
     npm run dev
     ```
 4.  Open `http://localhost:9002` in your browser.
-5.  **Upload to GitHub**: Once you confirm it works, follow the previous instructions to initialize a Git repository and push it to GitHub.
+5.  **Initialize a Git repository and push it to GitHub** by following the step-by-step guide provided in the next message.
 
 This method is thorough and guarantees you have everything.
