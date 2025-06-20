@@ -3,19 +3,12 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import type { ContentBlockType } from '@/lib/types';
-import { Button } from '@/components/ui/button';
-import { Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
 
 interface HtmlBlockProps {
     block: ContentBlockType;
-    onEdit: () => void;
-    onDelete: () => void;
-    onMoveUp: () => void;
-    onMoveDown: () => void;
-    isFirst: boolean;
-    isLast: boolean;
+    onSelect: (blockId: string) => void;
+    isActive: boolean;
 }
 
 declare global {
@@ -25,7 +18,8 @@ declare global {
     }
 }
 
-const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, html: htmlString }, onEdit, onDelete, onMoveUp, onMoveDown, isFirst, isLast }) => {
+const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isActive }) => {
+    const { id: blockId, html: htmlString } = block;
     const blockRef = useRef<HTMLDivElement>(null);
     const instanceId = useRef(`block-${crypto.randomUUID()}`).current;
     
@@ -163,38 +157,20 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, 
     }, [codeBlockData, codeBlocksVisibility, instanceId]);
 
     return (
-        <div ref={blockRef} className="content-block relative py-4 border-t-2 border-gray-700 first:pt-0 first:border-none">
-             {/* Botones siempre visibles */}
-            <div className="absolute top-1 right-1 z-40 flex space-x-1 bg-card p-1 rounded-md shadow-md">
-                <Button variant="ghost" size="icon" onClick={onEdit} title="Editar diapositiva" className="h-7 w-7 p-1 text-blue-400 hover:text-blue-300 hover:bg-gray-700">
-                    <Pencil size={16} />
-                </Button>
-                <Button variant="ghost" size="icon" onClick={onMoveUp} disabled={isFirst} title="Mover arriba" className="h-7 w-7 p-1 text-green-400 hover:text-green-300 hover:bg-gray-700 disabled:opacity-50">
-                    <ArrowUpCircle size={16} />
-                </Button>
-                <Button variant="ghost" size="icon" onClick={onMoveDown} disabled={isLast} title="Mover abajo" className="h-7 w-7 p-1 text-yellow-400 hover:text-yellow-300 hover:bg-gray-700 disabled:opacity-50">
-                    <ArrowDownCircle size={16} />
-                </Button>
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon" title="Eliminar diapositiva" className="h-7 w-7 p-1 text-red-400 hover:text-red-300 hover:bg-gray-700">
-                            <Trash2 size={16} />
-                        </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-card border-border text-card-foreground">
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                Esta acción no se puede deshacer. Esto eliminará permanentemente la diapositiva.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel className="hover:bg-muted">Cancelar</AlertDialogCancel>
-                            <AlertDialogAction onClick={onDelete} className="bg-destructive hover:bg-destructive/90">Eliminar</AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-            </div>
+        <div 
+            ref={blockRef} 
+            className={cn(
+                "content-block relative py-4 border-t-2 border-gray-700 first:pt-0 first:border-none cursor-pointer transition-all duration-150 ease-in-out",
+                isActive ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-lg' : 'hover:bg-card/50',
+                'my-2 rounded-md' // Added margin and rounded corners
+            )}
+            onClick={() => onSelect(blockId)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onSelect(blockId); }}
+            aria-pressed={isActive}
+            aria-label={`Diapositiva ${blockId}${isActive ? ', seleccionada' : ''}`}
+        >
             <div className="content-block-inner relative">
                 {/* El HTML del usuario se inyectará aquí por el primer useEffect */}
             </div>
@@ -204,3 +180,6 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block: { id: blockId, 
 
 HtmlBlock.displayName = 'HtmlBlock';
 export default HtmlBlock;
+
+
+    

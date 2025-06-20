@@ -13,11 +13,10 @@ interface ContentViewProps {
     onNavigate: (direction: 'prev' | 'next') => void;
     flatSections: SectionType[];
     onOpenAddModal: () => void;
-    onEditBlock: (blockId: string, currentHtml: string) => void;
-    onDeleteBlock: (blockId: string) => void;
-    onMoveBlock: (blockId: string, direction: 'up' | 'down') => void;
     isSidebarVisible: boolean;
     toggleSidebar: () => void;
+    selectedBlockId: string | null;
+    onBlockSelect: (blockId: string) => void;
 }
 
 const ContentView: React.FC<ContentViewProps> = ({ 
@@ -25,11 +24,10 @@ const ContentView: React.FC<ContentViewProps> = ({
     onNavigate, 
     flatSections, 
     onOpenAddModal,
-    onEditBlock,
-    onDeleteBlock,
-    onMoveBlock,
     isSidebarVisible,
-    toggleSidebar
+    toggleSidebar,
+    selectedBlockId,
+    onBlockSelect
 }) => {
     const contentRef = React.useRef<HTMLDivElement>(null);
     const [isFullscreen, setIsFullscreen] = React.useState(false);
@@ -92,13 +90,13 @@ const ContentView: React.FC<ContentViewProps> = ({
     const isLastSection = currentIndex === flatSections.length - 1;
 
     return (
-        <main ref={contentRef} className="flex-1 flex flex-col bg-background overflow-hidden">
+        <main ref={contentRef} className="flex-1 flex flex-col bg-background overflow-hidden pt-16 md:pt-0"> {/* Added padding top for fixed global buttons */}
             {/* Barra de encabezado para acciones de contenido */}
             <div className="p-3 border-b border-border bg-card flex justify-between items-center sticky top-0 z-10">
                 <div className="flex items-center gap-2">
                     <Button
                         onClick={toggleSidebar}
-                        className="p-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md md:hidden" // Oculto en md y superior
+                        className="p-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md md:hidden"
                         aria-label={isSidebarVisible ? "Ocultar menú lateral" : "Mostrar menú lateral"}
                         variant="ghost"
                         size="icon"
@@ -154,16 +152,12 @@ const ContentView: React.FC<ContentViewProps> = ({
 
             <ScrollArea className="flex-grow p-4 md:p-8">
                 <div className="max-w-none">
-                    {section.content.map((block, index) => (
+                    {section.content.map((block) => (
                         <HtmlBlock 
                             key={block.id} 
                             block={block}
-                            onEdit={() => onEditBlock(block.id, block.html)}
-                            onDelete={() => onDeleteBlock(block.id)}
-                            onMoveUp={() => onMoveBlock(block.id, 'up')}
-                            onMoveDown={() => onMoveBlock(block.id, 'down')}
-                            isFirst={index === 0}
-                            isLast={index === section.content.length - 1}
+                            onSelect={onBlockSelect}
+                            isActive={selectedBlockId === block.id}
                         />
                     ))}
                 </div>
@@ -173,3 +167,6 @@ const ContentView: React.FC<ContentViewProps> = ({
 };
 
 export default ContentView;
+
+
+    
