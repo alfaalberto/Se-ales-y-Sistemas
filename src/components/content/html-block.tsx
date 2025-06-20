@@ -88,7 +88,9 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
         setCodeBlocksVisibility(initialVisibilityStateCollector);
 
         const runScripts = () => {
-            const scriptsToRun = Array.from(container.getElementsByTagName('script'));
+            const currentContainer = blockRef.current;
+            if (!currentContainer) return;
+            const scriptsToRun = Array.from(currentContainer.getElementsByTagName('script'));
             scriptsToRun.forEach(originalScript => {
                  if (!originalScript.closest('.content-block-inner')) return;
                 
@@ -100,19 +102,32 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
             });
         };
 
-        const timerId = setTimeout(() => {
-            if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
-                window.MathJax.typesetPromise([container])
-                    .catch((err: any) => console.error('MathJax typesetting failed:', err))
-                    .finally(runScripts); 
-            } else {
-                runScripts(); 
-            }
-        }, 100); 
+        if (window.MathJax) {
+            window.MathJax.startup.promise
+                .then(() => {
+                    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                        const currentContainerForMathJax = blockRef.current;
+                        if (currentContainerForMathJax && document.body.contains(currentContainerForMathJax)) {
+                            window.MathJax.typesetPromise([currentContainerForMathJax])
+                                .catch((err: any) => console.error('MathJax typesetting failed:', err))
+                                .finally(runScripts);
+                        } else {
+                             console.warn('MathJax: blockRef.current no longer in DOM, skipping typesetting and script execution.');
+                        }
+                    } else {
+                        console.warn('MathJax.typesetPromise not found after startup.');
+                        runScripts(); 
+                    }
+                })
+                .catch((err: any) => {
+                    console.error('MathJax startup promise failed:', err);
+                    runScripts(); 
+                });
+        } else {
+            console.warn('MathJax object not found, running scripts directly.');
+            runScripts(); 
+        }
 
-        return () => {
-            clearTimeout(timerId);
-        };
     }, [htmlString, instanceId]);
 
 
@@ -180,5 +195,3 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
 
 HtmlBlock.displayName = 'HtmlBlock';
 export default HtmlBlock;
-
-    
