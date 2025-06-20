@@ -56,8 +56,7 @@ body {
   }
 
   .dark {
-    /* Properties for .dark class if needed, but :root is already dark themed */
-    /* For consistency, can copy :root values here or ensure .dark is not actively used if :root is the primary theme */
+    /* Ensures .dark class (used by Tailwind's darkMode: 'class') matches the default dark theme from :root */
     --background: 240 6% 12%;
     --foreground: 0 0% 98%;
     --card: 240 6% 15%;
@@ -102,23 +101,23 @@ body {
     font-family: var(--font-body);
   }
   
-  /* Default prose styles (applied by `prose` class, typically for light mode or non-inverted dark) */
-  /* Relies on Tailwind Typography plugin variables configured in tailwind.config.ts */
+  /* Default prose styles (applied by `prose` class) */
+  /* These rely on Tailwind Typography plugin variables configured in tailwind.config.ts */
+  /* The .dark .prose styles will take precedence when 'dark' class is active on html tag */
   .prose {
-    h2 { /* Specific style for h2, applied via @layer base */
+    h2 { 
       @apply text-primary border-b-2 border-border pb-2;
     }
-    /* For p, li, strong, etc., colors come from --tw-prose-body, --tw-prose-bold from Tailwind config */
-    a { /* Link color from --tw-prose-links */
-      @apply hover:text-accent/80; /* Specific hover style */
+    a { 
+      @apply hover:text-accent/80;
     }
-    pre { /* Background from --tw-prose-pre-bg, text from --tw-prose-pre-code */
-      @apply p-4 rounded-md; /* Keep padding and radius for structure */
+    pre { 
+      @apply p-4 rounded-md; 
     }
-    code { /* Inline code: text from --tw-prose-code */
-      @apply bg-muted px-1 py-0.5 rounded-sm; /* Keep specific background and padding for inline code */
+    code { 
+      @apply bg-muted px-1 py-0.5 rounded-sm; 
     }
-    pre code { /* Code inside pre: text from --tw-prose-pre-code, background transparent */
+    pre code { 
       @apply bg-transparent p-0;
     }
     thead {
@@ -129,23 +128,22 @@ body {
     }
   }
 
-  /* Styles for `dark:prose-invert` or `.dark .prose` */
-  /* These are effectively the styles for HtmlBlock due to `dark:prose-invert` */
+  /* Styles for `dark:prose-invert` or when `.dark .prose` is active */
+  /* These are effectively the styles for HtmlBlock due to `dark:prose-invert` and `className="dark"` on <html> */
   .dark .prose {
     h2 {
       @apply text-primary border-b-2 border-border pb-2; /* Matches config and app theme */
     }
-    /* For p, li, strong, etc., colors come from --tw-prose-body, --tw-prose-bold (inverted) from Tailwind config */
-     a { /* Link color from --tw-prose-links (inverted) */
-      @apply hover:text-accent/80; /* Specific hover style */
+     a { 
+      @apply hover:text-accent/80; 
     }
-    pre { /* Background from --tw-prose-pre-bg (inverted), text from --tw-prose-pre-code (inverted) */
-      @apply p-4 rounded-md; /* Keep padding and radius */
+    pre { 
+      @apply p-4 rounded-md; 
     }
-    code { /* Inline code: text from --tw-prose-code (inverted) */
-       @apply bg-muted px-1 py-0.5 rounded-sm; /* Keep specific background and padding */
+    code { 
+       @apply bg-muted px-1 py-0.5 rounded-sm; 
     }
-    pre code { /* Code in pre: text from --tw-prose-pre-code (inverted), background transparent */
+    pre code { 
        @apply bg-transparent p-0;
     }
     thead {
@@ -172,5 +170,3 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--secondary));
 }
-
-    
