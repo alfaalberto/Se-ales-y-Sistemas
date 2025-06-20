@@ -65,7 +65,8 @@ const ContentView: React.FC<ContentViewProps> = ({
     if (!section) {
         return (
             <div className="flex-1 p-8 flex flex-col items-center justify-center text-gray-400 bg-background">
-                <div className="fixed top-4 left-4 z-50 md:hidden">
+                {/* This button is for mobile view when no section is selected, to toggle sidebar */}
+                <div className="absolute top-4 left-4 z-50 md:hidden">
                      <Button
                         onClick={toggleSidebar}
                         className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
@@ -90,7 +91,7 @@ const ContentView: React.FC<ContentViewProps> = ({
     const isLastSection = currentIndex === flatSections.length - 1;
 
     return (
-        <main ref={contentRef} className="flex-1 flex flex-col bg-background overflow-hidden pt-16 md:pt-0"> {/* Added padding top for fixed global buttons */}
+        <main ref={contentRef} className="flex-1 flex flex-col bg-background overflow-hidden">
             {/* Barra de encabezado para acciones de contenido */}
             <div className="p-3 border-b border-border bg-card flex justify-between items-center sticky top-0 z-10">
                 <div className="flex items-center gap-2">
@@ -137,17 +138,18 @@ const ContentView: React.FC<ContentViewProps> = ({
                          <span className="hidden md:inline ml-1 md:ml-2">{isFullscreen ? "Minimizar" : "Completa"}</span>
                     </Button>
                 </div>
-
-                <Button
-                    onClick={() => onNavigate('next')}
-                    disabled={isLastSection}
-                    variant="outline"
-                    className="text-foreground hover:bg-secondary disabled:opacity-50"
-                    aria-label="Siguiente sección"
-                    size="sm"
-                >
-                    <span className="hidden md:inline">Siguiente</span> <ChevronRight size={18} className="ml-1 md:ml-2" />
-                </Button>
+                <div className="flex items-center gap-2">
+                    <Button
+                        onClick={() => onNavigate('next')}
+                        disabled={isLastSection}
+                        variant="outline"
+                        className="text-foreground hover:bg-secondary disabled:opacity-50"
+                        aria-label="Siguiente sección"
+                        size="sm"
+                    >
+                        <span className="hidden md:inline">Siguiente</span> <ChevronRight size={18} className="ml-1 md:ml-2" />
+                    </Button>
+                </div>
             </div>
 
             <ScrollArea className="flex-grow p-4 md:p-8">

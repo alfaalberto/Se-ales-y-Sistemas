@@ -10,7 +10,7 @@ import { initialTableOfContents } from '@/lib/data';
 import type { TableOfContentsType, SectionType, ContentBlockType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { useToast } from "@/hooks/use-toast";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'; // Removed AlertDialogTrigger as it's not used directly here
 
 export default function SignalVisorPage() {
     const [toc, setToc] = useState<TableOfContentsType>(initialTableOfContents);
@@ -315,7 +315,7 @@ export default function SignalVisorPage() {
                 <Sidebar toc={toc} activeSection={activeSection} onSectionSelect={handleSectionSelect} />
             </div>
 
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0"> {/* Added pt-20 for non-md screens, md:pt-0 if global buttons are handled differently or sidebar presence changes layout significantly */}
                  <div className="fixed top-4 right-4 z-50 flex flex-wrap gap-2">
                     <Button
                         onClick={toggleSidebar}
