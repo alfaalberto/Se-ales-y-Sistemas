@@ -10,7 +10,10 @@ import { initialTableOfContents } from '@/lib/data';
 import type { TableOfContentsType, SectionType, ContentBlockType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { useToast } from "@/hooks/use-toast";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'; // Removed AlertDialogTrigger as it's not used directly here
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Separator } from "@/components/ui/separator";
+
 
 export default function SignalVisorPage() {
     const [toc, setToc] = useState<TableOfContentsType>(initialTableOfContents);
@@ -45,14 +48,14 @@ export default function SignalVisorPage() {
 
     const handleSectionSelect = (section: SectionType) => {
         setActiveSection(section);
-        setSelectedBlockId(null); // Reset selected block when section changes
+        setSelectedBlockId(null); 
         if (typeof window !== 'undefined' && window.innerWidth < 768) {
             setIsSidebarVisible(false);
         }
     };
 
     const handleBlockSelect = (blockId: string) => {
-        setSelectedBlockId(currentSelectedId => currentSelectedId === blockId ? null : blockId); // Toggle selection or select new
+        setSelectedBlockId(currentSelectedId => currentSelectedId === blockId ? null : blockId); 
     };
     
 
@@ -69,14 +72,14 @@ export default function SignalVisorPage() {
         if (newIndex !== -1) {
            const newSection = flatSections[newIndex];
            setActiveSection(newSection);
-           setSelectedBlockId(null); // Reset selected block
+           setSelectedBlockId(null); 
         }
     }, [activeSection, flatSections]);
 
     const handleOpenAddModal = () => {
         setModalMode('add');
         setHtmlToEdit('');
-        setEditingBlockInfo(null); // Clear any previous editing info
+        setEditingBlockInfo(null); 
         setIsModalOpen(true);
     };
     
@@ -121,13 +124,12 @@ export default function SignalVisorPage() {
                                 block.id === editingBlockInfo.blockId ? { ...block, html: htmlContent } : block
                             );
                             toast({ title: "Contenido Actualizado", description: "El bloque HTML ha sido actualizado." });
-                        } else { // Add mode
+                        } else { 
                             const newBlock: ContentBlockType = { id: crypto.randomUUID(), html: htmlContent };
                             updatedContent = [...section.content, newBlock];
                             toast({ title: "Contenido Añadido", description: "El bloque HTML ha sido añadido a la sección." });
-                            newSelectedBlockId = newBlock.id; // Select the newly added block
+                            newSelectedBlockId = newBlock.id; 
                         }
-                        // Update activeSection immediately with new content
                         setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: updatedContent } : undefined);
                         setSelectedBlockId(newSelectedBlockId);
                         return { ...section, content: updatedContent };
@@ -138,8 +140,8 @@ export default function SignalVisorPage() {
             return newToc;
         });
         setIsModalOpen(false);
-        setEditingBlockInfo(null); // Clear editing info
-        setHtmlToEdit(''); // Clear HTML edit area
+        setEditingBlockInfo(null); 
+        setHtmlToEdit(''); 
     };
 
     const handleDeleteBlockGlobal = () => {
@@ -156,7 +158,7 @@ export default function SignalVisorPage() {
                         const updatedContent = section.content.filter(block => block.id !== selectedBlockId);
                         setActiveSection(prevActiveSection => prevActiveSection ? { ...prevActiveSection, content: updatedContent } : undefined);
                         toast({ title: "Contenido Eliminado", description: "El bloque HTML ha sido eliminado." });
-                        setSelectedBlockId(null); // Deselect the block
+                        setSelectedBlockId(null); 
                         return { ...section, content: updatedContent };
                     }
                     return section;
@@ -164,7 +166,7 @@ export default function SignalVisorPage() {
             }));
             return newToc;
         });
-        setIsDeleteDialogOpen(false); // Close confirmation dialog
+        setIsDeleteDialogOpen(false); 
     };
 
     const handleMoveBlockGlobal = (direction: 'up' | 'down') => {
@@ -186,10 +188,9 @@ export default function SignalVisorPage() {
 
                         if (direction === 'up' && blockIndex > 0) {
                             newContent.splice(blockIndex - 1, 0, blockToMove);
-                        } else if (direction === 'down' && blockIndex < newContent.length) { // newContent.length because one item was removed
+                        } else if (direction === 'down' && blockIndex < newContent.length) { 
                             newContent.splice(blockIndex + 1, 0, blockToMove);
                         } else {
-                            // Cannot move further, re-insert at original position (or simply return section)
                             newContent.splice(blockIndex, 0, blockToMove); 
                             return section; 
                         }
@@ -266,7 +267,7 @@ export default function SignalVisorPage() {
     }, [activeSection, selectedBlockId]);
 
     const canMoveUp = selectedBlockId !== null && activeSection !== undefined && selectedBlockIndex > 0;
-    const canMoveDown = selectedBlockId !== null && activeSection !== undefined && selectedBlockIndex !== -1 && selectedBlockIndex < activeSection.content.length - 1;
+    const canMoveDown = selectedBlockId !== null && activeSection !== undefined && selectedBlockIndex !== -1 && activeSection.content.length > 0 && selectedBlockIndex < activeSection.content.length - 1;
 
 
     return (
@@ -314,85 +315,116 @@ export default function SignalVisorPage() {
             >
                 <Sidebar toc={toc} activeSection={activeSection} onSectionSelect={handleSectionSelect} />
             </div>
+            
+            <div className="fixed top-4 right-4 z-50 flex items-center space-x-1">
+                <TooltipProvider delayDuration={100}>
+                    {selectedBlockId && activeSection && (
+                        <>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        onClick={handleOpenEditModalForSelected}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                    >
+                                        <Pencil size={18} />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent><p>Editar Diapositiva</p></TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        onClick={() => handleMoveBlockGlobal('up')}
+                                        disabled={!canMoveUp}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                    >
+                                        <ArrowUpCircle size={18} />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent><p>Mover Arriba</p></TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        onClick={() => handleMoveBlockGlobal('down')}
+                                        disabled={!canMoveDown}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                    >
+                                        <ArrowDownCircle size={18} />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent><p>Mover Abajo</p></TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        onClick={() => setIsDeleteDialogOpen(true)}
+                                        variant="ghost"
+                                        size="icon"
+                                        className="text-destructive hover:bg-destructive/90 hover:text-destructive-foreground"
+                                    >
+                                        <Trash2 size={18} />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent><p>Eliminar Diapositiva</p></TooltipContent>
+                            </Tooltip>
+                             <Separator orientation="vertical" className="h-6 bg-border mx-2" />
+                        </>
+                    )}
 
-            <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0"> {/* Added pt-20 for non-md screens, md:pt-0 if global buttons are handled differently or sidebar presence changes layout significantly */}
-                 <div className="fixed top-4 right-4 z-50 flex flex-wrap gap-2">
-                    <Button
-                        onClick={toggleSidebar}
-                        className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
-                        aria-label={isSidebarVisible ? "Ocultar menú lateral" : "Mostrar menú lateral"}
-                        variant="ghost"
-                        size="icon"
-                    >
-                        {isSidebarVisible ? <X size={20} /> : <Menu size={20} />}
-                    </Button>
-                    <Button
-                        onClick={handleDownloadBackup}
-                        className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
-                        aria-label="Descargar respaldo JSON"
-                        variant="ghost"
-                        size="icon"
-                        title="Descargar Respaldo JSON"
-                    >
-                        <Save size={20} />
-                    </Button>
-                    <Button
-                        onClick={handleSaveToServer}
-                        className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
-                        aria-label="Guardar en servidor local"
-                        variant="ghost"
-                        size="icon"
-                        title="Guardar en Servidor Local (Experimental)"
-                    >
-                        <UploadCloud size={20} />
-                    </Button>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                onClick={handleDownloadBackup}
+                                variant="ghost"
+                                size="icon"
+                                className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                            >
+                                <Save size={18} />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent><p>Descargar Respaldo JSON</p></TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                onClick={handleSaveToServer}
+                                variant="ghost"
+                                size="icon"
+                                className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                            >
+                                <UploadCloud size={18} />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent><p>Guardar en Servidor Local</p></TooltipContent>
+                    </Tooltip>
                     
-                    {/* Slide action buttons */}
-                    <Button
-                        onClick={handleOpenEditModalForSelected}
-                        disabled={!selectedBlockId || !activeSection}
-                        className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
-                        aria-label="Editar diapositiva seleccionada"
-                        variant="ghost"
-                        size="icon"
-                        title="Editar Diapositiva Seleccionada"
-                    >
-                        <Pencil size={20} />
-                    </Button>
-                    <Button
-                        onClick={() => handleMoveBlockGlobal('up')}
-                        disabled={!canMoveUp}
-                        className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
-                        aria-label="Mover diapositiva seleccionada hacia arriba"
-                        variant="ghost"
-                        size="icon"
-                        title="Mover Diapositiva Arriba"
-                    >
-                        <ArrowUpCircle size={20} />
-                    </Button>
-                    <Button
-                        onClick={() => handleMoveBlockGlobal('down')}
-                        disabled={!canMoveDown}
-                        className="p-2 bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground rounded-md shadow-lg"
-                        aria-label="Mover diapositiva seleccionada hacia abajo"
-                        variant="ghost"
-                        size="icon"
-                        title="Mover Diapositiva Abajo"
-                    >
-                        <ArrowDownCircle size={20} />
-                    </Button>
-                    <Button
-                        onClick={() => setIsDeleteDialogOpen(true)}
-                        disabled={!selectedBlockId || !activeSection}
-                        className="p-2 bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-md shadow-lg"
-                        aria-label="Eliminar diapositiva seleccionada"
-                        variant="ghost"
-                        size="icon"
-                        title="Eliminar Diapositiva Seleccionada"
-                    >
-                        <Trash2 size={20} />
-                    </Button>
-                </div>
+                    <Separator orientation="vertical" className="h-6 bg-border mx-2" />
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                onClick={toggleSidebar}
+                                variant="ghost"
+                                size="icon"
+                                className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                aria-label={isSidebarVisible ? "Ocultar menú lateral" : "Mostrar menú lateral"}
+                            >
+                                {isSidebarVisible ? <X size={20} /> : <Menu size={20} />}
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent><p>{isSidebarVisible ? "Ocultar Menú" : "Mostrar Menú"}</p></TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            </div>
+
+            <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0"> 
                 <ContentView
                     section={activeSection}
                     onNavigate={handleNavigate}
@@ -407,6 +439,8 @@ export default function SignalVisorPage() {
         </div>
     );
 }
+    
+
     
 
     

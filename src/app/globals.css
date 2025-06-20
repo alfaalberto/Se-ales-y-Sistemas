@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,7 +30,7 @@ body {
     --accent: 250 100% 64%; /* #6949FF Violet */
     --accent-foreground: 0 0% 98%; /* Light text for accent */
 
-    --destructive: 0 63% 31%; /* Default dark destructive */
+    --destructive: 0 70% 50%; /* A more vibrant destructive red */
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 6% 30%; /* Visible border on dark background */
@@ -71,7 +72,7 @@ body {
     --muted-foreground: 0 0% 60%;
     --accent: 250 100% 64%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 63% 31%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 6% 30%;
     --input: 240 6% 20%;
@@ -100,10 +101,65 @@ body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
   }
+  
   .prose {
-    /* Custom prose styles if needed to override theme defaults for content */
     h2 {
-      @apply text-primary; /* Example: Make h2 use primary color from theme */
+      @apply text-primary border-b-2 border-border pb-2;
+    }
+    p, li, blockquote, figcaption, td, th, dt, dd {
+      @apply text-foreground;
+    }
+    strong {
+      @apply text-foreground;
+    }
+    a {
+      @apply text-accent hover:text-accent/80;
+    }
+    pre {
+      @apply bg-muted text-foreground p-4 rounded-md;
+    }
+    code {
+      @apply text-accent bg-muted px-1 py-0.5 rounded-sm;
+    }
+    /* Apply foreground color to code within pre for better contrast */
+    pre code {
+      @apply text-foreground bg-transparent p-0;
+    }
+    thead {
+      @apply border-b border-border;
+    }
+    tbody tr {
+      @apply border-b border-border/50;
+    }
+  }
+
+  .dark .prose {
+    h2 {
+      @apply text-primary border-b-2 border-border pb-2;
+    }
+     p, li, blockquote, figcaption, td, th, dt, dd {
+      @apply text-foreground;
+    }
+    strong {
+      @apply text-foreground;
+    }
+     a {
+      @apply text-accent hover:text-accent/80;
+    }
+    pre {
+      @apply bg-muted text-foreground p-4 rounded-md;
+    }
+    code {
+       @apply text-accent bg-muted px-1 py-0.5 rounded-sm;
+    }
+    pre code {
+       @apply text-foreground bg-transparent p-0;
+    }
+    thead {
+      @apply border-b border-border;
+    }
+    tbody tr {
+      @apply border-b border-border/50;
     }
   }
 }
@@ -123,3 +179,5 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--secondary));
 }
+
+    

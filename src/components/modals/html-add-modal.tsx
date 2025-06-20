@@ -26,8 +26,6 @@ const HtmlAddModal: React.FC<HtmlAddModalProps> = ({
     const [htmlContent, setHtmlContent] = useState(initialContent);
 
     useEffect(() => {
-        // Actualiza el contenido del textarea si initialContent cambia mientras el modal está abierto
-        // Esto es útil si el usuario abre el modal para editar, cierra, y luego lo abre para editar otro bloque.
         if (isOpen) {
             setHtmlContent(initialContent);
         }
@@ -36,13 +34,12 @@ const HtmlAddModal: React.FC<HtmlAddModalProps> = ({
     const handleAdd = () => {
         if (htmlContent.trim()) {
             onAdd(htmlContent);
-            // No limpiar htmlContent aquí, onClose o el cambio de initialContent lo manejan.
-            onClose(); // Cierra el modal después de añadir/editar.
+            onClose(); 
         }
     };
     
     const handleClose = () => {
-        setHtmlContent(''); // Limpia al cerrar manualmente o al cambiar isOpen a false
+        setHtmlContent(''); 
         onClose();
     };
 
@@ -51,24 +48,24 @@ const HtmlAddModal: React.FC<HtmlAddModalProps> = ({
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => { if (!open) handleClose(); }}>
-            <DialogContent className="bg-gray-800 border-gray-700 text-white sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px]">
+            <DialogContent className="bg-card border-border text-card-foreground sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px]">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-white">{modalTitle}</DialogTitle>
+                    <DialogTitle className="text-2xl font-bold">{modalTitle}</DialogTitle>
                 </DialogHeader>
                 <Textarea
                     value={htmlContent}
                     onChange={(e) => setHtmlContent(e.target.value)}
                     placeholder="<p>Pega tu código HTML aquí...</p>"
-                    className="w-full h-96 bg-gray-900 text-gray-200 border border-gray-600 rounded-md p-3 font-mono text-sm focus-visible:ring-primary resize-y"
+                    className="w-full h-96 bg-input text-foreground border-border rounded-md p-3 font-mono text-sm focus-visible:ring-primary resize-y"
                     rows={15}
                 />
                 <DialogFooter className="mt-6">
                     <DialogClose asChild>
-                        <Button variant="outline" onClick={handleClose} className="bg-gray-600 hover:bg-gray-700 text-white border-gray-600 hover:border-gray-500">
+                        <Button variant="outline" onClick={handleClose}>
                             Cancelar
                         </Button>
                     </DialogClose>
-                    <Button onClick={handleAdd} className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <Button onClick={handleAdd} className="bg-primary hover:bg-primary/90 text-primary-foreground">
                         {confirmButtonText}
                     </Button>
                 </DialogFooter>
@@ -78,3 +75,5 @@ const HtmlAddModal: React.FC<HtmlAddModalProps> = ({
 };
 
 export default HtmlAddModal;
+
+    

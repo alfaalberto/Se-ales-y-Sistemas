@@ -160,9 +160,9 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
         <div 
             ref={blockRef} 
             className={cn(
-                "content-block relative py-4 border-t-2 border-gray-700 first:pt-0 first:border-none cursor-pointer transition-all duration-150 ease-in-out",
-                isActive ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-lg' : 'hover:bg-card/50',
-                'my-2 rounded-md' // Added margin and rounded corners
+                "content-block group relative py-4 border-t-2 border-border/30 first:pt-0 first:border-none cursor-pointer transition-all duration-150 ease-in-out prose dark:prose-invert max-w-none prose-headings:text-primary prose-p:text-foreground prose-strong:text-foreground prose-pre:bg-muted prose-pre:text-foreground",
+                isActive ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-lg bg-card' : 'hover:bg-card/50',
+                'my-2 rounded-md' 
             )}
             onClick={() => onSelect(blockId)}
             role="button"
@@ -180,6 +180,5 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
 
 HtmlBlock.displayName = 'HtmlBlock';
 export default HtmlBlock;
-
 
     
