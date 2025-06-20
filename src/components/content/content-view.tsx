@@ -124,6 +124,15 @@ const ContentView: React.FC<ContentViewProps> = ({
                     >
                         <ChevronLeft size={16} className="mr-1 md:mr-2" /> <span className="hidden md:inline">Anterior</span>
                     </Button>
+                    <Button
+                        onClick={() => onNavigate('next')}
+                        disabled={isLastSection}
+                        variant="outline"
+                        size="sm"
+                        className="text-foreground hover:bg-secondary disabled:opacity-50"
+                    >
+                        <span className="hidden md:inline">Siguiente</span> <ChevronRight size={16} className="ml-1 md:ml-2" />
+                    </Button>
                 </div>
                 
                 <div className="flex-1 flex justify-center items-center gap-2">
@@ -151,21 +160,14 @@ const ContentView: React.FC<ContentViewProps> = ({
                         </Tooltip>
                     </TooltipProvider>
                 </div>
+                {/* Empty div for spacing if needed, or remove if justify-between handles it */}
                 <div className="flex items-center gap-2">
-                    <Button
-                        onClick={() => onNavigate('next')}
-                        disabled={isLastSection}
-                        variant="outline"
-                        size="sm"
-                        className="text-foreground hover:bg-secondary disabled:opacity-50"
-                    >
-                        <span className="hidden md:inline">Siguiente</span> <ChevronRight size={16} className="ml-1 md:ml-2" />
-                    </Button>
+                     {/* Placeholder for right-aligned elements if any in future */}
                 </div>
             </div>
 
             <ScrollArea className="flex-grow p-4 md:p-8">
-                <div className="max-w-none">
+                <div className="max-w-none prose dark:prose-invert prose-headings:text-primary prose-p:text-foreground prose-strong:text-foreground prose-pre:bg-muted prose-pre:text-foreground">
                     {section.content.map((block) => (
                         <HtmlBlock 
                             key={block.id} 
