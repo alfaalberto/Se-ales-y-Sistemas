@@ -122,10 +122,6 @@ export default {
               marginTop: theme('spacing.8'), // Example: Add some top margin to h2
               marginBottom: theme('spacing.4'), // Example: Add some bottom margin to h2
             },
-            // Ensures user's specific background utilities can still apply if needed.
-             '.bg-gray-800': { 
-              backgroundColor: theme('colors.gray[800]')
-            }
           },
         },
       }),
@@ -133,5 +129,3 @@ export default {
   },
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config;
-
-    
