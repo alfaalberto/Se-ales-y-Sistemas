@@ -103,37 +103,19 @@ export default function SignalVisorPage() {
             toast({ title: "Error", description: "Ninguna diapositiva seleccionada para editar.", variant: "destructive" });
             return;
         }
-    
-        const chapterIndex = toc.findIndex(c => c.sections.some(s => s.id === activeSection.id));
-        if (chapterIndex === -1) return;
-        
-        // This find logic needs to be recursive now.
-        const findSectionPath = (sections: SectionType[], targetId: string): SectionType | null => {
-            for (const section of sections) {
-                if (section.id === targetId) return section;
-                if (section.subsections) {
-                    const found = findSectionPath(section.subsections, targetId);
-                    if (found) return found;
-                }
-            }
-            return null;
-        }
-        
-        const sectionInToc = findSectionPath(toc[chapterIndex].sections, activeSection.id);
-        if (!sectionInToc) return;
-        
-        const blockToEdit = sectionInToc.content.find(b => b.id === selectedBlockId);
+
+        // Simplified logic: get the block to edit directly from the active section in the state.
+        const blockToEdit = activeSection.content.find(b => b.id === selectedBlockId);
 
         if (!blockToEdit) {
-             toast({ title: "Error", description: "Diapositiva seleccionada no encontrada.", variant: "destructive" });
+            toast({ title: "Error", description: "Diapositiva seleccionada no encontrada.", variant: "destructive" });
             return;
         }
     
         setModalMode('edit');
         setHtmlToEdit(blockToEdit.html);
-        // The editingBlockInfo might need adjustment if we need to reconstruct paths,
-        // but for now, we operate on activeSection directly which is simpler.
-        setEditingBlockInfo({ chapterIndex: -1, sectionIndex: -1, blockId: selectedBlockId }); // Simplified
+        // This info is not strictly needed for the simplified update logic, but we set it for consistency.
+        setEditingBlockInfo({ chapterIndex: -1, sectionIndex: -1, blockId: selectedBlockId });
         setIsModalOpen(true);
     };
     
@@ -296,8 +278,9 @@ export default function SignalVisorPage() {
         } catch (error) {
             toast({ 
                 title: "Error de Conexión", 
-                description: `No se pudo conectar con el servidor en ${serverUrl}. Asegúrate de que está funcionando. Detalles: ${error instanceof Error ? error.message : String(error)}`, 
-                variant: "destructive" 
+                description: `No se pudo conectar con el servidor en ${serverUrl}. Esta función requiere un servidor local separado que probablemente no está ejecutándose. Para guardar su contenido, use el botón "Descargar Respaldo JSON".`, 
+                variant: "destructive",
+                duration: 10000
             });
         }
     };
@@ -481,4 +464,5 @@ export default function SignalVisorPage() {
             </div>
         </div>
     );
-}
+
+    
