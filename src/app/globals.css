@@ -30,7 +30,7 @@ body {
     --accent: 250 100% 64%; /* #6949FF Violet */
     --accent-foreground: 0 0% 98%; /* Light text for accent */
 
-    --destructive: 0 70% 50%; /* A more vibrant destructive red */
+    --destructive: 0 70% 60%; /* A more vibrant destructive red */
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 6% 30%; /* Visible border on dark background */
@@ -72,7 +72,7 @@ body {
     --muted-foreground: 0 0% 60%;
     --accent: 250 100% 64%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 70% 50%;
+    --destructive: 0 70% 60%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 6% 30%;
     --input: 240 6% 20%;
@@ -102,28 +102,24 @@ body {
     font-family: var(--font-body);
   }
   
+  /* Default prose styles (applied by `prose` class, typically for light mode or non-inverted dark) */
+  /* Relies on Tailwind Typography plugin variables configured in tailwind.config.ts */
   .prose {
-    h2 {
+    h2 { /* Specific style for h2, applied via @layer base */
       @apply text-primary border-b-2 border-border pb-2;
     }
-    p, li, blockquote, figcaption, td, th, dt, dd {
-      @apply text-foreground;
+    /* For p, li, strong, etc., colors come from --tw-prose-body, --tw-prose-bold from Tailwind config */
+    a { /* Link color from --tw-prose-links */
+      @apply hover:text-accent/80; /* Specific hover style */
     }
-    strong {
-      @apply text-foreground;
+    pre { /* Background from --tw-prose-pre-bg, text from --tw-prose-pre-code */
+      @apply p-4 rounded-md; /* Keep padding and radius for structure */
     }
-    a {
-      @apply text-accent hover:text-accent/80;
+    code { /* Inline code: text from --tw-prose-code */
+      @apply bg-muted px-1 py-0.5 rounded-sm; /* Keep specific background and padding for inline code */
     }
-    pre {
-      @apply bg-muted text-foreground p-4 rounded-md;
-    }
-    code {
-      @apply text-accent bg-muted px-1 py-0.5 rounded-sm;
-    }
-    /* Apply foreground color to code within pre for better contrast */
-    pre code {
-      @apply text-foreground bg-transparent p-0;
+    pre code { /* Code inside pre: text from --tw-prose-pre-code, background transparent */
+      @apply bg-transparent p-0;
     }
     thead {
       @apply border-b border-border;
@@ -133,27 +129,24 @@ body {
     }
   }
 
+  /* Styles for `dark:prose-invert` or `.dark .prose` */
+  /* These are effectively the styles for HtmlBlock due to `dark:prose-invert` */
   .dark .prose {
     h2 {
-      @apply text-primary border-b-2 border-border pb-2;
+      @apply text-primary border-b-2 border-border pb-2; /* Matches config and app theme */
     }
-     p, li, blockquote, figcaption, td, th, dt, dd {
-      @apply text-foreground;
+    /* For p, li, strong, etc., colors come from --tw-prose-body, --tw-prose-bold (inverted) from Tailwind config */
+     a { /* Link color from --tw-prose-links (inverted) */
+      @apply hover:text-accent/80; /* Specific hover style */
     }
-    strong {
-      @apply text-foreground;
+    pre { /* Background from --tw-prose-pre-bg (inverted), text from --tw-prose-pre-code (inverted) */
+      @apply p-4 rounded-md; /* Keep padding and radius */
     }
-     a {
-      @apply text-accent hover:text-accent/80;
+    code { /* Inline code: text from --tw-prose-code (inverted) */
+       @apply bg-muted px-1 py-0.5 rounded-sm; /* Keep specific background and padding */
     }
-    pre {
-      @apply bg-muted text-foreground p-4 rounded-md;
-    }
-    code {
-       @apply text-accent bg-muted px-1 py-0.5 rounded-sm;
-    }
-    pre code {
-       @apply text-foreground bg-transparent p-0;
+    pre code { /* Code in pre: text from --tw-prose-pre-code (inverted), background transparent */
+       @apply bg-transparent p-0;
     }
     thead {
       @apply border-b border-border;
