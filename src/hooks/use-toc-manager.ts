@@ -1,18 +1,33 @@
+
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { TableOfContentsType, SectionType, ContentBlockType } from '@/lib/types';
-import { initialTableOfContents } from '@/lib/data';
+import type { TableOfContentsType, SectionType, ContentBlockType, ChapterType } from '@/lib/types';
+import { initialTableOfContents, placeholderContent } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast";
 import { useDebounce } from './use-debounce';
 
-const updateTocRecursively = (sections: SectionType[], targetSectionId: string, updateFn: (section: SectionType) => SectionType): SectionType[] => {
+
+const findSection = (sections: SectionType[], sectionId: string): SectionType | null => {
+    for (const section of sections) {
+        if (section.id === sectionId) {
+            return section;
+        }
+        if (section.subsections) {
+            const found = findSection(section.subsections, sectionId);
+            if (found) return found;
+        }
+    }
+    return null;
+};
+
+const updateSectionRecursively = (sections: SectionType[], targetSectionId: string, updateFn: (section: SectionType) => SectionType): SectionType[] => {
     return sections.map(section => {
         if (section.id === targetSectionId) {
             return updateFn(section);
         }
         if (section.subsections) {
-            return { ...section, subsections: updateTocRecursively(section.subsections, targetSectionId, updateFn) };
+            return { ...section, subsections: updateSectionRecursively(section.subsections, targetSectionId, updateFn) };
         }
         return section;
     });
@@ -39,7 +54,6 @@ export function useTocManager() {
                         description: "Se ha cargado tu progreso guardado anteriormente.",
                     });
                 } else if (response.status === 404) {
-                    // If no backup file, load the default from the book.
                     setToc(initialTableOfContents);
                 } else {
                     const errorData = await response.json();
@@ -47,9 +61,8 @@ export function useTocManager() {
                 }
             } catch (error) {
                 console.error("Could not load backup content, loading default:", error);
-                setToc(initialTableOfContents); // Load default on any error
+                setToc(initialTableOfContents);
             } finally {
-                 // Give it a moment to prevent the initial state from being saved
                  setTimeout(() => isInitialMount.current = false, 500);
             }
         };
@@ -57,7 +70,6 @@ export function useTocManager() {
         loadInitialData();
     }, [toast]);
     
-    // Auto-save effect
     useEffect(() => {
         if (isInitialMount.current || !debouncedToc || debouncedToc.length === 0) {
             return;
@@ -87,7 +99,6 @@ export function useTocManager() {
         autoSave();
     }, [debouncedToc, toast]);
 
-    // Effect to reset saving status indicator
     useEffect(() => {
         if (savingStatus === 'saved') {
             const timer = setTimeout(() => setSavingStatus('idle'), 2000);
@@ -111,7 +122,7 @@ export function useTocManager() {
 
             const updatedToc = newToc.map(chapter => ({
                 ...chapter,
-                sections: updateTocRecursively(chapter.sections, sectionId, updateFn)
+                sections: updateSectionRecursively(chapter.sections, sectionId, updateFn)
             }));
             return updatedToc;
         });
@@ -134,7 +145,7 @@ export function useTocManager() {
 
             return newToc.map(chapter => ({
                 ...chapter,
-                sections: updateTocRecursively(chapter.sections, sectionId, updateFn)
+                sections: updateSectionRecursively(chapter.sections, sectionId, updateFn)
             }));
         });
     }, [toast]);
@@ -153,7 +164,7 @@ export function useTocManager() {
 
             return newToc.map(chapter => ({
                 ...chapter,
-                sections: updateTocRecursively(chapter.sections, sectionId, updateFn)
+                sections: updateSectionRecursively(chapter.sections, sectionId, updateFn)
             }));
         });
     }, [toast]);
@@ -184,10 +195,86 @@ export function useTocManager() {
 
              return newToc.map(chapter => ({
                 ...chapter,
-                sections: updateTocRecursively(chapter.sections, sectionId, updateFn)
+                sections: updateSectionRecursively(chapter.sections, sectionId, updateFn)
             }));
         });
     }, [toast]);
+
+    const addSection = useCallback((parentId: string, title: string) => {
+        setToc(currentToc => {
+            const newToc = JSON.parse(JSON.stringify(currentToc));
+            
+            const parentChapter = newToc.find((c: ChapterType) => c.chapter === parentId);
+            if (parentChapter) {
+                const lastSectionNum = parentChapter.sections.reduce((max: number, s: SectionType) => {
+                    const num = parseInt(s.id.split('.').pop() || '0');
+                    return Math.max(max, num);
+                }, 0);
+                const newId = `${parentChapter.chapter}.${lastSectionNum + 1}`;
+                const newSection: SectionType = {
+                    id: newId,
+                    title: title,
+                    content: [placeholderContent(title, newId)],
+                    subsections: []
+                };
+                parentChapter.sections.push(newSection);
+                toast({ title: "Sección Añadida", description: `Se añadió la sección "${title}".` });
+                setActiveSection(newSection);
+                return newToc;
+            }
+            
+            for (const chapter of newToc) {
+                const parentSection = findSection(chapter.sections, parentId);
+                if (parentSection) {
+                    parentSection.subsections = parentSection.subsections || [];
+                     const lastSubSectionNum = parentSection.subsections.reduce((max: number, s: SectionType) => {
+                        const num = parseInt(s.id.split('.').pop() || '0');
+                        return Math.max(max, num);
+                    }, 0);
+                    const newId = `${parentSection.id}.${lastSubSectionNum + 1}`;
+                    const newSubSection: SectionType = {
+                        id: newId,
+                        title: title,
+                        content: [placeholderContent(title, newId)],
+                        subsections: []
+                    };
+                    parentSection.subsections.push(newSubSection);
+                    toast({ title: "Subsección Añadida", description: `Se añadió la subsección "${title}".` });
+                    setActiveSection(newSubSection);
+                    return newToc;
+                }
+            }
+            return newToc;
+        });
+    }, [toast]);
+
+    const renameChapter = useCallback((chapterNum: string, newTitle: string) => {
+        setToc(currentToc => {
+            return currentToc.map(chapter => 
+                chapter.chapter === chapterNum ? { ...chapter, title: newTitle } : chapter
+            );
+        });
+        toast({ title: "Capítulo Renombrado", description: `El capítulo ${chapterNum} ahora se llama "${newTitle}".` });
+    }, [toast]);
+
+    const renameSection = useCallback((sectionId: string, newTitle: string) => {
+        setToc(currentToc => {
+            const newToc = [...currentToc];
+            const updateFn = (section: SectionType) => {
+                const updatedSection = { ...section, title: newTitle };
+                if(activeSection?.id === sectionId) {
+                    setActiveSection(updatedSection);
+                }
+                return updatedSection;
+            };
+
+            return newToc.map(chapter => ({
+                ...chapter,
+                sections: updateSectionRecursively(chapter.sections, sectionId, updateFn)
+            }));
+        });
+        toast({ title: "Sección Renombrada", description: `La sección ${sectionId} ahora se llama "${newTitle}".` });
+    }, [toast, activeSection]);
 
     return {
         toc,
@@ -198,5 +285,8 @@ export function useTocManager() {
         deleteBlock,
         moveBlock,
         savingStatus,
+        addSection,
+        renameChapter,
+        renameSection
     };
 }

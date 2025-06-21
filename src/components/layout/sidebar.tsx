@@ -2,8 +2,8 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search } from 'lucide-react';
-import type { TableOfContentsType, SectionType } from '@/lib/types';
+import { Search, PlusCircle, Pencil } from 'lucide-react';
+import type { TableOfContentsType, SectionType, ChapterType } from '@/lib/types';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
@@ -13,6 +13,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
 
 interface SectionItemProps {
     section: SectionType;
@@ -20,15 +23,24 @@ interface SectionItemProps {
     onSectionSelect: (section: SectionType) => void;
     searchTerm: string;
     isInitiallyOpen: boolean;
+    onAddSubsection: (sectionId: string) => void;
+    onRenameSection: (sectionId: string, currentTitle: string) => void;
 }
 
-const SectionItem: React.FC<SectionItemProps> = ({ section, activeSection, onSectionSelect, searchTerm, isInitiallyOpen }) => {
+const SectionItem: React.FC<SectionItemProps> = ({ 
+    section, 
+    activeSection, 
+    onSectionSelect, 
+    searchTerm, 
+    isInitiallyOpen,
+    onAddSubsection,
+    onRenameSection
+}) => {
     const hasSubsections = section.subsections && section.subsections.length > 0;
     
     const isSelected = activeSection?.id === section.id;
     const isParentOfSelected = hasSubsections && activeSection ? activeSection.id.startsWith(section.id + '.') : false;
 
-    // Filter subsections based on search term, recursively.
     const filterSubsections = (subsections: SectionType[]): SectionType[] => {
         if (!searchTerm) return subsections;
         return subsections.map(sub => {
@@ -54,10 +66,15 @@ const SectionItem: React.FC<SectionItemProps> = ({ section, activeSection, onSec
         return null;
     }
 
+    const handleActionClick = (e: React.MouseEvent, action: () => void) => {
+        e.stopPropagation();
+        action();
+    }
+
     if (hasSubsections) {
         return (
             <Accordion type="single" collapsible className="w-full" defaultValue={ (isSelected || isParentOfSelected || isInitiallyOpen) ? section.id : undefined }>
-                <AccordionItem value={section.id} className="border-none">
+                <AccordionItem value={section.id} className="border-none group">
                     <AccordionTrigger
                         className={cn(
                             "p-2 hover:no-underline rounded-sm my-0.5 justify-start gap-2 text-sm",
@@ -69,6 +86,19 @@ const SectionItem: React.FC<SectionItemProps> = ({ section, activeSection, onSec
                         <span className="flex-grow text-left" onClick={(e) => { e.stopPropagation(); onSectionSelect(section); }}>
                             {section.id} - {section.title}
                         </span>
+                        
+                        <div className="pr-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                            <TooltipProvider delayDuration={100}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleActionClick(e, () => onAddSubsection(section.id))}><PlusCircle size={14}/></Button></TooltipTrigger>
+                                    <TooltipContent side="right"><p>Añadir Subsección</p></TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleActionClick(e, () => onRenameSection(section.id, section.title))}><Pencil size={14}/></Button></TooltipTrigger>
+                                    <TooltipContent side="right"><p>Renombrar</p></TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </div>
                     </AccordionTrigger>
                     <AccordionContent className="pt-1 pb-0 pl-4 border-l-2 border-primary/50 ml-3">
                         {subsectionsToShow.map(subSection => (
@@ -79,6 +109,8 @@ const SectionItem: React.FC<SectionItemProps> = ({ section, activeSection, onSec
                                 onSectionSelect={onSectionSelect}
                                 searchTerm={searchTerm}
                                 isInitiallyOpen={isInitiallyOpen}
+                                onAddSubsection={onAddSubsection}
+                                onRenameSection={onRenameSection}
                             />
                         ))}
                     </AccordionContent>
@@ -88,18 +120,32 @@ const SectionItem: React.FC<SectionItemProps> = ({ section, activeSection, onSec
     }
     
     return (
-        <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); onSectionSelect(section); }}
-            className={cn(
-                "block p-2 pl-2 text-sm rounded-sm my-0.5",
-                isSelected ? 'bg-primary/20 text-primary font-semibold' : 'text-gray-400',
-                "hover:bg-sidebar-accent hover:text-white"
-            )}
-            aria-current={isSelected ? "page" : undefined}
-        >
-            {section.id} - {section.title}
-        </a>
+         <div className="group relative pr-2">
+            <a
+                href="#"
+                onClick={(e) => { e.preventDefault(); onSectionSelect(section); }}
+                className={cn(
+                    "block p-2 pl-2 text-sm rounded-sm my-0.5 w-full",
+                    isSelected ? 'bg-primary/20 text-primary font-semibold' : 'text-gray-400',
+                    "hover:bg-sidebar-accent hover:text-white"
+                )}
+                aria-current={isSelected ? "page" : undefined}
+            >
+                {section.id} - {section.title}
+            </a>
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                <TooltipProvider delayDuration={100}>
+                    <Tooltip>
+                         <TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleActionClick(e, () => onAddSubsection(section.id))}><PlusCircle size={14}/></Button></TooltipTrigger>
+                         <TooltipContent side="right"><p>Añadir Subsección</p></TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleActionClick(e, () => onRenameSection(section.id, section.title))}><Pencil size={14}/></Button></TooltipTrigger>
+                        <TooltipContent side="right"><p>Renombrar</p></TooltipContent>
+                    </Tooltip>
+                 </TooltipProvider>
+            </div>
+        </div>
     );
 };
 
@@ -107,11 +153,28 @@ interface SidebarProps {
     toc: TableOfContentsType;
     activeSection?: SectionType;
     onSectionSelect: (section: SectionType) => void;
+    onAddSection: (chapterNum: string) => void;
+    onAddSubsection: (sectionId: string) => void;
+    onRenameChapter: (chapterNum: string, currentTitle: string) => void;
+    onRenameSection: (sectionId: string, currentTitle: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ toc, activeSection, onSectionSelect }) => {
+const Sidebar: React.FC<SidebarProps> = ({ 
+    toc, 
+    activeSection, 
+    onSectionSelect,
+    onAddSection,
+    onAddSubsection,
+    onRenameChapter,
+    onRenameSection
+}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [expandedChapters, setExpandedChapters] = useState<string[]>([]);
+    
+    const handleActionClick = (e: React.MouseEvent, action: () => void) => {
+        e.stopPropagation();
+        action();
+    }
     
     const filterSections = (sections: SectionType[]): SectionType[] => {
         if (!searchTerm) return sections;
@@ -145,10 +208,8 @@ const Sidebar: React.FC<SidebarProps> = ({ toc, activeSection, onSectionSelect }
 
     useEffect(() => {
         if (searchTerm) {
-            // If there's a search term, expand all chapters that have results.
             setExpandedChapters(filteredToc.map(c => c.chapter));
         } else {
-            // If no search term, only expand the active chapter or the first one.
             let chapterToExpand: string | undefined;
             if (activeSection) {
                 chapterToExpand = activeSection.id.split('.')[0];
@@ -188,11 +249,23 @@ const Sidebar: React.FC<SidebarProps> = ({ toc, activeSection, onSectionSelect }
                     onValueChange={setExpandedChapters}
                 >
                     {filteredToc.map(chapter => (
-                        <AccordionItem value={chapter.chapter} key={chapter.chapter} className="border-b border-sidebar-border last:border-b-0">
+                        <AccordionItem value={chapter.chapter} key={chapter.chapter} className="border-b border-sidebar-border last:border-b-0 group">
                             <AccordionTrigger className="p-3 text-left text-base font-semibold hover:bg-sidebar-accent/80 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring rounded-md data-[state=open]:text-white">
                                 <span className="flex-1 text-sidebar-foreground data-[state=open]:text-white">
                                     Cap. {chapter.chapter}: {chapter.title}
                                 </span>
+                                <div className="pr-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                                    <TooltipProvider delayDuration={100}>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleActionClick(e, () => onAddSection(chapter.chapter))}><PlusCircle size={14}/></Button></TooltipTrigger>
+                                            <TooltipContent side="right"><p>Añadir Sección</p></TooltipContent>
+                                        </Tooltip>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleActionClick(e, () => onRenameChapter(chapter.chapter, chapter.title))}><Pencil size={14}/></Button></TooltipTrigger>
+                                            <TooltipContent side="right"><p>Renombrar Capítulo</p></TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </div>
                             </AccordionTrigger>
                             <AccordionContent className="pt-1 pb-2 pl-4 border-l-2 border-primary ml-3">
                                 {chapter.sections.map(section => (
@@ -203,6 +276,8 @@ const Sidebar: React.FC<SidebarProps> = ({ toc, activeSection, onSectionSelect }
                                         onSectionSelect={onSectionSelect}
                                         searchTerm={searchTerm}
                                         isInitiallyOpen={!!searchTerm}
+                                        onAddSubsection={onAddSubsection}
+                                        onRenameSection={onRenameSection}
                                     />
                                 ))}
                             </AccordionContent>

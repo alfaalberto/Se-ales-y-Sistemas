@@ -7,6 +7,7 @@ import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
 import AiGenerateModal from '@/components/modals/ai-generate-modal';
+import InputDialog from '@/components/modals/input-dialog';
 import { generateContent, type GenerateContentInput } from '@/ai/flows/generate-content-flow';
 import { generateImage } from '@/ai/flows/generate-image-flow';
 import type { SectionType } from '@/lib/types';
@@ -16,6 +17,15 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Separator } from "@/components/ui/separator";
 import { useTocManager } from '@/hooks/use-toc-manager';
 import { useToast } from "@/hooks/use-toast";
+
+type InputDialogState = {
+    isOpen: boolean;
+    mode: 'addSection' | 'addSubsection' | 'renameChapter' | 'renameSection' | null;
+    parentId?: string;
+    sectionId?: string;
+    currentTitle?: string;
+    chapterNum?: string;
+};
 
 export default function SignalVisorPage() {
     const {
@@ -27,9 +37,11 @@ export default function SignalVisorPage() {
         deleteBlock,
         moveBlock,
         savingStatus,
+        addSection,
+        renameChapter,
+        renameSection,
     } = useTocManager();
 
-    // UI State for Modals and Dialogs
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
     const [isHtmlModalOpen, setIsHtmlModalOpen] = useState(false);
     const [isAiModalOpen, setIsAiModalOpen] = useState(false);
@@ -41,6 +53,7 @@ export default function SignalVisorPage() {
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [blockToDelete, setBlockToDelete] = useState<string | null>(null);
     const [generatingImageForBlock, setGeneratingImageForBlock] = useState<string | null>(null);
+    const [inputDialogState, setInputDialogState] = useState<InputDialogState>({ isOpen: false, mode: null });
 
     const { toast } = useToast();
 
@@ -73,8 +86,6 @@ export default function SignalVisorPage() {
         }
     }, [flatSections, activeSection, setActiveSection]);
 
-    // --- UI Interaction Handlers ---
-
     const handleSectionSelect = (section: SectionType) => {
         setActiveSection(section);
         setSelectedBlockId(null); 
@@ -104,7 +115,6 @@ export default function SignalVisorPage() {
         }
     }, [activeSection, flatSections, setActiveSection]);
 
-    // --- HTML Modal Handlers ---
     const handleOpenAddModal = () => {
         setModalMode('add');
         setHtmlToEdit('');
@@ -138,7 +148,6 @@ export default function SignalVisorPage() {
         setHtmlToEdit('');
     };
 
-    // --- AI Modal Handlers ---
     const handleOpenAiModal = () => {
         if (!activeSection) return;
         setIsAiModalOpen(true);
@@ -203,8 +212,6 @@ export default function SignalVisorPage() {
         }
     };
 
-
-    // --- Block Action Handlers ---
     const confirmDeleteBlock = (blockId: string) => {
         setBlockToDelete(blockId);
         setIsDeleteDialogOpen(true);
@@ -227,16 +234,33 @@ export default function SignalVisorPage() {
     
     const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
 
-    // Effect for keyboard shortcuts
+    const handleOpenInputDialog = (state: Omit<InputDialogState, 'isOpen'>) => {
+        setInputDialogState({ ...state, isOpen: true });
+    };
+
+    const handleInputDialogSubmit = (newTitle: string) => {
+        const { mode, parentId, sectionId, chapterNum } = inputDialogState;
+        if (mode === 'addSection' && parentId) {
+            addSection(parentId, newTitle);
+        } else if (mode === 'addSubsection' && parentId) {
+            addSection(parentId, newTitle);
+        } else if (mode === 'renameChapter' && chapterNum) {
+            renameChapter(chapterNum, newTitle);
+        } else if (mode === 'renameSection' && sectionId) {
+            renameSection(sectionId, newTitle);
+        }
+        setInputDialogState({ isOpen: false, mode: null });
+    };
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || isHtmlModalOpen || isAiModalOpen || isDeleteDialogOpen) return;
+            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || isHtmlModalOpen || isAiModalOpen || isDeleteDialogOpen || inputDialogState.isOpen) return;
             if (e.key === 'ArrowLeft') handleNavigate('prev');
             if (e.key === 'ArrowRight') handleNavigate('next');
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [activeSection, flatSections, isHtmlModalOpen, isAiModalOpen, isDeleteDialogOpen, handleNavigate]);
+    }, [activeSection, flatSections, isHtmlModalOpen, isAiModalOpen, isDeleteDialogOpen, inputDialogState.isOpen, handleNavigate]);
 
     const getTooltipContent = () => {
         switch (savingStatus) {
@@ -245,6 +269,16 @@ export default function SignalVisorPage() {
             default: return <p>El contenido se guarda automáticamente.</p>;
         }
     };
+    
+    const getInputDialogTitle = () => {
+        switch(inputDialogState.mode) {
+            case 'addSection': return "Añadir Nueva Sección";
+            case 'addSubsection': return "Añadir Nueva Subsección";
+            case 'renameChapter': return "Renombrar Capítulo";
+            case 'renameSection': return "Renombrar Sección";
+            default: return "";
+        }
+    }
 
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
@@ -266,6 +300,15 @@ export default function SignalVisorPage() {
                     sectionTitle={activeSection.title}
                  />
             )}
+
+            <InputDialog
+                isOpen={inputDialogState.isOpen}
+                onClose={() => setInputDialogState({ isOpen: false, mode: null })}
+                onSubmit={handleInputDialogSubmit}
+                title={getInputDialogTitle()}
+                label="Título"
+                initialValue={inputDialogState.currentTitle}
+            />
 
             <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
                 <AlertDialogContent className="bg-card border-border text-card-foreground">
@@ -299,7 +342,15 @@ export default function SignalVisorPage() {
                     ${isSidebarVisible ? 'translate-x-0 md:w-80 lg:w-96' : '-translate-x-full md:w-0'}
                 `}
             >
-                <Sidebar toc={toc} activeSection={activeSection} onSectionSelect={handleSectionSelect} />
+                <Sidebar 
+                    toc={toc} 
+                    activeSection={activeSection} 
+                    onSectionSelect={handleSectionSelect}
+                    onAddSection={(chapterNum) => handleOpenInputDialog({ mode: 'addSection', parentId: chapterNum })}
+                    onAddSubsection={(sectionId) => handleOpenInputDialog({ mode: 'addSubsection', parentId: sectionId })}
+                    onRenameChapter={(chapterNum, currentTitle) => handleOpenInputDialog({ mode: 'renameChapter', chapterNum, currentTitle })}
+                    onRenameSection={(sectionId, currentTitle) => handleOpenInputDialog({ mode: 'renameSection', sectionId, currentTitle })}
+                />
             </div>
             
             <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0"> 
@@ -361,5 +412,3 @@ export default function SignalVisorPage() {
         </div>
     );
 }
-
-    
