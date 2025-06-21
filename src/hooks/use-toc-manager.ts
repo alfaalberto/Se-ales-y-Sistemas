@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { TableOfContentsType, SectionType, ContentBlockType } from '@/lib/types';
 import { initialTableOfContents } from '@/lib/data';
 import { useToast } from "@/hooks/use-toast";
+import { useDebounce } from './use-debounce';
 
 const updateTocRecursively = (sections: SectionType[], targetSectionId: string, updateFn: (section: SectionType) => SectionType): SectionType[] => {
     return sections.map(section => {
@@ -20,7 +21,11 @@ const updateTocRecursively = (sections: SectionType[], targetSectionId: string, 
 export function useTocManager() {
     const [toc, setToc] = useState<TableOfContentsType>(initialTableOfContents);
     const [activeSection, setActiveSection] = useState<SectionType | undefined>(undefined);
+    const [savingStatus, setSavingStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
     const { toast } = useToast();
+    const isInitialMount = useRef(true);
+
+    const debouncedToc = useDebounce(toc, 2000);
 
     useEffect(() => {
         const loadInitialData = async () => {
@@ -39,11 +44,51 @@ export function useTocManager() {
                 }
             } catch (error) {
                 console.error("Could not load backup content:", error);
+            } finally {
+                 setTimeout(() => isInitialMount.current = false, 500);
             }
         };
 
         loadInitialData();
     }, [toast]);
+    
+    // Auto-save effect
+    useEffect(() => {
+        if (isInitialMount.current || !debouncedToc) {
+            return;
+        }
+
+        const autoSave = async () => {
+            setSavingStatus('saving');
+            try {
+                const response = await fetch('/api/save-content', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(debouncedToc),
+                });
+                if (!response.ok) throw new Error('Server responded with an error during auto-save.');
+                setSavingStatus('saved');
+            } catch (error) {
+                console.error("Auto-save failed:", error);
+                setSavingStatus('idle');
+                toast({
+                    title: "Error de Auto-Guardado",
+                    description: "No se pudieron guardar los últimos cambios en el servidor.",
+                    variant: "destructive",
+                });
+            }
+        };
+
+        autoSave();
+    }, [debouncedToc, toast]);
+
+    // Effect to reset saving status indicator
+    useEffect(() => {
+        if (savingStatus === 'saved') {
+            const timer = setTimeout(() => setSavingStatus('idle'), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [savingStatus]);
 
     const addBlock = useCallback((sectionId: string, htmlContent: string): ContentBlockType | undefined => {
         let newBlock: ContentBlockType | undefined;
@@ -140,6 +185,7 @@ export function useTocManager() {
     }, [toast]);
     
     const saveContentToFile = useCallback(async () => {
+        setSavingStatus('saving');
         try {
             const response = await fetch('/api/save-content', {
                 method: 'POST',
@@ -152,12 +198,14 @@ export function useTocManager() {
                 throw new Error(errorData.error || 'Failed to save file on server.');
             }
 
+            setSavingStatus('saved');
             toast({
                 title: "Respaldo Guardado",
                 description: "El archivo 'content-backup.json' se ha guardado en la raíz del proyecto.",
             });
         } catch (error) {
             console.error("Error saving content to file:", error);
+            setSavingStatus('idle');
             toast({
                 title: "Error al Guardar",
                 description: error instanceof Error ? error.message : "No se pudo guardar el archivo en el servidor.",
@@ -175,5 +223,6 @@ export function useTocManager() {
         deleteBlock,
         moveBlock,
         saveContentToFile,
+        savingStatus,
     };
 }

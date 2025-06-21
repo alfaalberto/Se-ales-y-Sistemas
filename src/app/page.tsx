@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Save, Menu, X } from 'lucide-react';
+import { Save, Menu, X, Loader2, Check } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
@@ -22,6 +22,7 @@ export default function SignalVisorPage() {
         deleteBlock,
         moveBlock,
         saveContentToFile,
+        savingStatus,
     } = useTocManager();
 
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
@@ -163,6 +164,14 @@ export default function SignalVisorPage() {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [activeSection, flatSections, isModalOpen, isDeleteDialogOpen, handleNavigate]);
 
+    const getTooltipContent = () => {
+        switch (savingStatus) {
+            case 'saving': return <p>Guardando cambios...</p>;
+            case 'saved': return <p>¡Guardado!</p>;
+            default: return <p>Guardar Respaldo (auto-guardado activado)</p>;
+        }
+    };
+
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
             <HtmlAddModal 
@@ -212,18 +221,23 @@ export default function SignalVisorPage() {
             <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0"> 
                 <div className="fixed top-4 right-4 z-50 flex items-center space-x-1">
                     <TooltipProvider delayDuration={100}>
-                        <Tooltip>
+                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
                                     onClick={saveContentToFile}
                                     variant="ghost"
                                     size="icon"
                                     className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                    disabled={savingStatus === 'saving'}
                                 >
-                                    <Save size={18} />
+                                    {savingStatus === 'saving' && <Loader2 size={18} className="animate-spin" />}
+                                    {savingStatus === 'saved' && <Check size={18} />}
+                                    {savingStatus === 'idle' && <Save size={18} />}
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent><p>Guardar Respaldo en Archivo del Proyecto</p></TooltipContent>
+                            <TooltipContent>
+                                {getTooltipContent()}
+                            </TooltipContent>
                         </Tooltip>
 
                         <Separator orientation="vertical" className="h-6 bg-border mx-2" />
