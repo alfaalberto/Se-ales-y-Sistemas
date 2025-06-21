@@ -2,7 +2,7 @@
 "use client";
 
 import React from 'react';
-import { PlusCircle, ChevronLeft, ChevronRight, MonitorPlay, Minimize, Menu, X } from 'lucide-react';
+import { PlusCircle, ChevronLeft, ChevronRight, MonitorPlay, Minimize, Menu, X, Sparkles } from 'lucide-react';
 import type { SectionType } from '@/lib/types';
 import HtmlBlock from './html-block';
 import { Button } from '@/components/ui/button';
@@ -14,10 +14,16 @@ interface ContentViewProps {
     onNavigate: (direction: 'prev' | 'next') => void;
     flatSections: SectionType[];
     onOpenAddModal: () => void;
+    onOpenAiModal: () => void;
     isSidebarVisible: boolean;
     toggleSidebar: () => void;
     selectedBlockId: string | null;
     onBlockSelect: (blockId: string) => void;
+    onBlockEdit: (blockId: string) => void;
+    onBlockDelete: (blockId: string) => void;
+    onBlockMove: (blockId: string, direction: 'up' | 'down') => void;
+    onGenerateImage: (blockId: string) => void;
+    generatingImageForBlock: string | null;
 }
 
 const ContentView: React.FC<ContentViewProps> = ({ 
@@ -25,10 +31,16 @@ const ContentView: React.FC<ContentViewProps> = ({
     onNavigate, 
     flatSections, 
     onOpenAddModal,
+    onOpenAiModal,
     isSidebarVisible,
     toggleSidebar,
     selectedBlockId,
-    onBlockSelect
+    onBlockSelect,
+    onBlockEdit,
+    onBlockDelete,
+    onBlockMove,
+    onGenerateImage,
+    generatingImageForBlock
 }) => {
     const contentRef = React.useRef<HTMLDivElement>(null);
     const [isFullscreen, setIsFullscreen] = React.useState(false);
@@ -138,11 +150,19 @@ const ContentView: React.FC<ContentViewProps> = ({
                 <div className="flex-1 flex justify-center items-center gap-2">
                      <Button
                         onClick={onOpenAddModal}
+                        variant="outline"
+                        size="sm"
+                        className="shadow-sm"
+                    >
+                        <PlusCircle size={16} className="mr-1 md:mr-2" /> <span className="hidden md:inline">Añadir Manual</span>
+                    </Button>
+                    <Button
+                        onClick={onOpenAiModal}
                         variant="default"
                         size="sm"
                         className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
                     >
-                        <PlusCircle size={16} className="mr-1 md:mr-2" /> <span className="hidden md:inline">Añadir Diapositiva</span>
+                        <Sparkles size={16} className="mr-1 md:mr-2" /> <span className="hidden md:inline">Generar con IA</span>
                     </Button>
                     <TooltipProvider delayDuration={100}>
                         <Tooltip>
@@ -160,42 +180,42 @@ const ContentView: React.FC<ContentViewProps> = ({
                         </Tooltip>
                     </TooltipProvider>
                 </div>
-                {/* Empty div for spacing if needed, or remove if justify-between handles it */}
                 <div className="flex items-center gap-2">
-                     {/* Placeholder for right-aligned elements if any in future */}
                 </div>
             </div>
 
             <ScrollArea className="flex-grow p-4 md:p-8">
                 <div className="max-w-none prose dark:prose-invert prose-headings:text-primary prose-p:text-foreground prose-strong:text-foreground prose-pre:bg-muted prose-pre:text-foreground">
-                    {section.content.map((block) => (
-                        <HtmlBlock 
-                            key={block.id} 
-                            block={block}
-                            onSelect={onBlockSelect}
-                            isActive={selectedBlockId === block.id}
-                        />
-                    ))}
+                    {section.content.map((block, index) => {
+                        const canMoveUp = index > 0;
+                        const canMoveDown = index < section.content.length - 1;
+                        return (
+                            <HtmlBlock 
+                                key={block.id} 
+                                block={block}
+                                onSelect={onBlockSelect}
+                                isActive={selectedBlockId === block.id}
+                                onEdit={onBlockEdit}
+                                onDelete={onBlockDelete}
+                                onMove={onBlockMove}
+                                canMoveUp={canMoveUp}
+                                canMoveDown={canMoveDown}
+                                onGenerateImage={onGenerateImage}
+                                isGeneratingImage={generatingImageForBlock === block.id}
+                            />
+                        )
+                    })}
                 </div>
             </ScrollArea>
         </main>
     );
 };
 
-// Extend ButtonProps for icon-sm size
 declare module '@/components/ui/button' {
     interface ButtonProps {
       size?: 'default' | 'sm' | 'lg' | 'icon' | 'icon-sm';
     }
   }
-  
-  // Add icon-sm variant to buttonVariants if it doesn't exist
-  // This is illustrative; actual modification of buttonVariants is in button.tsx
-  // For this example, we'll assume 'icon-sm' is handled by custom class or 'sm' with 'p-1.5' or similar.
-  // If using CVA directly, you would add 'icon-sm': "h-8 w-8 p-1.5" or similar
-  // For simplicity here, we use size="sm" and rely on padding/icon size to achieve effect.
-  // A more robust way is to add 'icon-sm' to buttonVariants in button.tsx
-  
 
 export default ContentView;
 

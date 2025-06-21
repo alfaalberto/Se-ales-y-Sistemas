@@ -2,13 +2,23 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
+import { Pencil, Trash2, ArrowUpCircle, ArrowDownCircle, Image as ImageIcon, Loader2 } from 'lucide-react';
 import type { ContentBlockType } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface HtmlBlockProps {
     block: ContentBlockType;
     onSelect: (blockId: string) => void;
     isActive: boolean;
+    onEdit: (blockId: string) => void;
+    onDelete: (blockId: string) => void;
+    onMove: (blockId: string, direction: 'up' | 'down') => void;
+    canMoveUp: boolean;
+    canMoveDown: boolean;
+    onGenerateImage: (blockId: string) => void;
+    isGeneratingImage: boolean;
 }
 
 declare global {
@@ -18,7 +28,7 @@ declare global {
     }
 }
 
-const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isActive }) => {
+const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isActive, onEdit, onDelete, onMove, canMoveUp, canMoveDown, onGenerateImage, isGeneratingImage }) => {
     const { id: blockId, html: htmlString } = block;
     const blockRef = useRef<HTMLDivElement>(null);
     const instanceId = useRef(`block-${crypto.randomUUID()}`).current;
@@ -27,6 +37,7 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
     const [codeBlocksVisibility, setCodeBlocksVisibility] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
+        let isMounted = true;
         const container = blockRef.current;
         if (!container) return;
 
@@ -51,7 +62,6 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
             idMap.forEach((newId, oldId) => {
                 const regex = new RegExp(`getElementById\\((['"])${oldId}\\1\\)`, 'g');
                 scriptContent = scriptContent.replace(regex, `getElementById('${newId}')`);
-
                 const querySelectorRegex = new RegExp(`querySelector\\((['"])#${oldId}\\1\\)`, 'g');
                 scriptContent = scriptContent.replace(querySelectorRegex, `querySelector('#${newId.replace(/[:.]/g, '\\$&')}')`);
             });
@@ -61,20 +71,16 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
         const pres = Array.from(tempDiv.querySelectorAll('pre'));
         const newCodeBlockDataCollector: { preId: string, placeholderId: string }[] = [];
         const initialVisibilityStateCollector: Record<string, boolean> = {};
-
         pres.forEach((pre, index) => {
             let preId = pre.id; 
             if (!preId) { 
                 preId = `${instanceId}__pre-${index}`;
                 pre.id = preId;
             }
-            
             const placeholderId = `${instanceId}__btn-placeholder-for-${preId.replace(/__/g, '-')}`;
             const placeholderDiv = document.createElement('div');
             placeholderDiv.id = placeholderId;
-            
             pre.parentNode?.insertBefore(placeholderDiv, pre);
-
             newCodeBlockDataCollector.push({ preId, placeholderId });
             initialVisibilityStateCollector[preId] = true; 
         });
@@ -82,52 +88,56 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
         const innerDiv = container.querySelector('.content-block-inner');
         if (innerDiv) {
             innerDiv.innerHTML = tempDiv.innerHTML;
+        } else {
+            return;
         }
         
-        setCodeBlockData(newCodeBlockDataCollector);
-        setCodeBlocksVisibility(initialVisibilityStateCollector);
+        if (isMounted) {
+            setCodeBlockData(newCodeBlockDataCollector);
+            setCodeBlocksVisibility(initialVisibilityStateCollector);
+        }
 
         const runScripts = () => {
-            const currentContainer = blockRef.current;
-            if (!currentContainer) return;
-            const scriptsToRun = Array.from(currentContainer.getElementsByTagName('script'));
+            if (!isMounted || !blockRef.current) return;
+            const scriptsToRun = Array.from(blockRef.current.getElementsByTagName('script'));
             scriptsToRun.forEach(originalScript => {
-                 if (!originalScript.closest('.content-block-inner')) return;
-                
+                if (!originalScript.closest('.content-block-inner')) return;
                 const newScript = document.createElement('script');
                 newScript.textContent = `(function() { try { ${originalScript.innerHTML} } catch (e) { console.error('Error executing script for ${instanceId}:', e); } })();`;
                 document.body.appendChild(newScript);
                 document.body.removeChild(newScript); 
-                 originalScript.remove(); 
+                originalScript.remove(); 
             });
         };
 
         const processContent = async () => {
-            // Wait for MathJax to be ready if it exists
-            if (window.MathJax && window.MathJax.startup) {
-                 await window.MathJax.startup.promise;
-            }
-            
-            // If component is still mounted after potential async operations, proceed.
-            if (blockRef.current) {
-                try {
-                    // Try to typeset with MathJax if it's available
-                    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
-                        await window.MathJax.typesetPromise([blockRef.current]);
-                    }
-                } catch(err) {
+            try {
+                if (window.MathJax && window.MathJax.startup) {
+                    await window.MathJax.startup.promise;
+                }
+                if (!isMounted) return;
+
+                if (window.MathJax && typeof window.MathJax.typesetPromise === 'function' && blockRef.current) {
+                    await window.MathJax.typesetPromise([blockRef.current]);
+                }
+                if (!isMounted) return;
+
+            } catch (err) {
+                if(isMounted) {
                     console.error("MathJax typesetting failed:", err);
-                } finally {
-                    // Always run scripts after attempting to typeset, but only if still mounted
-                    if(blockRef.current) {
-                        runScripts();
-                    }
+                }
+            } finally {
+                if (isMounted) {
+                    runScripts();
                 }
             }
         };
 
         processContent();
 
+        return () => {
+            isMounted = false;
+        };
     }, [htmlString, instanceId]);
 
 
@@ -171,11 +181,16 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
 
     }, [codeBlockData, codeBlocksVisibility, instanceId]);
 
+    const handleActionClick = (e: React.MouseEvent, action: () => void) => {
+        e.stopPropagation();
+        action();
+    }
+
     return (
         <div 
             ref={blockRef} 
             className={cn(
-                "content-block group relative py-4 border-t-2 border-border/30 first:pt-0 first:border-none cursor-pointer transition-all duration-150 ease-in-out prose dark:prose-invert max-w-none prose-headings:text-primary prose-p:text-foreground prose-strong:text-foreground prose-pre:bg-muted prose-pre:text-foreground",
+                "content-block group relative p-4 border-t-2 border-border/30 first:pt-0 first:border-none cursor-pointer transition-all duration-150 ease-in-out prose dark:prose-invert max-w-none prose-headings:text-primary prose-p:text-foreground prose-strong:text-foreground prose-pre:bg-muted prose-pre:text-foreground",
                 isActive ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-lg bg-card' : 'hover:bg-card/50',
                 'my-2 rounded-md' 
             )}
@@ -186,12 +201,66 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
             aria-pressed={isActive}
             aria-label={`Diapositiva ${blockId}${isActive ? ', seleccionada' : ''}`}
         >
+             {isGeneratingImage && (
+                <div className="absolute inset-0 bg-background/80 flex flex-col items-center justify-center z-10 rounded-md">
+                    <Loader2 className="animate-spin h-8 w-8 text-primary" />
+                    <p className="mt-2 text-sm text-foreground">Generando imagen...</p>
+                </div>
+            )}
             <div className="content-block-inner relative">
                 {/* El HTML del usuario se inyectará aquí por el primer useEffect */}
             </div>
+            {isActive && !isGeneratingImage && (
+                <div className="absolute top-2 right-2 flex items-center space-x-1 bg-background/80 backdrop-blur-sm rounded-md p-1">
+                     <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onEdit(blockId))} variant="ghost" size="icon-sm" className="text-foreground hover:bg-accent hover:text-accent-foreground">
+                                    <Pencil size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Editar</p></TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onGenerateImage(blockId))} variant="ghost" size="icon-sm" className="text-foreground hover:bg-accent hover:text-accent-foreground">
+                                    <ImageIcon size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Generar Imagen con IA</p></TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onMove(blockId, 'up'))} disabled={!canMoveUp} variant="ghost" size="icon-sm" className="text-foreground hover:bg-accent hover:text-accent-foreground">
+                                    <ArrowUpCircle size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Mover Arriba</p></TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onMove(blockId, 'down'))} disabled={!canMoveDown} variant="ghost" size="icon-sm" className="text-foreground hover:bg-accent hover:text-accent-foreground">
+                                    <ArrowDownCircle size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Mover Abajo</p></TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onDelete(blockId))} variant="ghost" size="icon-sm" className="text-destructive hover:bg-destructive/90 hover:text-destructive-foreground">
+                                    <Trash2 size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Eliminar</p></TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
+            )}
         </div>
     );
 });
 
 HtmlBlock.displayName = 'HtmlBlock';
 export default HtmlBlock;
+
+    

@@ -1,63 +1,61 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ChevronRight, X, Save, Menu, Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { Save, Menu, X, Loader2, Check } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
-import { initialTableOfContents } from '@/lib/data';
-import type { TableOfContentsType, SectionType, ContentBlockType } from '@/lib/types';
+import AiGenerateModal from '@/components/modals/ai-generate-modal';
+import InputDialog from '@/components/modals/input-dialog';
+import { generateContent, type GenerateContentInput } from '@/ai/flows/generate-content-flow';
+import { generateImage } from '@/ai/flows/generate-image-flow';
+import type { SectionType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { useToast } from "@/hooks/use-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Separator } from "@/components/ui/separator";
+import { useTocManager } from '@/hooks/use-toc-manager';
+import { useToast } from "@/hooks/use-toast";
 
+type InputDialogState = {
+    isOpen: boolean;
+    mode: 'addSection' | 'addSubsection' | 'renameChapter' | 'renameSection' | null;
+    parentId?: string;
+    sectionId?: string;
+    currentTitle?: string;
+    chapterNum?: string;
+};
 
 export default function SignalVisorPage() {
-    const [toc, setToc] = useState<TableOfContentsType>(initialTableOfContents);
-    const [activeSection, setActiveSection] = useState<SectionType | undefined>(undefined);
+    const {
+        toc,
+        activeSection,
+        setActiveSection,
+        addBlock,
+        editBlock,
+        deleteBlock,
+        moveBlock,
+        savingStatus,
+        addSection,
+        renameChapter,
+        renameSection,
+    } = useTocManager();
+
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-    
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isHtmlModalOpen, setIsHtmlModalOpen] = useState(false);
+    const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+    const [isGenerating, setIsGenerating] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [editingBlockInfo, setEditingBlockInfo] = useState<{ blockId: string } | null>(null);
     const [htmlToEdit, setHtmlToEdit] = useState<string>('');
     const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
+    const [blockToDelete, setBlockToDelete] = useState<string | null>(null);
+    const [generatingImageForBlock, setGeneratingImageForBlock] = useState<string | null>(null);
+    const [inputDialogState, setInputDialogState] = useState<InputDialogState>({ isOpen: false, mode: null });
 
     const { toast } = useToast();
-
-    // Automatically load content from the server on initial render
-    useEffect(() => {
-        const loadInitialData = async () => {
-            try {
-                const response = await fetch('/api/load-content');
-                if (response.ok) {
-                    const data = await response.json();
-                    setToc(data);
-                    toast({
-                        title: "Contenido recuperado",
-                        description: "Se ha cargado tu progreso guardado anteriormente.",
-                    });
-                } else if (response.status !== 404) {
-                    // Only show an error if it's not a "file not found" error
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to load backup file from server.');
-                }
-            } catch (error) {
-                console.error("Could not load backup content:", error);
-                toast({
-                    title: "Error al Cargar Progreso",
-                    description: error instanceof Error ? error.message : "No se pudo cargar el archivo de respaldo.",
-                    variant: "destructive",
-                });
-            }
-        };
-
-        loadInitialData();
-    }, [toast]); // Added toast to dependency array as it's used inside
 
     const flattenSections = (sections: SectionType[]): SectionType[] => {
         let flatList: SectionType[] = [];
@@ -86,7 +84,7 @@ export default function SignalVisorPage() {
             setActiveSection(flatSections[0]);
             setSelectedBlockId(null); 
         }
-    }, [flatSections, activeSection]);
+    }, [flatSections, activeSection, setActiveSection]);
 
     const handleSectionSelect = (section: SectionType) => {
         setActiveSection(section);
@@ -100,7 +98,6 @@ export default function SignalVisorPage() {
         setSelectedBlockId(currentSelectedId => currentSelectedId === blockId ? null : blockId); 
     };
     
-
     const handleNavigate = useCallback((direction: 'prev' | 'next') => {
         if (!activeSection) return;
         const currentIndex = flatSections.findIndex(s => s.id === activeSection.id);
@@ -116,205 +113,201 @@ export default function SignalVisorPage() {
            setActiveSection(newSection);
            setSelectedBlockId(null); 
         }
-    }, [activeSection, flatSections]);
+    }, [activeSection, flatSections, setActiveSection]);
 
     const handleOpenAddModal = () => {
         setModalMode('add');
         setHtmlToEdit('');
         setEditingBlockInfo(null); 
-        setIsModalOpen(true);
+        setIsHtmlModalOpen(true);
     };
     
-    const handleOpenEditModalForSelected = () => {
-        if (!activeSection || !selectedBlockId) {
-            toast({ title: "Error", description: "Ninguna diapositiva seleccionada para editar.", variant: "destructive" });
-            return;
-        }
-        
-        const blockToEdit = activeSection.content.find(b => b.id === selectedBlockId);
-
-        if (!blockToEdit) {
-             toast({ title: "Error", description: "Diapositiva seleccionada no encontrada.", variant: "destructive" });
-            return;
-        }
+    const handleOpenEditModal = (blockId: string) => {
+        if (!activeSection) return;
+        const blockToEdit = activeSection.content.find(b => b.id === blockId);
+        if (!blockToEdit) return;
     
         setModalMode('edit');
         setHtmlToEdit(blockToEdit.html);
-        setEditingBlockInfo({ blockId: selectedBlockId });
-        setIsModalOpen(true);
-    };
-    
-    const updateTocRecursively = (sections: SectionType[], targetSectionId: string, updateFn: (section: SectionType) => SectionType): SectionType[] => {
-        return sections.map(section => {
-            if (section.id === targetSectionId) {
-                return updateFn(section);
-            }
-            if (section.subsections) {
-                return { ...section, subsections: updateTocRecursively(section.subsections, targetSectionId, updateFn) };
-            }
-            return section;
-        });
+        setEditingBlockInfo({ blockId });
+        setIsHtmlModalOpen(true);
     };
     
     const handleSaveFromModal = (htmlContent: string) => {
-        if (!activeSection || !htmlContent.trim()) {
-            toast({ title: "Error", description: "El contenido HTML no puede estar vacío.", variant: "destructive" });
-            return;
+        if (!activeSection) return;
+        if (modalMode === 'edit' && editingBlockInfo) {
+            editBlock(activeSection.id, editingBlockInfo.blockId, htmlContent);
+        } else {
+            const newBlock = addBlock(activeSection.id, htmlContent);
+            if (newBlock) {
+                setSelectedBlockId(newBlock.id);
+            }
         }
-    
-        setToc(currentToc => {
-            const newToc = [...currentToc];
-            const updateFn = (section: SectionType) => {
-                let updatedContent;
-                let newSelectedBlockId = selectedBlockId;
-                if (modalMode === 'edit' && editingBlockInfo) {
-                    updatedContent = section.content.map(block =>
-                        block.id === editingBlockInfo.blockId ? { ...block, html: htmlContent } : block
-                    );
-                    toast({ title: "Contenido Actualizado", description: "El bloque HTML ha sido actualizado." });
-                } else { 
-                    const newBlock: ContentBlockType = { id: crypto.randomUUID(), html: htmlContent };
-                    updatedContent = [...section.content, newBlock];
-                    toast({ title: "Contenido Añadido", description: "El bloque HTML ha sido añadido a la sección." });
-                    newSelectedBlockId = newBlock.id; 
-                }
-                const updatedSection = { ...section, content: updatedContent };
-                setActiveSection(updatedSection); // Update active section directly
-                setSelectedBlockId(newSelectedBlockId);
-                return updatedSection;
-            };
-
-            return newToc.map(chapter => ({
-                ...chapter,
-                sections: updateTocRecursively(chapter.sections, activeSection.id, updateFn)
-            }));
-        });
-        setIsModalOpen(false);
-        setEditingBlockInfo(null); 
-        setHtmlToEdit(''); 
+        setIsHtmlModalOpen(false);
+        setEditingBlockInfo(null);
+        setHtmlToEdit('');
     };
 
-    const handleDeleteBlockGlobal = () => {
-        if (!activeSection || !selectedBlockId) {
-            toast({ title: "Error", description: "Ninguna diapositiva seleccionada para eliminar.", variant: "destructive" });
-            return;
-        }
+    const handleOpenAiModal = () => {
+        if (!activeSection) return;
+        setIsAiModalOpen(true);
+    };
+
+    const handleGenerateWithAi = async (prompt: string) => {
+        if (!activeSection) return;
         
-        setToc(currentToc => {
-            const newToc = [...currentToc];
-            const updateFn = (section: SectionType) => {
-                const updatedContent = section.content.filter(block => block.id !== selectedBlockId);
-                const updatedSection = { ...section, content: updatedContent };
-                setActiveSection(updatedSection);
-                toast({ title: "Contenido Eliminado", description: "El bloque HTML ha sido eliminado." });
-                setSelectedBlockId(null);
-                return updatedSection;
+        setIsGenerating(true);
+        try {
+            const input: GenerateContentInput = {
+                topic: prompt,
+                context: activeSection.title
             };
-
-            return newToc.map(chapter => ({
-                ...chapter,
-                sections: updateTocRecursively(chapter.sections, activeSection.id, updateFn)
-            }));
-        });
-        setIsDeleteDialogOpen(false); 
-    };
-
-    const handleMoveBlockGlobal = (direction: 'up' | 'down') => {
-        if (!activeSection || !selectedBlockId) {
-            toast({ title: "Error", description: "Ninguna diapositiva seleccionada para mover.", variant: "destructive" });
-            return;
+            const result = await generateContent(input);
+            const newBlock = addBlock(activeSection.id, result.html);
+            if (newBlock) {
+                setSelectedBlockId(newBlock.id);
+            }
+            setIsAiModalOpen(false);
+        } catch (error) {
+            console.error("AI content generation failed:", error);
+            toast({
+                title: "Error de Generación",
+                description: "No se pudo generar el contenido con IA. Inténtalo de nuevo.",
+                variant: "destructive"
+            });
+        } finally {
+            setIsGenerating(false);
         }
-
-        setToc(currentToc => {
-             const newToc = [...currentToc];
-             const updateFn = (section: SectionType) => {
-                const blockIndex = section.content.findIndex(b => b.id === selectedBlockId);
-                if (blockIndex === -1) return section;
-
-                const newContent = [...section.content];
-                const [blockToMove] = newContent.splice(blockIndex, 1);
-
-                if (direction === 'up' && blockIndex > 0) {
-                    newContent.splice(blockIndex - 1, 0, blockToMove);
-                } else if (direction === 'down' && blockIndex < newContent.length) { 
-                    newContent.splice(blockIndex + 1, 0, blockToMove);
-                } else {
-                    return section; 
-                }
-                
-                const updatedSection = { ...section, content: newContent };
-                setActiveSection(updatedSection);
-                toast({ title: "Contenido Reordenado", description: `El bloque HTML ha sido movido hacia ${direction === 'up' ? 'arriba' : 'abajo'}.` });
-                return updatedSection;
-             };
-
-             return newToc.map(chapter => ({
-                ...chapter,
-                sections: updateTocRecursively(chapter.sections, activeSection.id, updateFn)
-            }));
-        });
     };
     
+    const getBlockTitle = (html: string): string => {
+        if (typeof window === 'undefined') return '';
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        const h2 = tempDiv.querySelector('h2');
+        return h2?.textContent || 'Signals and Systems concept';
+    };
+
+    const handleGenerateImage = async (blockId: string) => {
+        if (!activeSection) return;
+        const block = activeSection.content.find(b => b.id === blockId);
+        if (!block) return;
+        
+        setGeneratingImageForBlock(blockId);
+        try {
+            const topic = getBlockTitle(block.html);
+            const result = await generateImage({ topic });
+            const newHtml = `${block.html}<div class="my-4"><img src="${result.imageDataUri}" alt="AI generated image for ${topic}" class="w-full h-auto rounded-lg shadow-md" /></div>`;
+            editBlock(activeSection.id, blockId, newHtml);
+            toast({ title: "Imagen Generada", description: "La imagen generada por IA ha sido añadida a la diapositiva." });
+        } catch (error) {
+            console.error("AI image generation failed:", error);
+            toast({
+                title: "Error de Generación de Imagen",
+                description: "No se pudo generar la imagen con IA. Inténtalo de nuevo.",
+                variant: "destructive"
+            });
+        } finally {
+            setGeneratingImageForBlock(null);
+        }
+    };
+
+    const confirmDeleteBlock = (blockId: string) => {
+        setBlockToDelete(blockId);
+        setIsDeleteDialogOpen(true);
+    };
+
+    const handleDeleteConfirmed = () => {
+        if (!activeSection || !blockToDelete) return;
+        deleteBlock(activeSection.id, blockToDelete);
+        if (selectedBlockId === blockToDelete) {
+            setSelectedBlockId(null);
+        }
+        setIsDeleteDialogOpen(false);
+        setBlockToDelete(null);
+    };
+
+    const handleMoveBlock = (blockId: string, direction: 'up' | 'down') => {
+        if (!activeSection) return;
+        moveBlock(activeSection.id, blockId, direction);
+    };
+    
+    const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
+
+    const handleOpenInputDialog = (state: Omit<InputDialogState, 'isOpen'>) => {
+        setInputDialogState({ ...state, isOpen: true });
+    };
+
+    const handleInputDialogSubmit = (newTitle: string) => {
+        const { mode, parentId, sectionId, chapterNum } = inputDialogState;
+        if (mode === 'addSection' && parentId) {
+            addSection(parentId, newTitle);
+        } else if (mode === 'addSubsection' && parentId) {
+            addSection(parentId, newTitle);
+        } else if (mode === 'renameChapter' && chapterNum) {
+            renameChapter(chapterNum, newTitle);
+        } else if (mode === 'renameSection' && sectionId) {
+            renameSection(sectionId, newTitle);
+        }
+        setInputDialogState({ isOpen: false, mode: null });
+    };
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || isModalOpen || isDeleteDialogOpen) return;
+            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || isHtmlModalOpen || isAiModalOpen || isDeleteDialogOpen || inputDialogState.isOpen) return;
             if (e.key === 'ArrowLeft') handleNavigate('prev');
             if (e.key === 'ArrowRight') handleNavigate('next');
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [activeSection, flatSections, isModalOpen, isDeleteDialogOpen, handleNavigate]);
+    }, [activeSection, flatSections, isHtmlModalOpen, isAiModalOpen, isDeleteDialogOpen, inputDialogState.isOpen, handleNavigate]);
 
-    const handleSaveContentToFile = async () => {
-        try {
-            const response = await fetch('/api/save-content', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(toc, null, 2),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to save file on server.');
-            }
-
-            toast({
-                title: "Respaldo Guardado",
-                description: "El archivo 'content-backup.json' se ha guardado en la raíz del proyecto.",
-            });
-        } catch (error) {
-            console.error("Error saving content to file:", error);
-            toast({
-                title: "Error al Guardar",
-                description: error instanceof Error ? error.message : "No se pudo guardar el archivo en el servidor.",
-                variant: "destructive",
-            });
+    const getTooltipContent = () => {
+        switch (savingStatus) {
+            case 'saving': return <p>Guardando cambios...</p>;
+            case 'saved': return <p>¡Guardado!</p>;
+            default: return <p>El contenido se guarda automáticamente.</p>;
         }
     };
-
-
-    const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
-
-    const selectedBlockIndex = useMemo(() => {
-        if (!activeSection || !selectedBlockId) return -1;
-        return activeSection.content.findIndex(b => b.id === selectedBlockId);
-    }, [activeSection, selectedBlockId]);
-
-    const canMoveUp = selectedBlockId !== null && activeSection !== undefined && selectedBlockIndex > 0;
-    const canMoveDown = selectedBlockId !== null && activeSection !== undefined && selectedBlockIndex !== -1 && activeSection.content.length > 0 && selectedBlockIndex < activeSection.content.length - 1;
-
+    
+    const getInputDialogTitle = () => {
+        switch(inputDialogState.mode) {
+            case 'addSection': return "Añadir Nueva Sección";
+            case 'addSubsection': return "Añadir Nueva Subsección";
+            case 'renameChapter': return "Renombrar Capítulo";
+            case 'renameSection': return "Renombrar Sección";
+            default: return "";
+        }
+    }
 
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
             <HtmlAddModal 
-                isOpen={isModalOpen} 
-                onClose={() => setIsModalOpen(false)} 
+                isOpen={isHtmlModalOpen} 
+                onClose={() => setIsHtmlModalOpen(false)} 
                 onAdd={handleSaveFromModal}
                 initialContent={htmlToEdit}
                 modalTitle={modalMode === 'edit' ? "Editar Contenido HTML" : "Añadir Contenido HTML"}
                 confirmButtonText={modalMode === 'edit' ? "Guardar Cambios" : "Añadir"}
+            />
+
+            {activeSection && (
+                 <AiGenerateModal
+                    isOpen={isAiModalOpen}
+                    onClose={() => setIsAiModalOpen(false)}
+                    onGenerate={handleGenerateWithAi}
+                    isGenerating={isGenerating}
+                    sectionTitle={activeSection.title}
+                 />
+            )}
+
+            <InputDialog
+                isOpen={inputDialogState.isOpen}
+                onClose={() => setInputDialogState({ isOpen: false, mode: null })}
+                onSubmit={handleInputDialogSubmit}
+                title={getInputDialogTitle()}
+                label="Título"
+                initialValue={inputDialogState.currentTitle}
             />
 
             <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -326,8 +319,8 @@ export default function SignalVisorPage() {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel className="hover:bg-muted">Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDeleteBlockGlobal} className="bg-destructive hover:bg-destructive/90">Eliminar</AlertDialogAction>
+                        <AlertDialogCancel className="hover:bg-muted" onClick={() => setBlockToDelete(null)}>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleDeleteConfirmed} className="bg-destructive hover:bg-destructive/90">Eliminar</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
@@ -349,86 +342,37 @@ export default function SignalVisorPage() {
                     ${isSidebarVisible ? 'translate-x-0 md:w-80 lg:w-96' : '-translate-x-full md:w-0'}
                 `}
             >
-                <Sidebar toc={toc} activeSection={activeSection} onSectionSelect={handleSectionSelect} />
+                <Sidebar 
+                    toc={toc} 
+                    activeSection={activeSection} 
+                    onSectionSelect={handleSectionSelect}
+                    onAddSection={(chapterNum) => handleOpenInputDialog({ mode: 'addSection', parentId: chapterNum })}
+                    onAddSubsection={(sectionId) => handleOpenInputDialog({ mode: 'addSubsection', parentId: sectionId })}
+                    onRenameChapter={(chapterNum, currentTitle) => handleOpenInputDialog({ mode: 'renameChapter', chapterNum, currentTitle })}
+                    onRenameSection={(sectionId, currentTitle) => handleOpenInputDialog({ mode: 'renameSection', sectionId, currentTitle })}
+                />
             </div>
             
             <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0"> 
                 <div className="fixed top-4 right-4 z-50 flex items-center space-x-1">
                     <TooltipProvider delayDuration={100}>
-                        {selectedBlockId && activeSection && (
-                            <>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={handleOpenEditModalForSelected}
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            <Pencil size={18} />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent><p>Editar Diapositiva</p></TooltipContent>
-                                </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={() => handleMoveBlockGlobal('up')}
-                                            disabled={!canMoveUp}
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            <ArrowUpCircle size={18} />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent><p>Mover Arriba</p></TooltipContent>
-                                </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={() => handleMoveBlockGlobal('down')}
-                                            disabled={!canMoveDown}
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            <ArrowDownCircle size={18} />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent><p>Mover Abajo</p></TooltipContent>
-                                </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={() => setIsDeleteDialogOpen(true)}
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-destructive hover:bg-destructive/90 hover:text-destructive-foreground"
-                                        >
-                                            <Trash2 size={18} />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent><p>Eliminar Diapositiva</p></TooltipContent>
-                                </Tooltip>
-                                 <Separator orientation="vertical" className="h-6 bg-border mx-2" />
-                            </>
-                        )}
-
-                        <Tooltip>
+                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    onClick={handleSaveContentToFile}
                                     variant="ghost"
                                     size="icon"
-                                    className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                    className="text-foreground cursor-default hover:bg-transparent"
                                 >
-                                    <Save size={18} />
+                                    {savingStatus === 'saving' && <Loader2 size={18} className="animate-spin" />}
+                                    {savingStatus === 'saved' && <Check size={18} className="text-green-500" />}
+                                    {savingStatus === 'idle' && <Save size={18} />}
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent><p>Guardar Respaldo en Archivo del Proyecto</p></TooltipContent>
+                            <TooltipContent>
+                                {getTooltipContent()}
+                            </TooltipContent>
                         </Tooltip>
-                        
+
                         <Separator orientation="vertical" className="h-6 bg-border mx-2" />
 
                         <Tooltip>
@@ -453,10 +397,16 @@ export default function SignalVisorPage() {
                     onNavigate={handleNavigate}
                     flatSections={flatSections}
                     onOpenAddModal={handleOpenAddModal}
+                    onOpenAiModal={handleOpenAiModal}
                     isSidebarVisible={isSidebarVisible}
                     toggleSidebar={toggleSidebar}
                     selectedBlockId={selectedBlockId}
                     onBlockSelect={handleBlockSelect}
+                    onBlockEdit={handleOpenEditModal}
+                    onBlockDelete={confirmDeleteBlock}
+                    onBlockMove={handleMoveBlock}
+                    onGenerateImage={handleGenerateImage}
+                    generatingImageForBlock={generatingImageForBlock}
                 />
             </div>
         </div>

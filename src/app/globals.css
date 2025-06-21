@@ -153,19 +153,6 @@ body {
       @apply border-b border-border/50;
     }
   }
-
-  /* Fullscreen specific styles */
-  main:fullscreen {
-    width: 100vw !important;
-    height: 100vh !important;
-    overflow-y: auto !important;
-    background-color: hsl(var(--background)) !important;
-    padding: 2rem; /* Add some padding for better viewing */
-  }
-
-  main:fullscreen .prose {
-    max-width: none !important;
-  }
 }
 
 /* Custom scrollbar for webkit browsers */
@@ -182,4 +169,17 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--secondary));
+}
+
+/* Fullscreen specific styles */
+main:fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  background-color: hsl(var(--background)) !important;
+  padding: 2rem !important;
+}
+
+main:fullscreen .prose {
+  max-width: none !important;
 }
