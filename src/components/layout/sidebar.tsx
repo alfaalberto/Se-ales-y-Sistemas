@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -11,6 +10,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  AccordionHeader,
 } from "@/components/ui/accordion";
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
@@ -75,19 +75,22 @@ const SectionItem: React.FC<SectionItemProps> = ({
         return (
             <Accordion type="single" collapsible className="w-full" defaultValue={ (isSelected || isParentOfSelected || isInitiallyOpen) ? section.id : undefined }>
                 <AccordionItem value={section.id} className="border-none group">
-                    <AccordionTrigger
-                        className={cn(
-                            "p-2 hover:no-underline rounded-sm my-0.5 justify-start gap-2 text-sm",
-                            isSelected ? 'bg-primary/20 text-primary font-semibold' : '',
-                            isParentOfSelected ? 'text-white' : 'text-gray-400',
-                            "hover:bg-sidebar-accent hover:text-white"
-                        )}
-                        >
-                        <span className="flex-grow text-left" onClick={(e) => { e.stopPropagation(); onSectionSelect(section); }}>
-                            {section.id} - {section.title}
-                        </span>
+                     <AccordionHeader className={cn(
+                        "flex w-full items-center p-2 rounded-sm my-0.5 text-sm hover:bg-sidebar-accent hover:text-white",
+                        isParentOfSelected ? 'text-white' : 'text-gray-400',
+                     )}>
+                        <AccordionTrigger
+                            className={cn(
+                                "p-0 hover:no-underline justify-start gap-2 flex-1 text-left",
+                                isSelected ? 'text-primary font-semibold' : '',
+                            )}
+                            >
+                            <span onClick={(e) => { e.stopPropagation(); onSectionSelect(section); }}>
+                                {section.id} - {section.title}
+                            </span>
+                        </AccordionTrigger>
                         
-                        <div className="pr-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
                             <TooltipProvider delayDuration={100}>
                                 <Tooltip>
                                     <TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleActionClick(e, () => onAddSubsection(section.id))}><PlusCircle size={14}/></Button></TooltipTrigger>
@@ -99,7 +102,7 @@ const SectionItem: React.FC<SectionItemProps> = ({
                                 </Tooltip>
                             </TooltipProvider>
                         </div>
-                    </AccordionTrigger>
+                    </AccordionHeader>
                     <AccordionContent className="pt-1 pb-0 pl-4 border-l-2 border-primary/50 ml-3">
                         {subsectionsToShow.map(subSection => (
                             <SectionItem
@@ -250,11 +253,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                 >
                     {filteredToc.map(chapter => (
                         <AccordionItem value={chapter.chapter} key={chapter.chapter} className="border-b border-sidebar-border last:border-b-0 group">
-                            <AccordionTrigger className="p-3 text-left text-base font-semibold hover:bg-sidebar-accent/80 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring rounded-md data-[state=open]:text-white">
-                                <span className="flex-1 text-sidebar-foreground data-[state=open]:text-white">
-                                    Cap. {chapter.chapter}: {chapter.title}
-                                </span>
-                                <div className="pr-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                           <AccordionHeader className="flex w-full items-center p-3 text-left text-base font-semibold hover:bg-sidebar-accent/80 hover:no-underline focus-within:ring-2 focus-within:ring-sidebar-ring rounded-md data-[state=open]:text-white">
+                                <AccordionTrigger className="p-0 flex-1 hover:no-underline focus:outline-none">
+                                    <span className="flex-1 text-sidebar-foreground data-[state=open]:text-white">
+                                        Cap. {chapter.chapter}: {chapter.title}
+                                    </span>
+                                </AccordionTrigger>
+                                <div className="pl-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
                                     <TooltipProvider delayDuration={100}>
                                         <Tooltip>
                                             <TooltipTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => handleActionClick(e, () => onAddSection(chapter.chapter))}><PlusCircle size={14}/></Button></TooltipTrigger>
@@ -266,7 +271,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                                         </Tooltip>
                                     </TooltipProvider>
                                 </div>
-                            </AccordionTrigger>
+                            </AccordionHeader>
                             <AccordionContent className="pt-1 pb-2 pl-4 border-l-2 border-primary ml-3">
                                 {chapter.sections.map(section => (
                                     <SectionItem 
