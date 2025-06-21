@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ChevronRight, X, Save, UploadCloud, Menu, Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { ChevronRight, X, Save, Menu, Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
@@ -28,6 +28,36 @@ export default function SignalVisorPage() {
 
 
     const { toast } = useToast();
+
+    // Automatically load content from the server on initial render
+    useEffect(() => {
+        const loadInitialData = async () => {
+            try {
+                const response = await fetch('/api/load-content');
+                if (response.ok) {
+                    const data = await response.json();
+                    setToc(data);
+                    toast({
+                        title: "Contenido recuperado",
+                        description: "Se ha cargado tu progreso guardado anteriormente.",
+                    });
+                } else if (response.status !== 404) {
+                    // Only show an error if it's not a "file not found" error
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to load backup file from server.');
+                }
+            } catch (error) {
+                console.error("Could not load backup content:", error);
+                toast({
+                    title: "Error al Cargar Progreso",
+                    description: error instanceof Error ? error.message : "No se pudo cargar el archivo de respaldo.",
+                    variant: "destructive",
+                });
+            }
+        };
+
+        loadInitialData();
+    }, [toast]); // Added toast to dependency array as it's used inside
 
     const flattenSections = (sections: SectionType[]): SectionType[] => {
         let flatList: SectionType[] = [];
@@ -265,35 +295,6 @@ export default function SignalVisorPage() {
     };
 
 
-    const handleLoadContentFromServer = async () => {
-        try {
-            const response = await fetch('/api/load-content');
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to load backup file from server.');
-            }
-            
-            const newToc = await response.json();
-            setToc(newToc);
-            setActiveSection(undefined);
-            setSelectedBlockId(null);
-            
-            toast({
-                title: "Contenido Cargado",
-                description: "El respaldo ha sido cargado desde el archivo del proyecto.",
-            });
-
-        } catch (error) {
-            console.error("Error loading content from server:", error);
-            toast({
-                title: "Error al Cargar",
-                description: error instanceof Error ? error.message : "No se pudo cargar el archivo de respaldo.",
-                variant: "destructive",
-            });
-        }
-    };
-
     const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
 
     const selectedBlockIndex = useMemo(() => {
@@ -426,19 +427,6 @@ export default function SignalVisorPage() {
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent><p>Guardar Respaldo en Archivo del Proyecto</p></TooltipContent>
-                        </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    onClick={handleLoadContentFromServer}
-                                    variant="ghost"
-                                    size="icon"
-                                    className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                >
-                                    <UploadCloud size={18} />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent><p>Cargar Respaldo desde Archivo del Proyecto</p></TooltipContent>
                         </Tooltip>
                         
                         <Separator orientation="vertical" className="h-6 bg-border mx-2" />
