@@ -1,24 +1,32 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Save, Menu, Upload, X } from 'lucide-react';
+import { Save, Menu, X } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
-import { initialTableOfContents } from '@/lib/data';
-import type { TableOfContentsType, SectionType, ContentBlockType } from '@/lib/types';
+import type { SectionType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { useToast } from "@/hooks/use-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Separator } from "@/components/ui/separator";
-
+import { useTocManager } from '@/hooks/use-toc-manager';
 
 export default function SignalVisorPage() {
-    const [toc, setToc] = useState<TableOfContentsType>(initialTableOfContents);
-    const [activeSection, setActiveSection] = useState<SectionType | undefined>(undefined);
+    const {
+        toc,
+        activeSection,
+        setActiveSection,
+        addBlock,
+        editBlock,
+        deleteBlock,
+        moveBlock,
+        saveContentToFile,
+    } = useTocManager();
+
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
     
+    // UI State for Modals and Dialogs
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [editingBlockInfo, setEditingBlockInfo] = useState<{ blockId: string } | null>(null);
@@ -26,35 +34,6 @@ export default function SignalVisorPage() {
     const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [blockToDelete, setBlockToDelete] = useState<string | null>(null);
-
-
-    const { toast } = useToast();
-
-    // Automatically load content from the server on initial render
-    useEffect(() => {
-        const loadInitialData = async () => {
-            try {
-                const response = await fetch('/api/load-content');
-                if (response.ok) {
-                    const data = await response.json();
-                    setToc(data);
-                    toast({
-                        title: "Contenido recuperado",
-                        description: "Se ha cargado tu progreso guardado anteriormente.",
-                    });
-                } else if (response.status !== 404) {
-                    // Only show an error if it's not a "file not found" error
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to load backup file from server.');
-                }
-            } catch (error) {
-                console.error("Could not load backup content:", error);
-                // No toast on initial load failure, as it might just be the first run.
-            }
-        };
-
-        loadInitialData();
-    }, []);
 
     const flattenSections = (sections: SectionType[]): SectionType[] => {
         let flatList: SectionType[] = [];
@@ -71,6 +50,7 @@ export default function SignalVisorPage() {
         return toc.flatMap(chapter => flattenSections(chapter.sections));
     }, [toc]);
 
+    // Effect to handle initial sidebar visibility
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const showSidebar = window.innerWidth >= 768;
@@ -78,12 +58,15 @@ export default function SignalVisorPage() {
         }
     }, []);
 
+    // Effect to set initial active section
     useEffect(() => {
         if (flatSections.length > 0 && !activeSection) {
             setActiveSection(flatSections[0]);
             setSelectedBlockId(null); 
         }
-    }, [flatSections, activeSection]);
+    }, [flatSections, activeSection, setActiveSection]);
+
+    // --- UI Interaction Handlers ---
 
     const handleSectionSelect = (section: SectionType) => {
         setActiveSection(section);
@@ -97,7 +80,6 @@ export default function SignalVisorPage() {
         setSelectedBlockId(currentSelectedId => currentSelectedId === blockId ? null : blockId); 
     };
     
-
     const handleNavigate = useCallback((direction: 'prev' | 'next') => {
         if (!activeSection) return;
         const currentIndex = flatSections.findIndex(s => s.id === activeSection.id);
@@ -113,7 +95,7 @@ export default function SignalVisorPage() {
            setActiveSection(newSection);
            setSelectedBlockId(null); 
         }
-    }, [activeSection, flatSections]);
+    }, [activeSection, flatSections, setActiveSection]);
 
     const handleOpenAddModal = () => {
         setModalMode('add');
@@ -133,54 +115,19 @@ export default function SignalVisorPage() {
         setIsModalOpen(true);
     };
     
-    const updateTocRecursively = (sections: SectionType[], targetSectionId: string, updateFn: (section: SectionType) => SectionType): SectionType[] => {
-        return sections.map(section => {
-            if (section.id === targetSectionId) {
-                return updateFn(section);
-            }
-            if (section.subsections) {
-                return { ...section, subsections: updateTocRecursively(section.subsections, targetSectionId, updateFn) };
-            }
-            return section;
-        });
-    };
-    
     const handleSaveFromModal = (htmlContent: string) => {
-        if (!activeSection || !htmlContent.trim()) {
-            toast({ title: "Error", description: "El contenido HTML no puede estar vacío.", variant: "destructive" });
-            return;
+        if (!activeSection) return;
+        if (modalMode === 'edit' && editingBlockInfo) {
+            editBlock(activeSection.id, editingBlockInfo.blockId, htmlContent);
+        } else {
+            const newBlock = addBlock(activeSection.id, htmlContent);
+            if (newBlock) {
+                setSelectedBlockId(newBlock.id);
+            }
         }
-    
-        setToc(currentToc => {
-            const newToc = [...currentToc];
-            const updateFn = (section: SectionType) => {
-                let updatedContent;
-                let newSelectedBlockId = selectedBlockId;
-                if (modalMode === 'edit' && editingBlockInfo) {
-                    updatedContent = section.content.map(block =>
-                        block.id === editingBlockInfo.blockId ? { ...block, html: htmlContent } : block
-                    );
-                    toast({ title: "Contenido Actualizado", description: "El bloque HTML ha sido actualizado." });
-                } else { 
-                    const newBlock: ContentBlockType = { id: crypto.randomUUID(), html: htmlContent };
-                    updatedContent = [...section.content, newBlock];
-                    toast({ title: "Contenido Añadido", description: "El bloque HTML ha sido añadido a la sección." });
-                    newSelectedBlockId = newBlock.id; 
-                }
-                const updatedSection = { ...section, content: updatedContent };
-                setActiveSection(updatedSection); // Update active section directly
-                setSelectedBlockId(newSelectedBlockId);
-                return updatedSection;
-            };
-
-            return newToc.map(chapter => ({
-                ...chapter,
-                sections: updateTocRecursively(chapter.sections, activeSection.id, updateFn)
-            }));
-        });
         setIsModalOpen(false);
-        setEditingBlockInfo(null); 
-        setHtmlToEdit(''); 
+        setEditingBlockInfo(null);
+        setHtmlToEdit('');
     };
 
     const confirmDeleteBlock = (blockId: string) => {
@@ -188,64 +135,24 @@ export default function SignalVisorPage() {
         setIsDeleteDialogOpen(true);
     };
 
-    const handleDeleteBlock = () => {
+    const handleDeleteConfirmed = () => {
         if (!activeSection || !blockToDelete) return;
-        
-        setToc(currentToc => {
-            const newToc = [...currentToc];
-            const updateFn = (section: SectionType) => {
-                const updatedContent = section.content.filter(block => block.id !== blockToDelete);
-                const updatedSection = { ...section, content: updatedContent };
-                setActiveSection(updatedSection);
-                toast({ title: "Contenido Eliminado", description: "El bloque HTML ha sido eliminado." });
-                if (selectedBlockId === blockToDelete) {
-                    setSelectedBlockId(null);
-                }
-                return updatedSection;
-            };
-
-            return newToc.map(chapter => ({
-                ...chapter,
-                sections: updateTocRecursively(chapter.sections, activeSection.id, updateFn)
-            }));
-        });
-        setIsDeleteDialogOpen(false); 
+        deleteBlock(activeSection.id, blockToDelete);
+        if (selectedBlockId === blockToDelete) {
+            setSelectedBlockId(null);
+        }
+        setIsDeleteDialogOpen(false);
         setBlockToDelete(null);
     };
 
     const handleMoveBlock = (blockId: string, direction: 'up' | 'down') => {
         if (!activeSection) return;
-
-        setToc(currentToc => {
-             const newToc = [...currentToc];
-             const updateFn = (section: SectionType) => {
-                const blockIndex = section.content.findIndex(b => b.id === blockId);
-                if (blockIndex === -1) return section;
-
-                const newContent = [...section.content];
-                const [blockToMove] = newContent.splice(blockIndex, 1);
-
-                if (direction === 'up' && blockIndex > 0) {
-                    newContent.splice(blockIndex - 1, 0, blockToMove);
-                } else if (direction === 'down' && blockIndex < newContent.length) { 
-                    newContent.splice(blockIndex + 1, 0, blockToMove);
-                } else {
-                    return section; 
-                }
-                
-                const updatedSection = { ...section, content: newContent };
-                setActiveSection(updatedSection);
-                toast({ title: "Contenido Reordenado", description: `El bloque HTML ha sido movido hacia ${direction === 'up' ? 'arriba' : 'abajo'}.` });
-                return updatedSection;
-             };
-
-             return newToc.map(chapter => ({
-                ...chapter,
-                sections: updateTocRecursively(chapter.sections, activeSection.id, updateFn)
-            }));
-        });
+        moveBlock(activeSection.id, blockId, direction);
     };
     
+    const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
+
+    // Effect for keyboard shortcuts
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || isModalOpen || isDeleteDialogOpen) return;
@@ -255,58 +162,6 @@ export default function SignalVisorPage() {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [activeSection, flatSections, isModalOpen, isDeleteDialogOpen, handleNavigate]);
-
-    const handleSaveContentToFile = async () => {
-        try {
-            const response = await fetch('/api/save-content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(toc),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to save file on server.');
-            }
-
-            toast({
-                title: "Respaldo Guardado",
-                description: "El archivo 'content-backup.json' se ha guardado en la raíz del proyecto.",
-            });
-        } catch (error) {
-            console.error("Error saving content to file:", error);
-            toast({
-                title: "Error al Guardar",
-                description: error instanceof Error ? error.message : "No se pudo guardar el archivo en el servidor.",
-                variant: "destructive",
-            });
-        }
-    };
-
-    const handleLoadContentFromFile = async () => {
-        try {
-            const response = await fetch('/api/load-content');
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to load backup file from server.');
-            }
-            const data = await response.json();
-            setToc(data);
-            toast({
-                title: "Contenido Cargado",
-                description: "Se ha restaurado el contenido desde 'content-backup.json'.",
-            });
-        } catch (error) {
-            console.error("Error loading content from file:", error);
-            toast({
-                title: "Error al Cargar",
-                description: error instanceof Error ? error.message : "No se pudo cargar el archivo de respaldo.",
-                variant: "destructive",
-            });
-        }
-    };
-
-    const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
 
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
@@ -329,7 +184,7 @@ export default function SignalVisorPage() {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel className="hover:bg-muted" onClick={() => setBlockToDelete(null)}>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDeleteBlock} className="bg-destructive hover:bg-destructive/90">Eliminar</AlertDialogAction>
+                        <AlertDialogAction onClick={handleDeleteConfirmed} className="bg-destructive hover:bg-destructive/90">Eliminar</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
@@ -360,7 +215,7 @@ export default function SignalVisorPage() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    onClick={handleSaveContentToFile}
+                                    onClick={saveContentToFile}
                                     variant="ghost"
                                     size="icon"
                                     className="text-foreground hover:bg-accent hover:text-accent-foreground"
@@ -368,21 +223,7 @@ export default function SignalVisorPage() {
                                     <Save size={18} />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent><p>Guardar Respaldo en Archivo</p></TooltipContent>
-                        </Tooltip>
-                        
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    onClick={handleLoadContentFromFile}
-                                    variant="ghost"
-                                    size="icon"
-                                    className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                >
-                                    <Upload size={18} />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent><p>Cargar Respaldo desde Archivo</p></TooltipContent>
+                            <TooltipContent><p>Guardar Respaldo en Archivo del Proyecto</p></TooltipContent>
                         </Tooltip>
 
                         <Separator orientation="vertical" className="h-6 bg-border mx-2" />

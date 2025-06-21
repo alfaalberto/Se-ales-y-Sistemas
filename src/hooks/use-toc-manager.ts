@@ -1,0 +1,179 @@
+"use client";
+
+import { useState, useEffect, useCallback } from 'react';
+import type { TableOfContentsType, SectionType, ContentBlockType } from '@/lib/types';
+import { initialTableOfContents } from '@/lib/data';
+import { useToast } from "@/hooks/use-toast";
+
+const updateTocRecursively = (sections: SectionType[], targetSectionId: string, updateFn: (section: SectionType) => SectionType): SectionType[] => {
+    return sections.map(section => {
+        if (section.id === targetSectionId) {
+            return updateFn(section);
+        }
+        if (section.subsections) {
+            return { ...section, subsections: updateTocRecursively(section.subsections, targetSectionId, updateFn) };
+        }
+        return section;
+    });
+};
+
+export function useTocManager() {
+    const [toc, setToc] = useState<TableOfContentsType>(initialTableOfContents);
+    const [activeSection, setActiveSection] = useState<SectionType | undefined>(undefined);
+    const { toast } = useToast();
+
+    useEffect(() => {
+        const loadInitialData = async () => {
+            try {
+                const response = await fetch('/api/load-content');
+                if (response.ok) {
+                    const data = await response.json();
+                    setToc(data);
+                    toast({
+                        title: "Contenido recuperado",
+                        description: "Se ha cargado tu progreso guardado anteriormente.",
+                    });
+                } else if (response.status !== 404) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to load backup file from server.');
+                }
+            } catch (error) {
+                console.error("Could not load backup content:", error);
+            }
+        };
+
+        loadInitialData();
+    }, [toast]);
+
+    const addBlock = useCallback((sectionId: string, htmlContent: string): ContentBlockType | undefined => {
+        let newBlock: ContentBlockType | undefined;
+        setToc(currentToc => {
+            const newToc = [...currentToc];
+            const updateFn = (section: SectionType) => {
+                newBlock = { id: crypto.randomUUID(), html: htmlContent };
+                const updatedContent = [...section.content, newBlock];
+                const updatedSection = { ...section, content: updatedContent };
+                
+                setActiveSection(updatedSection);
+                toast({ title: "Contenido Añadido", description: "El bloque HTML ha sido añadido a la sección." });
+                return updatedSection;
+            };
+
+            const updatedToc = newToc.map(chapter => ({
+                ...chapter,
+                sections: updateTocRecursively(chapter.sections, sectionId, updateFn)
+            }));
+            return updatedToc;
+        });
+        return newBlock;
+    }, [toast]);
+
+    const editBlock = useCallback((sectionId: string, blockId: string, htmlContent: string) => {
+         setToc(currentToc => {
+            const newToc = [...currentToc];
+            const updateFn = (section: SectionType) => {
+                const updatedContent = section.content.map(block =>
+                    block.id === blockId ? { ...block, html: htmlContent } : block
+                );
+                const updatedSection = { ...section, content: updatedContent };
+                
+                setActiveSection(updatedSection);
+                toast({ title: "Contenido Actualizado", description: "El bloque HTML ha sido actualizado." });
+                return updatedSection;
+            };
+
+            return newToc.map(chapter => ({
+                ...chapter,
+                sections: updateTocRecursively(chapter.sections, sectionId, updateFn)
+            }));
+        });
+    }, [toast]);
+
+    const deleteBlock = useCallback((sectionId: string, blockId: string) => {
+        setToc(currentToc => {
+            const newToc = [...currentToc];
+            const updateFn = (section: SectionType) => {
+                const updatedContent = section.content.filter(block => block.id !== blockId);
+                const updatedSection = { ...section, content: updatedContent };
+                
+                setActiveSection(updatedSection);
+                toast({ title: "Contenido Eliminado", description: "El bloque HTML ha sido eliminado." });
+                return updatedSection;
+            };
+
+            return newToc.map(chapter => ({
+                ...chapter,
+                sections: updateTocRecursively(chapter.sections, sectionId, updateFn)
+            }));
+        });
+    }, [toast]);
+
+    const moveBlock = useCallback((sectionId: string, blockId: string, direction: 'up' | 'down') => {
+        setToc(currentToc => {
+             const newToc = [...currentToc];
+             const updateFn = (section: SectionType) => {
+                const blockIndex = section.content.findIndex(b => b.id === blockId);
+                if (blockIndex === -1) return section;
+
+                const newContent = [...section.content];
+                const [blockToMove] = newContent.splice(blockIndex, 1);
+
+                if (direction === 'up' && blockIndex > 0) {
+                    newContent.splice(blockIndex - 1, 0, blockToMove);
+                } else if (direction === 'down' && blockIndex < newContent.length) { 
+                    newContent.splice(blockIndex + 1, 0, blockToMove);
+                } else {
+                    return section; 
+                }
+                
+                const updatedSection = { ...section, content: newContent };
+                setActiveSection(updatedSection);
+                toast({ title: "Contenido Reordenado", description: `El bloque HTML ha sido movido hacia ${direction === 'up' ? 'arriba' : 'abajo'}.` });
+                return updatedSection;
+             };
+
+             return newToc.map(chapter => ({
+                ...chapter,
+                sections: updateTocRecursively(chapter.sections, sectionId, updateFn)
+            }));
+        });
+    }, [toast]);
+    
+    const saveContentToFile = useCallback(async () => {
+        try {
+            const response = await fetch('/api/save-content', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(toc),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to save file on server.');
+            }
+
+            toast({
+                title: "Respaldo Guardado",
+                description: "El archivo 'content-backup.json' se ha guardado en la raíz del proyecto.",
+            });
+        } catch (error) {
+            console.error("Error saving content to file:", error);
+            toast({
+                title: "Error al Guardar",
+                description: error instanceof Error ? error.message : "No se pudo guardar el archivo en el servidor.",
+                variant: "destructive",
+            });
+        }
+    }, [toc, toast]);
+
+    return {
+        toc,
+        activeSection,
+        setActiveSection,
+        addBlock,
+        editBlock,
+        deleteBlock,
+        moveBlock,
+        saveContentToFile,
+    };
+}
