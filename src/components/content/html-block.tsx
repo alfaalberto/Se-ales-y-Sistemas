@@ -1,13 +1,21 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
+import { Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import type { ContentBlockType } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface HtmlBlockProps {
     block: ContentBlockType;
     onSelect: (blockId: string) => void;
     isActive: boolean;
+    onEdit: (blockId: string) => void;
+    onDelete: (blockId: string) => void;
+    onMove: (blockId: string, direction: 'up' | 'down') => void;
+    canMoveUp: boolean;
+    canMoveDown: boolean;
 }
 
 declare global {
@@ -17,7 +25,7 @@ declare global {
     }
 }
 
-const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isActive }) => {
+const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isActive, onEdit, onDelete, onMove, canMoveUp, canMoveDown }) => {
     const { id: blockId, html: htmlString } = block;
     const blockRef = useRef<HTMLDivElement>(null);
     const instanceId = useRef(`block-${crypto.randomUUID()}`).current;
@@ -30,7 +38,6 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
         const container = blockRef.current;
         if (!container) return;
 
-        // Synchronous part: DOM preparation
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlString; 
 
@@ -82,9 +89,10 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
             return;
         }
         
-        setCodeBlockData(newCodeBlockDataCollector);
-        setCodeBlocksVisibility(initialVisibilityStateCollector);
-        // End of synchronous part
+        if (isMounted) {
+            setCodeBlockData(newCodeBlockDataCollector);
+            setCodeBlocksVisibility(initialVisibilityStateCollector);
+        }
 
         const runScripts = () => {
             if (!isMounted || !blockRef.current) return;
@@ -170,11 +178,16 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
 
     }, [codeBlockData, codeBlocksVisibility, instanceId]);
 
+    const handleActionClick = (e: React.MouseEvent, action: () => void) => {
+        e.stopPropagation();
+        action();
+    }
+
     return (
         <div 
             ref={blockRef} 
             className={cn(
-                "content-block group relative py-4 border-t-2 border-border/30 first:pt-0 first:border-none cursor-pointer transition-all duration-150 ease-in-out prose dark:prose-invert max-w-none prose-headings:text-primary prose-p:text-foreground prose-strong:text-foreground prose-pre:bg-muted prose-pre:text-foreground",
+                "content-block group relative p-4 border-t-2 border-border/30 first:pt-0 first:border-none cursor-pointer transition-all duration-150 ease-in-out prose dark:prose-invert max-w-none prose-headings:text-primary prose-p:text-foreground prose-strong:text-foreground prose-pre:bg-muted prose-pre:text-foreground",
                 isActive ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-lg bg-card' : 'hover:bg-card/50',
                 'my-2 rounded-md' 
             )}
@@ -188,6 +201,44 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
             <div className="content-block-inner relative">
                 {/* El HTML del usuario se inyectará aquí por el primer useEffect */}
             </div>
+            {isActive && (
+                <div className="absolute top-2 right-2 flex items-center space-x-1 bg-background/80 backdrop-blur-sm rounded-md p-1">
+                     <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onEdit(blockId))} variant="ghost" size="icon-sm" className="text-foreground hover:bg-accent hover:text-accent-foreground">
+                                    <Pencil size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Editar</p></TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onMove(blockId, 'up'))} disabled={!canMoveUp} variant="ghost" size="icon-sm" className="text-foreground hover:bg-accent hover:text-accent-foreground">
+                                    <ArrowUpCircle size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Mover Arriba</p></TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onMove(blockId, 'down'))} disabled={!canMoveDown} variant="ghost" size="icon-sm" className="text-foreground hover:bg-accent hover:text-accent-foreground">
+                                    <ArrowDownCircle size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Mover Abajo</p></TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onDelete(blockId))} variant="ghost" size="icon-sm" className="text-destructive hover:bg-destructive/90 hover:text-destructive-foreground">
+                                    <Trash2 size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Eliminar</p></TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
+            )}
         </div>
     );
 });

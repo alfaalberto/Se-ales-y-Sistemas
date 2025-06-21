@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ChevronRight, X, Save, Menu, Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { Save, Menu, Upload, X } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
@@ -25,6 +25,7 @@ export default function SignalVisorPage() {
     const [htmlToEdit, setHtmlToEdit] = useState<string>('');
     const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [blockToDelete, setBlockToDelete] = useState<string | null>(null);
 
 
     const { toast } = useToast();
@@ -48,16 +49,12 @@ export default function SignalVisorPage() {
                 }
             } catch (error) {
                 console.error("Could not load backup content:", error);
-                toast({
-                    title: "Error al Cargar Progreso",
-                    description: error instanceof Error ? error.message : "No se pudo cargar el archivo de respaldo.",
-                    variant: "destructive",
-                });
+                // No toast on initial load failure, as it might just be the first run.
             }
         };
 
         loadInitialData();
-    }, [toast]); // Added toast to dependency array as it's used inside
+    }, []);
 
     const flattenSections = (sections: SectionType[]): SectionType[] => {
         let flatList: SectionType[] = [];
@@ -125,22 +122,14 @@ export default function SignalVisorPage() {
         setIsModalOpen(true);
     };
     
-    const handleOpenEditModalForSelected = () => {
-        if (!activeSection || !selectedBlockId) {
-            toast({ title: "Error", description: "Ninguna diapositiva seleccionada para editar.", variant: "destructive" });
-            return;
-        }
-        
-        const blockToEdit = activeSection.content.find(b => b.id === selectedBlockId);
-
-        if (!blockToEdit) {
-             toast({ title: "Error", description: "Diapositiva seleccionada no encontrada.", variant: "destructive" });
-            return;
-        }
+    const handleOpenEditModal = (blockId: string) => {
+        if (!activeSection) return;
+        const blockToEdit = activeSection.content.find(b => b.id === blockId);
+        if (!blockToEdit) return;
     
         setModalMode('edit');
         setHtmlToEdit(blockToEdit.html);
-        setEditingBlockInfo({ blockId: selectedBlockId });
+        setEditingBlockInfo({ blockId });
         setIsModalOpen(true);
     };
     
@@ -194,20 +183,24 @@ export default function SignalVisorPage() {
         setHtmlToEdit(''); 
     };
 
-    const handleDeleteBlockGlobal = () => {
-        if (!activeSection || !selectedBlockId) {
-            toast({ title: "Error", description: "Ninguna diapositiva seleccionada para eliminar.", variant: "destructive" });
-            return;
-        }
+    const confirmDeleteBlock = (blockId: string) => {
+        setBlockToDelete(blockId);
+        setIsDeleteDialogOpen(true);
+    };
+
+    const handleDeleteBlock = () => {
+        if (!activeSection || !blockToDelete) return;
         
         setToc(currentToc => {
             const newToc = [...currentToc];
             const updateFn = (section: SectionType) => {
-                const updatedContent = section.content.filter(block => block.id !== selectedBlockId);
+                const updatedContent = section.content.filter(block => block.id !== blockToDelete);
                 const updatedSection = { ...section, content: updatedContent };
                 setActiveSection(updatedSection);
                 toast({ title: "Contenido Eliminado", description: "El bloque HTML ha sido eliminado." });
-                setSelectedBlockId(null);
+                if (selectedBlockId === blockToDelete) {
+                    setSelectedBlockId(null);
+                }
                 return updatedSection;
             };
 
@@ -217,18 +210,16 @@ export default function SignalVisorPage() {
             }));
         });
         setIsDeleteDialogOpen(false); 
+        setBlockToDelete(null);
     };
 
-    const handleMoveBlockGlobal = (direction: 'up' | 'down') => {
-        if (!activeSection || !selectedBlockId) {
-            toast({ title: "Error", description: "Ninguna diapositiva seleccionada para mover.", variant: "destructive" });
-            return;
-        }
+    const handleMoveBlock = (blockId: string, direction: 'up' | 'down') => {
+        if (!activeSection) return;
 
         setToc(currentToc => {
              const newToc = [...currentToc];
              const updateFn = (section: SectionType) => {
-                const blockIndex = section.content.findIndex(b => b.id === selectedBlockId);
+                const blockIndex = section.content.findIndex(b => b.id === blockId);
                 if (blockIndex === -1) return section;
 
                 const newContent = [...section.content];
@@ -269,10 +260,8 @@ export default function SignalVisorPage() {
         try {
             const response = await fetch('/api/save-content', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(toc, null, 2),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(toc),
             });
 
             if (!response.ok) {
@@ -294,17 +283,30 @@ export default function SignalVisorPage() {
         }
     };
 
+    const handleLoadContentFromFile = async () => {
+        try {
+            const response = await fetch('/api/load-content');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to load backup file from server.');
+            }
+            const data = await response.json();
+            setToc(data);
+            toast({
+                title: "Contenido Cargado",
+                description: "Se ha restaurado el contenido desde 'content-backup.json'.",
+            });
+        } catch (error) {
+            console.error("Error loading content from file:", error);
+            toast({
+                title: "Error al Cargar",
+                description: error instanceof Error ? error.message : "No se pudo cargar el archivo de respaldo.",
+                variant: "destructive",
+            });
+        }
+    };
 
     const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
-
-    const selectedBlockIndex = useMemo(() => {
-        if (!activeSection || !selectedBlockId) return -1;
-        return activeSection.content.findIndex(b => b.id === selectedBlockId);
-    }, [activeSection, selectedBlockId]);
-
-    const canMoveUp = selectedBlockId !== null && activeSection !== undefined && selectedBlockIndex > 0;
-    const canMoveDown = selectedBlockId !== null && activeSection !== undefined && selectedBlockIndex !== -1 && activeSection.content.length > 0 && selectedBlockIndex < activeSection.content.length - 1;
-
 
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
@@ -326,8 +328,8 @@ export default function SignalVisorPage() {
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel className="hover:bg-muted">Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleDeleteBlockGlobal} className="bg-destructive hover:bg-destructive/90">Eliminar</AlertDialogAction>
+                        <AlertDialogCancel className="hover:bg-muted" onClick={() => setBlockToDelete(null)}>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleDeleteBlock} className="bg-destructive hover:bg-destructive/90">Eliminar</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
@@ -355,66 +357,6 @@ export default function SignalVisorPage() {
             <div className="flex-1 flex flex-col min-w-0 pt-20 md:pt-0"> 
                 <div className="fixed top-4 right-4 z-50 flex items-center space-x-1">
                     <TooltipProvider delayDuration={100}>
-                        {selectedBlockId && activeSection && (
-                            <>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={handleOpenEditModalForSelected}
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            <Pencil size={18} />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent><p>Editar Diapositiva</p></TooltipContent>
-                                </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={() => handleMoveBlockGlobal('up')}
-                                            disabled={!canMoveUp}
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            <ArrowUpCircle size={18} />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent><p>Mover Arriba</p></TooltipContent>
-                                </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={() => handleMoveBlockGlobal('down')}
-                                            disabled={!canMoveDown}
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                        >
-                                            <ArrowDownCircle size={18} />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent><p>Mover Abajo</p></TooltipContent>
-                                </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            onClick={() => setIsDeleteDialogOpen(true)}
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-destructive hover:bg-destructive/90 hover:text-destructive-foreground"
-                                        >
-                                            <Trash2 size={18} />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent><p>Eliminar Diapositiva</p></TooltipContent>
-                                </Tooltip>
-                                 <Separator orientation="vertical" className="h-6 bg-border mx-2" />
-                            </>
-                        )}
-
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
@@ -426,9 +368,23 @@ export default function SignalVisorPage() {
                                     <Save size={18} />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent><p>Guardar Respaldo en Archivo del Proyecto</p></TooltipContent>
+                            <TooltipContent><p>Guardar Respaldo en Archivo</p></TooltipContent>
                         </Tooltip>
                         
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    onClick={handleLoadContentFromFile}
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-foreground hover:bg-accent hover:text-accent-foreground"
+                                >
+                                    <Upload size={18} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Cargar Respaldo desde Archivo</p></TooltipContent>
+                        </Tooltip>
+
                         <Separator orientation="vertical" className="h-6 bg-border mx-2" />
 
                         <Tooltip>
@@ -457,6 +413,9 @@ export default function SignalVisorPage() {
                     toggleSidebar={toggleSidebar}
                     selectedBlockId={selectedBlockId}
                     onBlockSelect={handleBlockSelect}
+                    onBlockEdit={handleOpenEditModal}
+                    onBlockDelete={confirmDeleteBlock}
+                    onBlockMove={handleMoveBlock}
                 />
             </div>
         </div>

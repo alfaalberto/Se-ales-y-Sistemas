@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -18,6 +17,9 @@ interface ContentViewProps {
     toggleSidebar: () => void;
     selectedBlockId: string | null;
     onBlockSelect: (blockId: string) => void;
+    onBlockEdit: (blockId: string) => void;
+    onBlockDelete: (blockId: string) => void;
+    onBlockMove: (blockId: string, direction: 'up' | 'down') => void;
 }
 
 const ContentView: React.FC<ContentViewProps> = ({ 
@@ -28,7 +30,10 @@ const ContentView: React.FC<ContentViewProps> = ({
     isSidebarVisible,
     toggleSidebar,
     selectedBlockId,
-    onBlockSelect
+    onBlockSelect,
+    onBlockEdit,
+    onBlockDelete,
+    onBlockMove
 }) => {
     const contentRef = React.useRef<HTMLDivElement>(null);
     const [isFullscreen, setIsFullscreen] = React.useState(false);
@@ -160,43 +165,39 @@ const ContentView: React.FC<ContentViewProps> = ({
                         </Tooltip>
                     </TooltipProvider>
                 </div>
-                {/* Empty div for spacing if needed, or remove if justify-between handles it */}
                 <div className="flex items-center gap-2">
-                     {/* Placeholder for right-aligned elements if any in future */}
                 </div>
             </div>
 
             <ScrollArea className="flex-grow p-4 md:p-8">
                 <div className="max-w-none prose dark:prose-invert prose-headings:text-primary prose-p:text-foreground prose-strong:text-foreground prose-pre:bg-muted prose-pre:text-foreground">
-                    {section.content.map((block) => (
-                        <HtmlBlock 
-                            key={block.id} 
-                            block={block}
-                            onSelect={onBlockSelect}
-                            isActive={selectedBlockId === block.id}
-                        />
-                    ))}
+                    {section.content.map((block, index) => {
+                        const canMoveUp = index > 0;
+                        const canMoveDown = index < section.content.length - 1;
+                        return (
+                            <HtmlBlock 
+                                key={block.id} 
+                                block={block}
+                                onSelect={onBlockSelect}
+                                isActive={selectedBlockId === block.id}
+                                onEdit={onBlockEdit}
+                                onDelete={onBlockDelete}
+                                onMove={onBlockMove}
+                                canMoveUp={canMoveUp}
+                                canMoveDown={canMoveDown}
+                            />
+                        )
+                    })}
                 </div>
             </ScrollArea>
         </main>
     );
 };
 
-// Extend ButtonProps for icon-sm size
 declare module '@/components/ui/button' {
     interface ButtonProps {
       size?: 'default' | 'sm' | 'lg' | 'icon' | 'icon-sm';
     }
   }
-  
-  // Add icon-sm variant to buttonVariants if it doesn't exist
-  // This is illustrative; actual modification of buttonVariants is in button.tsx
-  // For this example, we'll assume 'icon-sm' is handled by custom class or 'sm' with 'p-1.5' or similar.
-  // If using CVA directly, you would add 'icon-sm': "h-8 w-8 p-1.5" or similar
-  // For simplicity here, we use size="sm" and rely on padding/icon size to achieve effect.
-  // A more robust way is to add 'icon-sm' to buttonVariants in button.tsx
-  
 
 export default ContentView;
-
-    
