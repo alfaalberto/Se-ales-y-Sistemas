@@ -1,0 +1,3042 @@
+[
+  {
+    "chapter": "1",
+    "title": "SEÑALES Y SISTEMAS",
+    "sections": [
+      {
+        "id": "1.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "initial-1.0",
+            "html": "\n            <div class='space-y-4'>\n            <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.0 Introducción</h2>\n            <p class='text-lg'>Este capítulo introduce los conceptos fundamentales de señales y sistemas. Las señales son funciones de una o más variables independientes que contienen información sobre la naturaleza de un fenómeno físico.</p>\n            <p>Los sistemas procesan señales de entrada para producir señales de salida. Exploraremos las propiedades básicas que caracterizan tanto a las señales como a los sistemas.</p>\n            <p>Las fórmulas matemáticas se renderizarán usando MathJax. Por ejemplo, la señal sinusoidal en tiempo continuo:</p>\n            <div class='bg-gray-800 p-4 rounded-lg my-4 text-center'>\n                <p class='text-xl'>$$x(t) = A \\cos(\\omega_0 t + \\phi)$$</p>\n            </div>\n            <p>Navega a la sección 1.6 para ver un ejemplo de contenido interactivo.</p>\n            </div>\n        "
+          }
+        ]
+      },
+      {
+        "id": "1.1",
+        "title": "Señales continuas y discretas",
+        "content": [
+          {
+            "id": "placeholder-1.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.1 Señales continuas y discretas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Señales continuas y discretas</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "1.1.1",
+            "title": "Ejemplos y representación matemática",
+            "content": [
+              {
+                "id": "placeholder-1.1.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.1.1 Ejemplos y representación matemática</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos y representación matemática</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.1.2",
+            "title": "Señales de energía y de potencia",
+            "content": [
+              {
+                "id": "placeholder-1.1.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.1.2 Señales de energía y de potencia</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Señales de energía y de potencia</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1.2",
+        "title": "Transformaciones de la variable independiente",
+        "content": [
+          {
+            "id": "placeholder-1.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.2 Transformaciones de la variable independiente</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Transformaciones de la variable independiente</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "1.2.1",
+            "title": "Ejemplos de transformaciones de la variable independiente",
+            "content": [
+              {
+                "id": "placeholder-1.2.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.2.1 Ejemplos de transformaciones de la variable independiente</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos de transformaciones de la variable independiente</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.2.2",
+            "title": "Señales periódicas",
+            "content": [
+              {
+                "id": "placeholder-1.2.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.2.2 Señales periódicas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Señales periódicas</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.2.3",
+            "title": "Señales par e impar",
+            "content": [
+              {
+                "id": "placeholder-1.2.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.2.3 Señales par e impar</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Señales par e impar</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1.3",
+        "title": "Señales exponenciales y senoidales",
+        "content": [
+          {
+            "id": "placeholder-1.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.3 Señales exponenciales y senoidales</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Señales exponenciales y senoidales</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "1.3.1",
+            "title": "Señales continuas exponencial compleja y senoidal",
+            "content": [
+              {
+                "id": "placeholder-1.3.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.3.1 Señales continuas exponencial compleja y senoidal</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Señales continuas exponencial compleja y senoidal</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.3.2",
+            "title": "Señales discretas exponencial compleja y senoidal",
+            "content": [
+              {
+                "id": "placeholder-1.3.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.3.2 Señales discretas exponencial compleja y senoidal</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Señales discretas exponencial compleja y senoidal</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.3.3",
+            "title": "Propiedades de periodicidad de exponenciales discretas",
+            "content": [
+              {
+                "id": "placeholder-1.3.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.3.3 Propiedades de periodicidad de exponenciales discretas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de periodicidad de exponenciales discretas</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1.4",
+        "title": "Las funciones impulso unitario y escalón unitario",
+        "content": [
+          {
+            "id": "placeholder-1.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.4 Las funciones impulso unitario y escalón unitario</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Las funciones impulso unitario y escalón unitario</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "1.4.1",
+            "title": "Las secuencias discretas impulso unitario y escalón unitario",
+            "content": [
+              {
+                "id": "placeholder-1.4.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.4.1 Las secuencias discretas impulso unitario y escalón unitario</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Las secuencias discretas impulso unitario y escalón unitario</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.4.2",
+            "title": "Las funciones continuas escalón unitario e impulso unitario",
+            "content": [
+              {
+                "id": "placeholder-1.4.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.4.2 Las funciones continuas escalón unitario e impulso unitario</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Las funciones continuas escalón unitario e impulso unitario</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1.5",
+        "title": "Sistemas continuos y discretos",
+        "content": [
+          {
+            "id": "placeholder-1.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.5 Sistemas continuos y discretos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas continuos y discretos</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "1.5.1",
+            "title": "Ejemplos sencillos de sistemas",
+            "content": [
+              {
+                "id": "placeholder-1.5.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.5.1 Ejemplos sencillos de sistemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos sencillos de sistemas</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.5.2",
+            "title": "Interconexiones de sistemas",
+            "content": [
+              {
+                "id": "placeholder-1.5.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.5.2 Interconexiones de sistemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Interconexiones de sistemas</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1.6",
+        "title": "Propiedades básicas de los sistemas",
+        "content": [
+          {
+            "id": "initial-1.6",
+            "html": "<div class='space-y-4'><h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.6 Propiedades básicas de los sistemas</h2><p>Esta sección cubre las propiedades fundamentales de los sistemas.</p><div class=\"p-4 rounded-lg my-4\"><canvas id=\"myChart\"></canvas></div><script>if(window.Chart){const ctx=document.getElementById('myChart');if(ctx){const existingChart=Chart.getChart(ctx);if(existingChart){existingChart.destroy()}new Chart(ctx,{type:'line',data:{labels:['Memoria','Invertibilidad','Causalidad','Estabilidad','Linealidad'],datasets:[{label:'Complejidad del Concepto',data:[3,4,2,5,5],borderColor:'hsl(var(--primary))',backgroundColor:'hsla(var(--primary), 0.2)'}]}})}}</script></div>"
+          }
+        ],
+        "subsections": [
+          {
+            "id": "1.6.1",
+            "title": "Sistemas con y sin memoria",
+            "content": [
+              {
+                "id": "placeholder-1.6.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.6.1 Sistemas con y sin memoria</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas con y sin memoria</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.6.2",
+            "title": "Invertibilidad y sistemas inversos",
+            "content": [
+              {
+                "id": "placeholder-1.6.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.6.2 Invertibilidad y sistemas inversos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Invertibilidad y sistemas inversos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.6.3",
+            "title": "Causalidad",
+            "content": [
+              {
+                "id": "placeholder-1.6.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.6.3 Causalidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Causalidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.6.4",
+            "title": "Estabilidad",
+            "content": [
+              {
+                "id": "placeholder-1.6.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.6.4 Estabilidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Estabilidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.6.5",
+            "title": "Invariancia en el tiempo",
+            "content": [
+              {
+                "id": "placeholder-1.6.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.6.5 Invariancia en el tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Invariancia en el tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "1.6.6",
+            "title": "Linealidad",
+            "content": [
+              {
+                "id": "placeholder-1.6.6",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.6.6 Linealidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Linealidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1.7",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-1.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.7 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "1.8",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-1.8",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>1.8 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "2",
+    "title": "SISTEMAS LINEALES INVARIANTES EN EL TIEMPO",
+    "sections": [
+      {
+        "id": "2.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-2.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "2.1",
+        "title": "Sistemas LTI discretos: La suma de convolución",
+        "content": [
+          {
+            "id": "placeholder-2.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.1 Sistemas LTI discretos: La suma de convolución</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas LTI discretos: La suma de convolución</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "2.1.1",
+            "title": "La representación de señales discretas en términos de los impulsos",
+            "content": [
+              {
+                "id": "placeholder-2.1.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.1.1 La representación de señales discretas en términos de los impulsos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La representación de señales discretas en términos de los impulsos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.1.2",
+            "title": "La respuesta al impulso unitario discreto y la representación de la suma de convolución de sistemas LTI",
+            "content": [
+              {
+                "id": "placeholder-2.1.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.1.2 La respuesta al impulso unitario discreto y la representación de la suma de convolución de sistemas LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La respuesta al impulso unitario discreto y la representación de la suma de convolución de sistemas LTI</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2.2",
+        "title": "Sistemas LTI continuos: La integral de convolución",
+        "content": [
+          {
+            "id": "placeholder-2.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.2 Sistemas LTI continuos: La integral de convolución</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas LTI continuos: La integral de convolución</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "2.2.1",
+            "title": "La representación de señales continuas en términos de los impulsos",
+            "content": [
+              {
+                "id": "placeholder-2.2.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.2.1 La representación de señales continuas en términos de los impulsos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La representación de señales continuas en términos de los impulsos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.2.2",
+            "title": "La respuesta al impulso unitario continuo y la representación de la integral de convolución de sistemas LTI",
+            "content": [
+              {
+                "id": "placeholder-2.2.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.2.2 La respuesta al impulso unitario continuo y la representación de la integral de convolución de sistemas LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La respuesta al impulso unitario continuo y la representación de la integral de convolución de sistemas LTI</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2.3",
+        "title": "Propiedades de los sistemas lineales e invariantes en el tiempo",
+        "content": [
+          {
+            "id": "placeholder-2.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.3 Propiedades de los sistemas lineales e invariantes en el tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de los sistemas lineales e invariantes en el tiempo</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "2.3.1",
+            "title": "Propiedad conmutativa",
+            "content": [
+              {
+                "id": "placeholder-2.3.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.3.1 Propiedad conmutativa</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedad conmutativa</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.3.2",
+            "title": "Propiedad distributiva",
+            "content": [
+              {
+                "id": "placeholder-2.3.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.3.2 Propiedad distributiva</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedad distributiva</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.3.3",
+            "title": "Propiedad asociativa",
+            "content": [
+              {
+                "id": "placeholder-2.3.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.3.3 Propiedad asociativa</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedad asociativa</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.3.4",
+            "title": "Sistemas LTI con y sin memoria",
+            "content": [
+              {
+                "id": "placeholder-2.3.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.3.4 Sistemas LTI con y sin memoria</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas LTI con y sin memoria</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.3.5",
+            "title": "Invertibilidad de sistemas LTI",
+            "content": [
+              {
+                "id": "placeholder-2.3.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.3.5 Invertibilidad de sistemas LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Invertibilidad de sistemas LTI</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.3.6",
+            "title": "Causalidad para los sistemas LTI",
+            "content": [
+              {
+                "id": "placeholder-2.3.6",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.3.6 Causalidad para los sistemas LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Causalidad para los sistemas LTI</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.3.7",
+            "title": "Estabilidad para los sistemas LTI",
+            "content": [
+              {
+                "id": "placeholder-2.3.7",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.3.7 Estabilidad para los sistemas LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Estabilidad para los sistemas LTI</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.3.8",
+            "title": "Respuesta al escalón unitario de un sistema LTI",
+            "content": [
+              {
+                "id": "placeholder-2.3.8",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.3.8 Respuesta al escalón unitario de un sistema LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Respuesta al escalón unitario de un sistema LTI</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2.4",
+        "title": "Sistemas LTI causales descritos por ecuaciones diferenciales y de diferencias",
+        "content": [
+          {
+            "id": "placeholder-2.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.4 Sistemas LTI causales descritos por ecuaciones diferenciales y de diferencias</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas LTI causales descritos por ecuaciones diferenciales y de diferencias</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "2.4.1",
+            "title": "Ecuaciones diferenciales lineales con coeficientes constantes",
+            "content": [
+              {
+                "id": "placeholder-2.4.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.4.1 Ecuaciones diferenciales lineales con coeficientes constantes</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ecuaciones diferenciales lineales con coeficientes constantes</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.4.2",
+            "title": "Ecuaciones de diferencias lineales con coeficientes constantes",
+            "content": [
+              {
+                "id": "placeholder-2.4.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.4.2 Ecuaciones de diferencias lineales con coeficientes constantes</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ecuaciones de diferencias lineales con coeficientes constantes</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.4.3",
+            "title": "Representación en diagrama de bloques de sistemas de primer orden",
+            "content": [
+              {
+                "id": "placeholder-2.4.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.4.3 Representación en diagrama de bloques de sistemas de primer orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representación en diagrama de bloques de sistemas de primer orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2.5",
+        "title": "Funciones singulares",
+        "content": [
+          {
+            "id": "placeholder-2.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.5 Funciones singulares</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Funciones singulares</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "2.5.1",
+            "title": "El impulso unitario como un pulso corto idealizado",
+            "content": [
+              {
+                "id": "placeholder-2.5.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.5.1 El impulso unitario como un pulso corto idealizado</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>El impulso unitario como un pulso corto idealizado</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.5.2",
+            "title": "Definición del impulso unitario mediante la convolución",
+            "content": [
+              {
+                "id": "placeholder-2.5.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.5.2 Definición del impulso unitario mediante la convolución</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Definición del impulso unitario mediante la convolución</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "2.5.3",
+            "title": "Dobletes unitarios y otras funciones singulares",
+            "content": [
+              {
+                "id": "placeholder-2.5.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.5.3 Dobletes unitarios y otras funciones singulares</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Dobletes unitarios y otras funciones singulares</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2.6",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-2.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.6 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "2.7",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-2.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>2.7 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "3",
+    "title": "REPRESENTACIÓN DE SEÑALES PERIÓDICAS EN SERIES DE FOURIER",
+    "sections": [
+      {
+        "id": "3.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-3.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "3.1",
+        "title": "Una perspectiva histórica",
+        "content": [
+          {
+            "id": "placeholder-3.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.1 Una perspectiva histórica</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Una perspectiva histórica</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "3.2",
+        "title": "La respuesta de sistemas LTI a exponenciales complejas",
+        "content": [
+          {
+            "id": "placeholder-3.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.2 La respuesta de sistemas LTI a exponenciales complejas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La respuesta de sistemas LTI a exponenciales complejas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "3.3",
+        "title": "Representación en serie de Fourier de señales periódicas continuas",
+        "content": [
+          {
+            "id": "placeholder-3.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.3 Representación en serie de Fourier de señales periódicas continuas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representación en serie de Fourier de señales periódicas continuas</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "3.3.1",
+            "title": "Combinaciones lineales de exponenciales complejas relacionadas armónicamente",
+            "content": [
+              {
+                "id": "placeholder-3.3.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.3.1 Combinaciones lineales de exponenciales complejas relacionadas armónicamente</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Combinaciones lineales de exponenciales complejas relacionadas armónicamente</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.3.2",
+            "title": "Determinación de la representación en serie de Fourier de una señal periódica continua",
+            "content": [
+              {
+                "id": "placeholder-3.3.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.3.2 Determinación de la representación en serie de Fourier de una señal periódica continua</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Determinación de la representación en serie de Fourier de una señal periódica continua</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3.4",
+        "title": "Convergencia de las series de Fourier",
+        "content": [
+          {
+            "id": "placeholder-3.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.4 Convergencia de las series de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Convergencia de las series de Fourier</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "3.5",
+        "title": "Propiedades de la serie continua de Fourier",
+        "content": [
+          {
+            "id": "placeholder-3.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5 Propiedades de la serie continua de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de la serie continua de Fourier</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "3.5.1",
+            "title": "Linealidad",
+            "content": [
+              {
+                "id": "placeholder-3.5.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5.1 Linealidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Linealidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.5.2",
+            "title": "Desplazamiento de tiempo",
+            "content": [
+              {
+                "id": "placeholder-3.5.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5.2 Desplazamiento de tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Desplazamiento de tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.5.3",
+            "title": "Inversión de tiempo",
+            "content": [
+              {
+                "id": "placeholder-3.5.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5.3 Inversión de tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Inversión de tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.5.4",
+            "title": "Escalamiento de tiempo",
+            "content": [
+              {
+                "id": "placeholder-3.5.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5.4 Escalamiento de tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Escalamiento de tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.5.5",
+            "title": "Multiplicación",
+            "content": [
+              {
+                "id": "placeholder-3.5.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5.5 Multiplicación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Multiplicación</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.5.6",
+            "title": "Conjugación y simetría conjugada",
+            "content": [
+              {
+                "id": "placeholder-3.5.6",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5.6 Conjugación y simetría conjugada</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Conjugación y simetría conjugada</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.5.7",
+            "title": "Relación de Parseval para señales periódicas continuas",
+            "content": [
+              {
+                "id": "placeholder-3.5.7",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5.7 Relación de Parseval para señales periódicas continuas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Relación de Parseval para señales periódicas continuas</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.5.8",
+            "title": "Resumen de las propiedades de la serie continua de Fourier",
+            "content": [
+              {
+                "id": "placeholder-3.5.8",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5.8 Resumen de las propiedades de la serie continua de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen de las propiedades de la serie continua de Fourier</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.5.9",
+            "title": "Ejemplos",
+            "content": [
+              {
+                "id": "placeholder-3.5.9",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.5.9 Ejemplos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3.6",
+        "title": "Representación en series de Fourier de señales periódicas discretas",
+        "content": [
+          {
+            "id": "placeholder-3.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.6 Representación en series de Fourier de señales periódicas discretas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representación en series de Fourier de señales periódicas discretas</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "3.6.1",
+            "title": "Combinaciones lineales de exponenciales complejas relacionadas armónicamente",
+            "content": [
+              {
+                "id": "placeholder-3.6.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.6.1 Combinaciones lineales de exponenciales complejas relacionadas armónicamente</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Combinaciones lineales de exponenciales complejas relacionadas armónicamente</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.6.2",
+            "title": "Determinación de la representación en series de Fourier de una señal periódica",
+            "content": [
+              {
+                "id": "placeholder-3.6.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.6.2 Determinación de la representación en series de Fourier de una señal periódica</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Determinación de la representación en series de Fourier de una señal periódica</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3.7",
+        "title": "Propiedades de la serie discreta de Fourier",
+        "content": [
+          {
+            "id": "placeholder-3.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.7 Propiedades de la serie discreta de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de la serie discreta de Fourier</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "3.7.1",
+            "title": "Multiplicación",
+            "content": [
+              {
+                "id": "placeholder-3.7.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.7.1 Multiplicación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Multiplicación</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.7.2",
+            "title": "Primera diferencia",
+            "content": [
+              {
+                "id": "placeholder-3.7.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.7.2 Primera diferencia</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Primera diferencia</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.7.3",
+            "title": "Relación de Parseval para señales periódicas discretas",
+            "content": [
+              {
+                "id": "placeholder-3.7.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.7.3 Relación de Parseval para señales periódicas discretas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Relación de Parseval para señales periódicas discretas</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.7.4",
+            "title": "Ejemplos",
+            "content": [
+              {
+                "id": "placeholder-3.7.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.7.4 Ejemplos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3.8",
+        "title": "Serie de Fourier y sistemas LTI",
+        "content": [
+          {
+            "id": "placeholder-3.8",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.8 Serie de Fourier y sistemas LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Serie de Fourier y sistemas LTI</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "3.9",
+        "title": "Filtrado",
+        "content": [
+          {
+            "id": "placeholder-3.9",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.9 Filtrado</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Filtrado</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "3.9.1",
+            "title": "Filtros conformadores de frecuencia",
+            "content": [
+              {
+                "id": "placeholder-3.9.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.9.1 Filtros conformadores de frecuencia</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Filtros conformadores de frecuencia</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.9.2",
+            "title": "Filtros selectivos en frecuencia",
+            "content": [
+              {
+                "id": "placeholder-3.9.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.9.2 Filtros selectivos en frecuencia</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Filtros selectivos en frecuencia</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3.10",
+        "title": "Ejemplos de filtros continuos descritos mediante ecuaciones diferenciales",
+        "content": [
+          {
+            "id": "placeholder-3.10",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.10 Ejemplos de filtros continuos descritos mediante ecuaciones diferenciales</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos de filtros continuos descritos mediante ecuaciones diferenciales</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "3.10.1",
+            "title": "Un filtro paso bajas RC sencillo",
+            "content": [
+              {
+                "id": "placeholder-3.10.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.10.1 Un filtro paso bajas RC sencillo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Un filtro paso bajas RC sencillo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.10.2",
+            "title": "Un filtro paso altas RC sencillo",
+            "content": [
+              {
+                "id": "placeholder-3.10.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.10.2 Un filtro paso altas RC sencillo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Un filtro paso altas RC sencillo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3.11",
+        "title": "Ejemplos de filtros discretos descritos mediante ecuaciones de diferencias",
+        "content": [
+          {
+            "id": "placeholder-3.11",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.11 Ejemplos de filtros discretos descritos mediante ecuaciones de diferencias</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos de filtros discretos descritos mediante ecuaciones de diferencias</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "3.11.1",
+            "title": "Filtros recursivos discretos de primer orden",
+            "content": [
+              {
+                "id": "placeholder-3.11.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.11.1 Filtros recursivos discretos de primer orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Filtros recursivos discretos de primer orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "3.11.2",
+            "title": "Filtros no recursivos discretos",
+            "content": [
+              {
+                "id": "placeholder-3.11.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.11.2 Filtros no recursivos discretos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Filtros no recursivos discretos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3.12",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-3.12",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.12 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "3.13",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-3.13",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>3.13 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "4",
+    "title": "LA TRANSFORMADA CONTINUA DE FOURIER",
+    "sections": [
+      {
+        "id": "4.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-4.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "4.1",
+        "title": "Representación de señales aperiódicas: La transformada continua de Fourier",
+        "content": [
+          {
+            "id": "placeholder-4.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.1 Representación de señales aperiódicas: La transformada continua de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representación de señales aperiódicas: La transformada continua de Fourier</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "4.1.1",
+            "title": "Desarrollo de la representación de la transformada de Fourier de una señal aperiódica",
+            "content": [
+              {
+                "id": "placeholder-4.1.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.1.1 Desarrollo de la representación de la transformada de Fourier de una señal aperiódica</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Desarrollo de la representación de la transformada de Fourier de una señal aperiódica</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "4.1.2",
+            "title": "Convergencia de las transformadas de Fourier",
+            "content": [
+              {
+                "id": "placeholder-4.1.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.1.2 Convergencia de las transformadas de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Convergencia de las transformadas de Fourier</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "4.1.3",
+            "title": "Ejemplos de transformadas continuas de Fourier",
+            "content": [
+              {
+                "id": "placeholder-4.1.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.1.3 Ejemplos de transformadas continuas de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos de transformadas continuas de Fourier</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4.2",
+        "title": "La transformada de Fourier para señales periódicas",
+        "content": [
+          {
+            "id": "placeholder-4.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.2 La transformada de Fourier para señales periódicas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La transformada de Fourier para señales periódicas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "4.3",
+        "title": "Propiedades de la transformada continua de Fourier",
+        "content": [
+          {
+            "id": "placeholder-4.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.3 Propiedades de la transformada continua de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de la transformada continua de Fourier</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "4.3.1",
+            "title": "Linealidad",
+            "content": [
+              {
+                "id": "placeholder-4.3.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.3.1 Linealidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Linealidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "4.3.2",
+            "title": "Desplazamiento de tiempo",
+            "content": [
+              {
+                "id": "placeholder-4.3.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.3.2 Desplazamiento de tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Desplazamiento de tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "4.3.3",
+            "title": "Conjugación y simetría conjugada",
+            "content": [
+              {
+                "id": "placeholder-4.3.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.3.3 Conjugación y simetría conjugada</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Conjugación y simetría conjugada</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "4.3.4",
+            "title": "Diferenciación e integración",
+            "content": [
+              {
+                "id": "placeholder-4.3.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.3.4 Diferenciación e integración</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Diferenciación e integración</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "4.3.5",
+            "title": "Dualidad",
+            "content": [
+              {
+                "id": "placeholder-4.3.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.3.5 Dualidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Dualidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "4.3.6",
+            "title": "Escalamiento de tiempo y de frecuencia",
+            "content": [
+              {
+                "id": "placeholder-4.3.6",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.3.6 Escalamiento de tiempo y de frecuencia</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Escalamiento de tiempo y de frecuencia</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "4.3.7",
+            "title": "Relación de Parseval",
+            "content": [
+              {
+                "id": "placeholder-4.3.7",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.3.7 Relación de Parseval</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Relación de Parseval</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4.4",
+        "title": "La propiedad de convolución",
+        "content": [
+          {
+            "id": "placeholder-4.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.4 La propiedad de convolución</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La propiedad de convolución</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "4.4.1",
+            "title": "Ejemplos",
+            "content": [
+              {
+                "id": "placeholder-4.4.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.4.1 Ejemplos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4.5",
+        "title": "La propiedad de multiplicación",
+        "content": [
+          {
+            "id": "placeholder-4.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.5 La propiedad de multiplicación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La propiedad de multiplicación</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "4.5.1",
+            "title": "Filtrado selectivo en frecuencia con frecuencia central variable",
+            "content": [
+              {
+                "id": "placeholder-4.5.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.5.1 Filtrado selectivo en frecuencia con frecuencia central variable</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Filtrado selectivo en frecuencia con frecuencia central variable</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4.6",
+        "title": "Tablas de las propiedades de la transformada de Fourier y de los pares básicos",
+        "content": [
+          {
+            "id": "placeholder-4.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.6 Tablas de las propiedades de la transformada de Fourier y de los pares básicos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Tablas de las propiedades de la transformada de Fourier y de los pares básicos</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "4.7",
+        "title": "Sistemas caracterizados por ecuaciones diferenciales lineales con coeficientes constantes",
+        "content": [
+          {
+            "id": "placeholder-4.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.7 Sistemas caracterizados por ecuaciones diferenciales lineales con coeficientes constantes</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas caracterizados por ecuaciones diferenciales lineales con coeficientes constantes</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "4.8",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-4.8",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.8 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "4.9",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-4.9",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>4.9 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "5",
+    "title": "LA TRANSFORMADA DE FOURIER DE TIEMPO DISCRETO",
+    "sections": [
+      {
+        "id": "5.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-5.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "5.1",
+        "title": "Representación de señales aperiódicas: La transformada de Fourier de tiempo discreto",
+        "content": [
+          {
+            "id": "placeholder-5.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.1 Representación de señales aperiódicas: La transformada de Fourier de tiempo discreto</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representación de señales aperiódicas: La transformada de Fourier de tiempo discreto</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "5.1.1",
+            "title": "Desarrollo de la transformada de Fourier de tiempo discreto",
+            "content": [
+              {
+                "id": "placeholder-5.1.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.1.1 Desarrollo de la transformada de Fourier de tiempo discreto</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Desarrollo de la transformada de Fourier de tiempo discreto</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.1.2",
+            "title": "Ejemplos de transformadas de Fourier de tiempo discreto",
+            "content": [
+              {
+                "id": "placeholder-5.1.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.1.2 Ejemplos de transformadas de Fourier de tiempo discreto</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos de transformadas de Fourier de tiempo discreto</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.1.3",
+            "title": "Problemas de la convergencia asociados con la transformada de Fourier de tiempo discreto",
+            "content": [
+              {
+                "id": "placeholder-5.1.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.1.3 Problemas de la convergencia asociados con la transformada de Fourier de tiempo discreto</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas de la convergencia asociados con la transformada de Fourier de tiempo discreto</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "5.2",
+        "title": "La transformada de Fourier para señales periódicas",
+        "content": [
+          {
+            "id": "placeholder-5.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.2 La transformada de Fourier para señales periódicas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La transformada de Fourier para señales periódicas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "5.3",
+        "title": "Propiedades de la transformada de Fourier de tiempo discreto",
+        "content": [
+          {
+            "id": "placeholder-5.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.3 Propiedades de la transformada de Fourier de tiempo discreto</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de la transformada de Fourier de tiempo discreto</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "5.3.1",
+            "title": "Periodicidad de la transformada de Fourier de tiempo discreto",
+            "content": [
+              {
+                "id": "placeholder-5.3.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.3.1 Periodicidad de la transformada de Fourier de tiempo discreto</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Periodicidad de la transformada de Fourier de tiempo discreto</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.3.2",
+            "title": "Linealidad de la transformada de Fourier",
+            "content": [
+              {
+                "id": "placeholder-5.3.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.3.2 Linealidad de la transformada de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Linealidad de la transformada de Fourier</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.3.3",
+            "title": "Desplazamiento de tiempo y desplazamiento de frecuencia",
+            "content": [
+              {
+                "id": "placeholder-5.3.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.3.3 Desplazamiento de tiempo y desplazamiento de frecuencia</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Desplazamiento de tiempo y desplazamiento de frecuencia</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.3.4",
+            "title": "Conjugación y simetría conjugada",
+            "content": [
+              {
+                "id": "placeholder-5.3.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.3.4 Conjugación y simetría conjugada</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Conjugación y simetría conjugada</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.3.5",
+            "title": "Diferenciación en frecuencia",
+            "content": [
+              {
+                "id": "placeholder-5.3.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.3.5 Diferenciación en frecuencia</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Diferenciación en frecuencia</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.3.6",
+            "title": "Inversión en tiempo",
+            "content": [
+              {
+                "id": "placeholder-5.3.6",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.3.6 Inversión en tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Inversión en tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.3.7",
+            "title": "Expansión en tiempo",
+            "content": [
+              {
+                "id": "placeholder-5.3.7",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.3.7 Expansión en tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Expansión en tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.3.9",
+            "title": "La relación de Parseval",
+            "content": [
+              {
+                "id": "placeholder-5.3.9",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.3.9 La relación de Parseval</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La relación de Parseval</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "5.4",
+        "title": "La propiedad de convolución",
+        "content": [
+          {
+            "id": "placeholder-5.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.4 La propiedad de convolución</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La propiedad de convolución</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "5.4.1",
+            "title": "Ejemplos",
+            "content": [
+              {
+                "id": "placeholder-5.4.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.4.1 Ejemplos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "5.5",
+        "title": "La propiedad de multiplicación",
+        "content": [
+          {
+            "id": "placeholder-5.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.5 La propiedad de multiplicación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La propiedad de multiplicación</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "5.6",
+        "title": "Tablas de las propiedades de la transformada de Fourier y pares básicos",
+        "content": [
+          {
+            "id": "placeholder-5.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.6 Tablas de las propiedades de la transformada de Fourier y pares básicos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Tablas de las propiedades de la transformada de Fourier y pares básicos</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "5.7",
+        "title": "Dualidad",
+        "content": [
+          {
+            "id": "placeholder-5.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.7 Dualidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Dualidad</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "5.7.1",
+            "title": "Dualidad en la serie discreta de Fourier",
+            "content": [
+              {
+                "id": "placeholder-5.7.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.7.1 Dualidad en la serie discreta de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Dualidad en la serie discreta de Fourier</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "5.7.2",
+            "title": "Dualidad entre la transformada de Fourier de tiempo discreto y la serie continua de Fourier",
+            "content": [
+              {
+                "id": "placeholder-5.7.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.7.2 Dualidad entre la transformada de Fourier de tiempo discreto y la serie continua de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Dualidad entre la transformada de Fourier de tiempo discreto y la serie continua de Fourier</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "5.8",
+        "title": "Sistemas caracterizados por ecuaciones en diferencias lineales con coeficientes constantes",
+        "content": [
+          {
+            "id": "placeholder-5.8",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.8 Sistemas caracterizados por ecuaciones en diferencias lineales con coeficientes constantes</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas caracterizados por ecuaciones en diferencias lineales con coeficientes constantes</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "5.9",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-5.9",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.9 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "5.10",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-5.10",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>5.10 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "6",
+    "title": "CARACTERIZACIÓN EN TIEMPO Y FRECUENCIA DE SEÑALES Y SISTEMAS",
+    "sections": [
+      {
+        "id": "6.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-6.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "6.1",
+        "title": "Representación de la magnitud-fase de la transformada de Fourier",
+        "content": [
+          {
+            "id": "placeholder-6.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.1 Representación de la magnitud-fase de la transformada de Fourier</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representación de la magnitud-fase de la transformada de Fourier</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "6.2",
+        "title": "Representación de la magnitud-fase de la respuesta en frecuencia de sistemas LTI",
+        "content": [
+          {
+            "id": "placeholder-6.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.2 Representación de la magnitud-fase de la respuesta en frecuencia de sistemas LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representación de la magnitud-fase de la respuesta en frecuencia de sistemas LTI</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "6.2.1",
+            "title": "Fase lineal y no lineal",
+            "content": [
+              {
+                "id": "placeholder-6.2.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.2.1 Fase lineal y no lineal</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Fase lineal y no lineal</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "6.2.2",
+            "title": "Retardo de grupo",
+            "content": [
+              {
+                "id": "placeholder-6.2.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.2.2 Retardo de grupo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Retardo de grupo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "6.2.3",
+            "title": "Magnitud logarítmica y diagramas de Bode",
+            "content": [
+              {
+                "id": "placeholder-6.2.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.2.3 Magnitud logarítmica y diagramas de Bode</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Magnitud logarítmica y diagramas de Bode</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "6.3",
+        "title": "Propiedades en el dominio del tiempo de filtros ideales",
+        "content": [
+          {
+            "id": "placeholder-6.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.3 Propiedades en el dominio del tiempo de filtros ideales</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades en el dominio del tiempo de filtros ideales</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "6.4",
+        "title": "Aspectos en el dominio del tiempo y en el dominio de la frecuencia de los filtros no ideales",
+        "content": [
+          {
+            "id": "placeholder-6.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.4 Aspectos en el dominio del tiempo y en el dominio de la frecuencia de los filtros no ideales</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Aspectos en el dominio del tiempo y en el dominio de la frecuencia de los filtros no ideales</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "6.5",
+        "title": "Sistemas continuos de primer y segundo órdenes",
+        "content": [
+          {
+            "id": "placeholder-6.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.5 Sistemas continuos de primer y segundo órdenes</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas continuos de primer y segundo órdenes</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "6.5.1",
+            "title": "Sistemas continuos de primer orden",
+            "content": [
+              {
+                "id": "placeholder-6.5.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.5.1 Sistemas continuos de primer orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas continuos de primer orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "6.5.2",
+            "title": "Sistemas continuos de segundo orden",
+            "content": [
+              {
+                "id": "placeholder-6.5.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.5.2 Sistemas continuos de segundo orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas continuos de segundo orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "6.5.3",
+            "title": "Diagramas de Bode para respuestas en frecuencia racionales",
+            "content": [
+              {
+                "id": "placeholder-6.5.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.5.3 Diagramas de Bode para respuestas en frecuencia racionales</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Diagramas de Bode para respuestas en frecuencia racionales</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "6.6",
+        "title": "Sistemas discretos de primer y segundo órdenes",
+        "content": [
+          {
+            "id": "placeholder-6.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.6 Sistemas discretos de primer y segundo órdenes</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas discretos de primer y segundo órdenes</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "6.6.1",
+            "title": "Sistemas discretos de primer orden",
+            "content": [
+              {
+                "id": "placeholder-6.6.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.6.1 Sistemas discretos de primer orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas discretos de primer orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "6.6.2",
+            "title": "Sistemas discretos de segundo orden",
+            "content": [
+              {
+                "id": "placeholder-6.6.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.6.2 Sistemas discretos de segundo orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas discretos de segundo orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "6.7",
+        "title": "Ejemplos de análisis de sistemas en el dominio del tiempo y de la frecuencia",
+        "content": [
+          {
+            "id": "placeholder-6.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.7 Ejemplos de análisis de sistemas en el dominio del tiempo y de la frecuencia</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos de análisis de sistemas en el dominio del tiempo y de la frecuencia</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "6.7.1",
+            "title": "Análisis de un sistema de suspensión para automóvil",
+            "content": [
+              {
+                "id": "placeholder-6.7.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.7.1 Análisis de un sistema de suspensión para automóvil</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Análisis de un sistema de suspensión para automóvil</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "6.7.2",
+            "title": "Ejemplos de filtros discretos no recursivos",
+            "content": [
+              {
+                "id": "placeholder-6.7.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.7.2 Ejemplos de filtros discretos no recursivos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos de filtros discretos no recursivos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "6.8",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-6.8",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.8 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "6.9",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-6.9",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>6.9 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "7",
+    "title": "MUESTREO",
+    "sections": [
+      {
+        "id": "7.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-7.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "7.1",
+        "title": "Representación de una señal continua mediante sus muestras: El teorema de muestreo",
+        "content": [
+          {
+            "id": "placeholder-7.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.1 Representación de una señal continua mediante sus muestras: El teorema de muestreo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representación de una señal continua mediante sus muestras: El teorema de muestreo</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "7.1.1",
+            "title": "Muestreo con tren de impulsos",
+            "content": [
+              {
+                "id": "placeholder-7.1.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.1.1 Muestreo con tren de impulsos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Muestreo con tren de impulsos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "7.1.2",
+            "title": "Muestreo con un retenedor de orden cero",
+            "content": [
+              {
+                "id": "placeholder-7.1.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.1.2 Muestreo con un retenedor de orden cero</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Muestreo con un retenedor de orden cero</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "7.2",
+        "title": "Reconstrucción de una señal a partir de sus muestras usando la interpolación",
+        "content": [
+          {
+            "id": "placeholder-7.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.2 Reconstrucción de una señal a partir de sus muestras usando la interpolación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Reconstrucción de una señal a partir de sus muestras usando la interpolación</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "7.3",
+        "title": "El efecto del submuestreo: Traslape",
+        "content": [
+          {
+            "id": "placeholder-7.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.3 El efecto del submuestreo: Traslape</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>El efecto del submuestreo: Traslape</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "7.4",
+        "title": "Procesamiento discreto de señales continuas",
+        "content": [
+          {
+            "id": "placeholder-7.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.4 Procesamiento discreto de señales continuas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Procesamiento discreto de señales continuas</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "7.4.1",
+            "title": "Diferenciador digital",
+            "content": [
+              {
+                "id": "placeholder-7.4.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.4.1 Diferenciador digital</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Diferenciador digital</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "7.4.2",
+            "title": "Retardo de media muestra",
+            "content": [
+              {
+                "id": "placeholder-7.4.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.4.2 Retardo de media muestra</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Retardo de media muestra</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "7.5",
+        "title": "Muestreo de señales discretas",
+        "content": [
+          {
+            "id": "placeholder-7.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.5 Muestreo de señales discretas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Muestreo de señales discretas</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "7.5.1",
+            "title": "Muestreo con tren de impulsos",
+            "content": [
+              {
+                "id": "placeholder-7.5.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.5.1 Muestreo con tren de impulsos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Muestreo con tren de impulsos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "7.6",
+        "title": "Decimación en tiempo discreto e interpolación",
+        "content": [
+          {
+            "id": "placeholder-7.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.6 Decimación en tiempo discreto e interpolación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Decimación en tiempo discreto e interpolación</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "7.7",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-7.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.7 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "7.8",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-7.8",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>7.8 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "8",
+    "title": "SISTEMAS DE COMUNICACIÓN",
+    "sections": [
+      {
+        "id": "8.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-8.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "8.1",
+        "title": "Modulación de amplitud con exponencial compleja y senoidal",
+        "content": [
+          {
+            "id": "placeholder-8.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.1 Modulación de amplitud con exponencial compleja y senoidal</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de amplitud con exponencial compleja y senoidal</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "8.1.1",
+            "title": "Modulación de amplitud con una portadora exponencial compleja",
+            "content": [
+              {
+                "id": "placeholder-8.1.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.1.1 Modulación de amplitud con una portadora exponencial compleja</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de amplitud con una portadora exponencial compleja</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "8.1.2",
+            "title": "Modulación de amplitud con una portadora senoidal",
+            "content": [
+              {
+                "id": "placeholder-8.1.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.1.2 Modulación de amplitud con una portadora senoidal</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de amplitud con una portadora senoidal</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "8.2",
+        "title": "Demodulación para AM senoidal",
+        "content": [
+          {
+            "id": "placeholder-8.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.2 Demodulación para AM senoidal</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Demodulación para AM senoidal</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "8.2.1",
+            "title": "Demodulación síncrona",
+            "content": [
+              {
+                "id": "placeholder-8.2.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.2.1 Demodulación síncrona</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Demodulación síncrona</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "8.2.2",
+            "title": "Demodulación asíncrona",
+            "content": [
+              {
+                "id": "placeholder-8.2.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.2.2 Demodulación asíncrona</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Demodulación asíncrona</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "8.3",
+        "title": "Multiplexaje por división de frecuencia",
+        "content": [
+          {
+            "id": "placeholder-8.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.3 Multiplexaje por división de frecuencia</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Multiplexaje por división de frecuencia</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "8.4",
+        "title": "Modulación de amplitud lateral de banda lateral única",
+        "content": [
+          {
+            "id": "placeholder-8.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.4 Modulación de amplitud lateral de banda lateral única</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de amplitud lateral de banda lateral única</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "8.5",
+        "title": "Modulación de amplitud con una portadora de tren de pulsos",
+        "content": [
+          {
+            "id": "placeholder-8.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.5 Modulación de amplitud con una portadora de tren de pulsos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de amplitud con una portadora de tren de pulsos</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "8.5.1",
+            "title": "Modulación de una portadora de tren de pulsos",
+            "content": [
+              {
+                "id": "placeholder-8.5.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.5.1 Modulación de una portadora de tren de pulsos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de una portadora de tren de pulsos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "8.5.2",
+            "title": "Multiplexaje por división de tiempo",
+            "content": [
+              {
+                "id": "placeholder-8.5.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.5.2 Multiplexaje por división de tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Multiplexaje por división de tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "8.6",
+        "title": "Modulación de amplitud de pulsos",
+        "content": [
+          {
+            "id": "placeholder-8.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.6 Modulación de amplitud de pulsos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de amplitud de pulsos</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "8.6.1",
+            "title": "Señales moduladas por amplitud de pulsos",
+            "content": [
+              {
+                "id": "placeholder-8.6.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.6.1 Señales moduladas por amplitud de pulsos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Señales moduladas por amplitud de pulsos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "8.6.2",
+            "title": "Interferencia intersímbolo en sistemas PAM",
+            "content": [
+              {
+                "id": "placeholder-8.6.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.6.2 Interferencia intersímbolo en sistemas PAM</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Interferencia intersímbolo en sistemas PAM</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "8.6.3",
+            "title": "Modulación digital por amplitud de pulsos y por codificación de pulsos",
+            "content": [
+              {
+                "id": "placeholder-8.6.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.6.3 Modulación digital por amplitud de pulsos y por codificación de pulsos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación digital por amplitud de pulsos y por codificación de pulsos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "8.7",
+        "title": "Modulación de frecuencia senoidal",
+        "content": [
+          {
+            "id": "placeholder-8.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.7 Modulación de frecuencia senoidal</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de frecuencia senoidal</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "8.7.1",
+            "title": "Modulación de frecuencia de banda angosta",
+            "content": [
+              {
+                "id": "placeholder-8.7.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.7.1 Modulación de frecuencia de banda angosta</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de frecuencia de banda angosta</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "8.7.2",
+            "title": "Modulación de frecuencia de banda ancha",
+            "content": [
+              {
+                "id": "placeholder-8.7.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.7.2 Modulación de frecuencia de banda ancha</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de frecuencia de banda ancha</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "8.7.3",
+            "title": "Señal moduladora de onda cuadrada periódica",
+            "content": [
+              {
+                "id": "placeholder-8.7.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.7.3 Señal moduladora de onda cuadrada periódica</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Señal moduladora de onda cuadrada periódica</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "8.8",
+        "title": "Modulación discreta",
+        "content": [
+          {
+            "id": "placeholder-8.8",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.8 Modulación discreta</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación discreta</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "8.8.1",
+            "title": "Modulación de amplitud senoidal discreta",
+            "content": [
+              {
+                "id": "placeholder-8.8.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.8.1 Modulación de amplitud senoidal discreta</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Modulación de amplitud senoidal discreta</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "8.8.2",
+            "title": "Transmodulación de tiempo discreto",
+            "content": [
+              {
+                "id": "placeholder-8.8.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.8.2 Transmodulación de tiempo discreto</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Transmodulación de tiempo discreto</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "8.9",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-8.9",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.9 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "8.10",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-8.10",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>8.10 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "9",
+    "title": "LA TRANSFORMADA DE LAPLACE",
+    "sections": [
+      {
+        "id": "9.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-9.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "9.1",
+        "title": "La transformada de Laplace",
+        "content": [
+          {
+            "id": "placeholder-9.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.1 La transformada de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La transformada de Laplace</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "9.2",
+        "title": "La región de convergencia para las transformadas de Laplace",
+        "content": [
+          {
+            "id": "placeholder-9.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.2 La región de convergencia para las transformadas de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La región de convergencia para las transformadas de Laplace</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "9.3",
+        "title": "La transformada inversa de Laplace",
+        "content": [
+          {
+            "id": "placeholder-9.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.3 La transformada inversa de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La transformada inversa de Laplace</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "9.4",
+        "title": "Evaluación geométrica de la transformada de Fourier a partir del diagrama de polos y ceros",
+        "content": [
+          {
+            "id": "placeholder-9.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.4 Evaluación geométrica de la transformada de Fourier a partir del diagrama de polos y ceros</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Evaluación geométrica de la transformada de Fourier a partir del diagrama de polos y ceros</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "9.4.1",
+            "title": "Sistemas de primer orden",
+            "content": [
+              {
+                "id": "placeholder-9.4.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.4.1 Sistemas de primer orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas de primer orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.4.2",
+            "title": "Sistemas de segundo orden",
+            "content": [
+              {
+                "id": "placeholder-9.4.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.4.2 Sistemas de segundo orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas de segundo orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.4.3",
+            "title": "Sistemas paso todo",
+            "content": [
+              {
+                "id": "placeholder-9.4.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.4.3 Sistemas paso todo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas paso todo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "9.5",
+        "title": "Propiedades de la transformada de Laplace",
+        "content": [
+          {
+            "id": "placeholder-9.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5 Propiedades de la transformada de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de la transformada de Laplace</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "9.5.1",
+            "title": "Linealidad de la transformada de Laplace",
+            "content": [
+              {
+                "id": "placeholder-9.5.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.1 Linealidad de la transformada de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Linealidad de la transformada de Laplace</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.2",
+            "title": "Desplazamiento en el tiempo",
+            "content": [
+              {
+                "id": "placeholder-9.5.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.2 Desplazamiento en el tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Desplazamiento en el tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.3",
+            "title": "Desplazamiento en el dominio de s",
+            "content": [
+              {
+                "id": "placeholder-9.5.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.3 Desplazamiento en el dominio de s</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Desplazamiento en el dominio de s</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.4",
+            "title": "Escalamiento en tiempo",
+            "content": [
+              {
+                "id": "placeholder-9.5.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.4 Escalamiento en tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Escalamiento en tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.5",
+            "title": "Conjugación",
+            "content": [
+              {
+                "id": "placeholder-9.5.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.5 Conjugación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Conjugación</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.6",
+            "title": "Propiedad de convolución",
+            "content": [
+              {
+                "id": "placeholder-9.5.6",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.6 Propiedad de convolución</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedad de convolución</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.7",
+            "title": "Diferenciación en el dominio de s",
+            "content": [
+              {
+                "id": "placeholder-9.5.7",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.7 Diferenciación en el dominio de s</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Diferenciación en el dominio de s</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.8",
+            "title": "Diferenciación en el dominio del tiempo",
+            "content": [
+              {
+                "id": "placeholder-9.5.8",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.8 Diferenciación en el dominio del tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Diferenciación en el dominio del tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.9",
+            "title": "Integración en el dominio del tiempo",
+            "content": [
+              {
+                "id": "placeholder-9.5.9",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.9 Integración en el dominio del tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Integración en el dominio del tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.10",
+            "title": "Los teoremas de valor inicial y de valor final",
+            "content": [
+              {
+                "id": "placeholder-9.5.10",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.10 Los teoremas de valor inicial y de valor final</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Los teoremas de valor inicial y de valor final</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.5.11",
+            "title": "Tabla de propiedades",
+            "content": [
+              {
+                "id": "placeholder-9.5.11",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.5.11 Tabla de propiedades</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Tabla de propiedades</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "9.6",
+        "title": "Almacén para transformadas de Laplace",
+        "content": [
+          {
+            "id": "placeholder-9.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.6 Almacén para transformadas de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Almacén para transformadas de Laplace</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "9.7",
+        "title": "Análisis y caracterización de los sistemas LTI usando la transformada de Laplace",
+        "content": [
+          {
+            "id": "placeholder-9.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.7 Análisis y caracterización de los sistemas LTI usando la transformada de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Análisis y caracterización de los sistemas LTI usando la transformada de Laplace</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "9.7.1",
+            "title": "Causalidad",
+            "content": [
+              {
+                "id": "placeholder-9.7.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.7.1 Causalidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Causalidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.7.2",
+            "title": "Estabilidad",
+            "content": [
+              {
+                "id": "placeholder-9.7.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.7.2 Estabilidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Estabilidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.7.3",
+            "title": "Sistemas LTI caracterizados por ecuaciones diferenciales lineales con coeficientes constantes",
+            "content": [
+              {
+                "id": "placeholder-9.7.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.7.3 Sistemas LTI caracterizados por ecuaciones diferenciales lineales con coeficientes constantes</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas LTI caracterizados por ecuaciones diferenciales lineales con coeficientes constantes</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.7.4",
+            "title": "Ejemplos que relacionan el comportamiento del sistema con la función del sistema",
+            "content": [
+              {
+                "id": "placeholder-9.7.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.7.4 Ejemplos que relacionan el comportamiento del sistema con la función del sistema</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos que relacionan el comportamiento del sistema con la función del sistema</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.7.5",
+            "title": "Filtros Butterworth",
+            "content": [
+              {
+                "id": "placeholder-9.7.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.7.5 Filtros Butterworth</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Filtros Butterworth</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "9.8",
+        "title": "Álgebra de la función del sistema y representación en diagrama de bloques",
+        "content": [
+          {
+            "id": "placeholder-9.8",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.8 Álgebra de la función del sistema y representación en diagrama de bloques</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Álgebra de la función del sistema y representación en diagrama de bloques</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "9.8.1",
+            "title": "Funciones del sistema para interconexiones de sistemas LTI",
+            "content": [
+              {
+                "id": "placeholder-9.8.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.8.1 Funciones del sistema para interconexiones de sistemas LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Funciones del sistema para interconexiones de sistemas LTI</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.8.2",
+            "title": "Representaciones en diagrama de bloques para los sistemas LTI causales",
+            "content": [
+              {
+                "id": "placeholder-9.8.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.8.2 Representaciones en diagrama de bloques para los sistemas LTI causales</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representaciones en diagrama de bloques para los sistemas LTI causales</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "9.9",
+        "title": "La transformada unilateral de Laplace",
+        "content": [
+          {
+            "id": "placeholder-9.9",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.9 La transformada unilateral de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La transformada unilateral de Laplace</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "9.9.1",
+            "title": "Ejemplos de transformadas unilaterales de Laplace",
+            "content": [
+              {
+                "id": "placeholder-9.9.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.9.1 Ejemplos de transformadas unilaterales de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos de transformadas unilaterales de Laplace</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.9.2",
+            "title": "Propiedades de la transformada unilateral de Laplace",
+            "content": [
+              {
+                "id": "placeholder-9.9.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.9.2 Propiedades de la transformada unilateral de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de la transformada unilateral de Laplace</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "9.9.3",
+            "title": "Solución de ecuaciones diferenciales usando la transformada unilateral de Laplace",
+            "content": [
+              {
+                "id": "placeholder-9.9.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.9.3 Solución de ecuaciones diferenciales usando la transformada unilateral de Laplace</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Solución de ecuaciones diferenciales usando la transformada unilateral de Laplace</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "9.10",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-9.10",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.10 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "9.11",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-9.11",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>9.11 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "10",
+    "title": "LA TRANSFORMADA Z",
+    "sections": [
+      {
+        "id": "10.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-10.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "10.1",
+        "title": "La transformada z",
+        "content": [
+          {
+            "id": "placeholder-10.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.1 La transformada z</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La transformada z</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "10.2",
+        "title": "La región de convergencia de la transformada z",
+        "content": [
+          {
+            "id": "placeholder-10.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.2 La región de convergencia de la transformada z</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La región de convergencia de la transformada z</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "10.3",
+        "title": "La transformada z inversa",
+        "content": [
+          {
+            "id": "placeholder-10.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.3 La transformada z inversa</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La transformada z inversa</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "10.4",
+        "title": "Evaluación geométrica de la transformada de Fourier a partir del diagrama de polos y ceros",
+        "content": [
+          {
+            "id": "placeholder-10.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.4 Evaluación geométrica de la transformada de Fourier a partir del diagrama de polos y ceros</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Evaluación geométrica de la transformada de Fourier a partir del diagrama de polos y ceros</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "10.4.1",
+            "title": "Sistemas de primer orden",
+            "content": [
+              {
+                "id": "placeholder-10.4.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.4.1 Sistemas de primer orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas de primer orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.4.2",
+            "title": "Sistemas de segundo orden",
+            "content": [
+              {
+                "id": "placeholder-10.4.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.4.2 Sistemas de segundo orden</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas de segundo orden</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "10.5",
+        "title": "Propiedades de la transformada z",
+        "content": [
+          {
+            "id": "placeholder-10.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5 Propiedades de la transformada z</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de la transformada z</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "10.5.1",
+            "title": "Linealidad",
+            "content": [
+              {
+                "id": "placeholder-10.5.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.1 Linealidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Linealidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.5.2",
+            "title": "Desplazamiento en el tiempo",
+            "content": [
+              {
+                "id": "placeholder-10.5.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.2 Desplazamiento en el tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Desplazamiento en el tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.5.3",
+            "title": "Escalamiento en el dominio de z",
+            "content": [
+              {
+                "id": "placeholder-10.5.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.3 Escalamiento en el dominio de z</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Escalamiento en el dominio de z</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.5.4",
+            "title": "Inversión de tiempo",
+            "content": [
+              {
+                "id": "placeholder-10.5.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.4 Inversión de tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Inversión de tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.5.5",
+            "title": "Expansión en el tiempo",
+            "content": [
+              {
+                "id": "placeholder-10.5.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.5 Expansión en el tiempo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Expansión en el tiempo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.5.6",
+            "title": "Conjugación",
+            "content": [
+              {
+                "id": "placeholder-10.5.6",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.6 Conjugación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Conjugación</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.5.7",
+            "title": "Propiedad de convolución",
+            "content": [
+              {
+                "id": "placeholder-10.5.7",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.7 Propiedad de convolución</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedad de convolución</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.5.8",
+            "title": "Diferenciación en el dominio de z",
+            "content": [
+              {
+                "id": "placeholder-10.5.8",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.8 Diferenciación en el dominio de z</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Diferenciación en el dominio de z</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.5.9",
+            "title": "Teorema del valor inicial",
+            "content": [
+              {
+                "id": "placeholder-10.5.9",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.9 Teorema del valor inicial</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Teorema del valor inicial</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.5.10",
+            "title": "Resumen de propiedades",
+            "content": [
+              {
+                "id": "placeholder-10.5.10",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.5.10 Resumen de propiedades</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen de propiedades</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "10.6",
+        "title": "Algunos pares comunes de transformada z",
+        "content": [
+          {
+            "id": "placeholder-10.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.6 Algunos pares comunes de transformada z</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Algunos pares comunes de transformada z</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "10.7",
+        "title": "Análisis y caracterización de los sistemas LTI usando las transformadas z",
+        "content": [
+          {
+            "id": "placeholder-10.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.7 Análisis y caracterización de los sistemas LTI usando las transformadas z</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Análisis y caracterización de los sistemas LTI usando las transformadas z</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "10.7.1",
+            "title": "Causalidad",
+            "content": [
+              {
+                "id": "placeholder-10.7.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.7.1 Causalidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Causalidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.7.2",
+            "title": "Estabilidad",
+            "content": [
+              {
+                "id": "placeholder-10.7.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.7.2 Estabilidad</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Estabilidad</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.7.3",
+            "title": "Sistemas LTI caracterizados por ecuaciones de diferencias lineales con coeficientes constantes",
+            "content": [
+              {
+                "id": "placeholder-10.7.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.7.3 Sistemas LTI caracterizados por ecuaciones de diferencias lineales con coeficientes constantes</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas LTI caracterizados por ecuaciones de diferencias lineales con coeficientes constantes</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.7.4",
+            "title": "Ejemplos que relacionan el comportamiento del sistema con la función del sistema",
+            "content": [
+              {
+                "id": "placeholder-10.7.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.7.4 Ejemplos que relacionan el comportamiento del sistema con la función del sistema</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos que relacionan el comportamiento del sistema con la función del sistema</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "10.8",
+        "title": "Álgebra de la función del sistema y representación en diagramas de bloques",
+        "content": [
+          {
+            "id": "placeholder-10.8",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.8 Álgebra de la función del sistema y representación en diagramas de bloques</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Álgebra de la función del sistema y representación en diagramas de bloques</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "10.8.1",
+            "title": "Funciones de sistema de interconexiones de sistemas LTI",
+            "content": [
+              {
+                "id": "placeholder-10.8.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.8.1 Funciones de sistema de interconexiones de sistemas LTI</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Funciones de sistema de interconexiones de sistemas LTI</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.8.2",
+            "title": "Representaciones en diagramas de bloques para los sistemas LTI causales",
+            "content": [
+              {
+                "id": "placeholder-10.8.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.8.2 Representaciones en diagramas de bloques para los sistemas LTI causales</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Representaciones en diagramas de bloques para los sistemas LTI causales</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "10.9",
+        "title": "La transformada z unilateral",
+        "content": [
+          {
+            "id": "placeholder-10.9",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.9 La transformada z unilateral</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La transformada z unilateral</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "10.9.1",
+            "title": "Ejemplos de transformadas z unilaterales",
+            "content": [
+              {
+                "id": "placeholder-10.9.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.9.1 Ejemplos de transformadas z unilaterales</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ejemplos de transformadas z unilaterales</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.9.2",
+            "title": "Propiedades de la transformada z unilateral",
+            "content": [
+              {
+                "id": "placeholder-10.9.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.9.2 Propiedades de la transformada z unilateral</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de la transformada z unilateral</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "10.9.3",
+            "title": "Solución de ecuaciones de diferencias usando la transformada z unilateral",
+            "content": [
+              {
+                "id": "placeholder-10.9.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.9.3 Solución de ecuaciones de diferencias usando la transformada z unilateral</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Solución de ecuaciones de diferencias usando la transformada z unilateral</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "10.10",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-10.10",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.10 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "10.11",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-10.11",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>10.11 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": "11",
+    "title": "SISTEMAS LINEALES RETROALIMENTADOS",
+    "sections": [
+      {
+        "id": "11.0",
+        "title": "Introducción",
+        "content": [
+          {
+            "id": "placeholder-11.0",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.0 Introducción</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Introducción</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "11.1",
+        "title": "Sistemas lineales retroalimentados",
+        "content": [
+          {
+            "id": "placeholder-11.1",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.1 Sistemas lineales retroalimentados</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas lineales retroalimentados</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "11.2",
+        "title": "Algunas aplicaciones y consecuencias de la retroalimentación",
+        "content": [
+          {
+            "id": "placeholder-11.2",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.2 Algunas aplicaciones y consecuencias de la retroalimentación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Algunas aplicaciones y consecuencias de la retroalimentación</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "11.2.1",
+            "title": "Diseño de un sistema inverso",
+            "content": [
+              {
+                "id": "placeholder-11.2.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.2.1 Diseño de un sistema inverso</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Diseño de un sistema inverso</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.2.2",
+            "title": "Compensación de elementos no ideales",
+            "content": [
+              {
+                "id": "placeholder-11.2.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.2.2 Compensación de elementos no ideales</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Compensación de elementos no ideales</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.2.3",
+            "title": "Estabilización de sistemas inestables",
+            "content": [
+              {
+                "id": "placeholder-11.2.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.2.3 Estabilización de sistemas inestables</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Estabilización de sistemas inestables</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.2.4",
+            "title": "Sistemas retroalimentados para datos muestreados",
+            "content": [
+              {
+                "id": "placeholder-11.2.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.2.4 Sistemas retroalimentados para datos muestreados</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas retroalimentados para datos muestreados</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.2.5",
+            "title": "Sistemas de rastreo",
+            "content": [
+              {
+                "id": "placeholder-11.2.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.2.5 Sistemas de rastreo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Sistemas de rastreo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.2.6",
+            "title": "Desestabilización causada por la retroalimentación",
+            "content": [
+              {
+                "id": "placeholder-11.2.6",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.2.6 Desestabilización causada por la retroalimentación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Desestabilización causada por la retroalimentación</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "11.3",
+        "title": "Análisis del lugar geométrico de las raíces de los sistemas lineales retroalimentados",
+        "content": [
+          {
+            "id": "placeholder-11.3",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.3 Análisis del lugar geométrico de las raíces de los sistemas lineales retroalimentados</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Análisis del lugar geométrico de las raíces de los sistemas lineales retroalimentados</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "11.3.1",
+            "title": "Un ejemplo introductorio",
+            "content": [
+              {
+                "id": "placeholder-11.3.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.3.1 Un ejemplo introductorio</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Un ejemplo introductorio</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.3.2",
+            "title": "Ecuación para los polos de lazo cerrado",
+            "content": [
+              {
+                "id": "placeholder-11.3.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.3.2 Ecuación para los polos de lazo cerrado</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Ecuación para los polos de lazo cerrado</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.3.3",
+            "title": "Los puntos extremos del lugar geométrico de las raíces",
+            "content": [
+              {
+                "id": "placeholder-11.3.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.3.3 Los puntos extremos del lugar geométrico de las raíces</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Los puntos extremos del lugar geométrico de las raíces</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.3.4",
+            "title": "El criterio del ángulo",
+            "content": [
+              {
+                "id": "placeholder-11.3.4",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.3.4 El criterio del ángulo</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>El criterio del ángulo</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.3.5",
+            "title": "Propiedades del lugar geométrico de las raíces",
+            "content": [
+              {
+                "id": "placeholder-11.3.5",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.3.5 Propiedades del lugar geométrico de las raíces</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades del lugar geométrico de las raíces</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "11.4",
+        "title": "Propiedades de la estabilidad de Nyquist",
+        "content": [
+          {
+            "id": "placeholder-11.4",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.4 Propiedades de la estabilidad de Nyquist</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Propiedades de la estabilidad de Nyquist</strong>.</p>\n      </div>\n    "
+          }
+        ],
+        "subsections": [
+          {
+            "id": "11.4.1",
+            "title": "La propiedad de circulación",
+            "content": [
+              {
+                "id": "placeholder-11.4.1",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.4.1 La propiedad de circulación</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>La propiedad de circulación</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.4.2",
+            "title": "El criterio de Nyquist para sistemas LTI retroalimentados continuos",
+            "content": [
+              {
+                "id": "placeholder-11.4.2",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.4.2 El criterio de Nyquist para sistemas LTI retroalimentados continuos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>El criterio de Nyquist para sistemas LTI retroalimentados continuos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          },
+          {
+            "id": "11.4.3",
+            "title": "El criterio de Nyquist para sistemas LTI retroalimentados discretos",
+            "content": [
+              {
+                "id": "placeholder-11.4.3",
+                "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.4.3 El criterio de Nyquist para sistemas LTI retroalimentados discretos</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>El criterio de Nyquist para sistemas LTI retroalimentados discretos</strong>.</p>\n      </div>\n    "
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "11.5",
+        "title": "Márgenes de ganancia y fase",
+        "content": [
+          {
+            "id": "placeholder-11.5",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.5 Márgenes de ganancia y fase</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Márgenes de ganancia y fase</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "11.6",
+        "title": "Resumen",
+        "content": [
+          {
+            "id": "placeholder-11.6",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.6 Resumen</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Resumen</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      },
+      {
+        "id": "11.7",
+        "title": "Problemas",
+        "content": [
+          {
+            "id": "placeholder-11.7",
+            "html": "\n      <div class='space-y-4'>\n        <h2 class='text-3xl font-bold text-primary border-b-2 border-border pb-2'>11.7 Problemas</h2>\n        <p class='text-lg'>El contenido para esta sección aún no está disponible.</p>\n        <p>Este es un marcador de posición para la sección sobre <strong>Problemas</strong>.</p>\n      </div>\n    "
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ChevronRight, X, Save, UploadCloud, Menu, Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
@@ -25,25 +25,9 @@ export default function SignalVisorPage() {
     const [htmlToEdit, setHtmlToEdit] = useState<string>('');
     const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
 
 
     const { toast } = useToast();
-
-    const findSectionById = (sections: SectionType[], id: string): SectionType | undefined => {
-        for (const section of sections) {
-            if (section.id === id) {
-                return section;
-            }
-            if (section.subsections) {
-                const found = findSectionById(section.subsections, id);
-                if (found) {
-                    return found;
-                }
-            }
-        }
-        return undefined;
-    };
 
     const flattenSections = (sections: SectionType[]): SectionType[] => {
         let flatList: SectionType[] = [];
@@ -281,53 +265,34 @@ export default function SignalVisorPage() {
     };
 
 
-    const handleTriggerUpload = () => {
-        fileInputRef.current?.click();
-    };
+    const handleLoadContentFromServer = async () => {
+        try {
+            const response = await fetch('/api/load-content');
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const text = e.target?.result;
-                if (typeof text !== 'string') {
-                    throw new Error("File content is not readable as text.");
-                }
-                const newToc = JSON.parse(text);
-                // TODO: Add validation to ensure it's a valid TOC structure
-                setToc(newToc);
-                toast({
-                    title: "Contenido Cargado",
-                    description: "El contenido del archivo JSON se ha cargado correctamente.",
-                });
-                setActiveSection(undefined);
-                setSelectedBlockId(null);
-            } catch (error) {
-                console.error("Error parsing JSON file:", error);
-                toast({
-                    title: "Error al Cargar",
-                    description: "El archivo no es un JSON válido o tiene un formato incorrecto.",
-                    variant: "destructive",
-                });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to load backup file from server.');
             }
-        };
-        reader.onerror = () => {
+            
+            const newToc = await response.json();
+            setToc(newToc);
+            setActiveSection(undefined);
+            setSelectedBlockId(null);
+            
             toast({
-                title: "Error de Lectura",
-                description: "No se pudo leer el archivo seleccionado.",
+                title: "Contenido Cargado",
+                description: "El respaldo ha sido cargado desde el archivo del proyecto.",
+            });
+
+        } catch (error) {
+            console.error("Error loading content from server:", error);
+            toast({
+                title: "Error al Cargar",
+                description: error instanceof Error ? error.message : "No se pudo cargar el archivo de respaldo.",
                 variant: "destructive",
             });
-        };
-        reader.readAsText(file);
-
-        if (event.target) {
-            event.target.value = '';
         }
     };
-
 
     const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
 
@@ -342,14 +307,6 @@ export default function SignalVisorPage() {
 
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept="application/json"
-                className="hidden"
-            />
-            
             <HtmlAddModal 
                 isOpen={isModalOpen} 
                 onClose={() => setIsModalOpen(false)} 
@@ -468,12 +425,12 @@ export default function SignalVisorPage() {
                                     <Save size={18} />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent><p>Guardar Respaldo en Archivo</p></TooltipContent>
+                            <TooltipContent><p>Guardar Respaldo en Archivo del Proyecto</p></TooltipContent>
                         </Tooltip>
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    onClick={handleTriggerUpload}
+                                    onClick={handleLoadContentFromServer}
                                     variant="ghost"
                                     size="icon"
                                     className="text-foreground hover:bg-accent hover:text-accent-foreground"
@@ -481,7 +438,7 @@ export default function SignalVisorPage() {
                                     <UploadCloud size={18} />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent><p>Cargar Respaldo desde JSON</p></TooltipContent>
+                            <TooltipContent><p>Cargar Respaldo desde Archivo del Proyecto</p></TooltipContent>
                         </Tooltip>
                         
                         <Separator orientation="vertical" className="h-6 bg-border mx-2" />
