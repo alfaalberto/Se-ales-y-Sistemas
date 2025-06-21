@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { PlusCircle, ChevronLeft, ChevronRight, MonitorPlay, Minimize, Menu, X } from 'lucide-react';
+import { PlusCircle, ChevronLeft, ChevronRight, MonitorPlay, Minimize, Menu, X, Sparkles } from 'lucide-react';
 import type { SectionType } from '@/lib/types';
 import HtmlBlock from './html-block';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ interface ContentViewProps {
     onNavigate: (direction: 'prev' | 'next') => void;
     flatSections: SectionType[];
     onOpenAddModal: () => void;
+    onOpenAiModal: () => void;
     isSidebarVisible: boolean;
     toggleSidebar: () => void;
     selectedBlockId: string | null;
@@ -27,6 +28,7 @@ const ContentView: React.FC<ContentViewProps> = ({
     onNavigate, 
     flatSections, 
     onOpenAddModal,
+    onOpenAiModal,
     isSidebarVisible,
     toggleSidebar,
     selectedBlockId,
@@ -143,11 +145,19 @@ const ContentView: React.FC<ContentViewProps> = ({
                 <div className="flex-1 flex justify-center items-center gap-2">
                      <Button
                         onClick={onOpenAddModal}
+                        variant="outline"
+                        size="sm"
+                        className="shadow-sm"
+                    >
+                        <PlusCircle size={16} className="mr-1 md:mr-2" /> <span className="hidden md:inline">Añadir Manual</span>
+                    </Button>
+                    <Button
+                        onClick={onOpenAiModal}
                         variant="default"
                         size="sm"
                         className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
                     >
-                        <PlusCircle size={16} className="mr-1 md:mr-2" /> <span className="hidden md:inline">Añadir Diapositiva</span>
+                        <Sparkles size={16} className="mr-1 md:mr-2" /> <span className="hidden md:inline">Generar con IA</span>
                     </Button>
                     <TooltipProvider delayDuration={100}>
                         <Tooltip>

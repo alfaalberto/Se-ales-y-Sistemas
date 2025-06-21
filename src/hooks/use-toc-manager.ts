@@ -19,7 +19,7 @@ const updateTocRecursively = (sections: SectionType[], targetSectionId: string, 
 };
 
 export function useTocManager() {
-    const [toc, setToc] = useState<TableOfContentsType>(initialTableOfContents);
+    const [toc, setToc] = useState<TableOfContentsType>([]);
     const [activeSection, setActiveSection] = useState<SectionType | undefined>(undefined);
     const [savingStatus, setSavingStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
     const { toast } = useToast();
@@ -38,13 +38,18 @@ export function useTocManager() {
                         title: "Contenido recuperado",
                         description: "Se ha cargado tu progreso guardado anteriormente.",
                     });
-                } else if (response.status !== 404) {
+                } else if (response.status === 404) {
+                    // If no backup file, load the default from the book.
+                    setToc(initialTableOfContents);
+                } else {
                     const errorData = await response.json();
                     throw new Error(errorData.error || 'Failed to load backup file from server.');
                 }
             } catch (error) {
-                console.error("Could not load backup content:", error);
+                console.error("Could not load backup content, loading default:", error);
+                setToc(initialTableOfContents); // Load default on any error
             } finally {
+                 // Give it a moment to prevent the initial state from being saved
                  setTimeout(() => isInitialMount.current = false, 500);
             }
         };
@@ -54,7 +59,7 @@ export function useTocManager() {
     
     // Auto-save effect
     useEffect(() => {
-        if (isInitialMount.current || !debouncedToc) {
+        if (isInitialMount.current || !debouncedToc || debouncedToc.length === 0) {
             return;
         }
 
@@ -183,36 +188,6 @@ export function useTocManager() {
             }));
         });
     }, [toast]);
-    
-    const saveContentToFile = useCallback(async () => {
-        setSavingStatus('saving');
-        try {
-            const response = await fetch('/api/save-content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(toc),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to save file on server.');
-            }
-
-            setSavingStatus('saved');
-            toast({
-                title: "Respaldo Guardado",
-                description: "El archivo 'content-backup.json' se ha guardado en la raíz del proyecto.",
-            });
-        } catch (error) {
-            console.error("Error saving content to file:", error);
-            setSavingStatus('idle');
-            toast({
-                title: "Error al Guardar",
-                description: error instanceof Error ? error.message : "No se pudo guardar el archivo en el servidor.",
-                variant: "destructive",
-            });
-        }
-    }, [toc, toast]);
 
     return {
         toc,
@@ -222,7 +197,6 @@ export function useTocManager() {
         editBlock,
         deleteBlock,
         moveBlock,
-        saveContentToFile,
         savingStatus,
     };
 }

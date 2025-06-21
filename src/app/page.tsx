@@ -5,12 +5,15 @@ import { Save, Menu, X, Loader2, Check } from 'lucide-react';
 import Sidebar from '@/components/layout/sidebar';
 import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
+import AiGenerateModal from '@/components/modals/ai-generate-modal';
+import { generateContent, type GenerateContentInput } from '@/ai/flows/generate-content-flow';
 import type { SectionType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Separator } from "@/components/ui/separator";
 import { useTocManager } from '@/hooks/use-toc-manager';
+import { useToast } from "@/hooks/use-toast";
 
 export default function SignalVisorPage() {
     const {
@@ -21,20 +24,22 @@ export default function SignalVisorPage() {
         editBlock,
         deleteBlock,
         moveBlock,
-        saveContentToFile,
         savingStatus,
     } = useTocManager();
 
-    const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-    
     // UI State for Modals and Dialogs
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+    const [isHtmlModalOpen, setIsHtmlModalOpen] = useState(false);
+    const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+    const [isGenerating, setIsGenerating] = useState(false);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
     const [editingBlockInfo, setEditingBlockInfo] = useState<{ blockId: string } | null>(null);
     const [htmlToEdit, setHtmlToEdit] = useState<string>('');
     const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [blockToDelete, setBlockToDelete] = useState<string | null>(null);
+
+    const { toast } = useToast();
 
     const flattenSections = (sections: SectionType[]): SectionType[] => {
         let flatList: SectionType[] = [];
@@ -51,7 +56,6 @@ export default function SignalVisorPage() {
         return toc.flatMap(chapter => flattenSections(chapter.sections));
     }, [toc]);
 
-    // Effect to handle initial sidebar visibility
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const showSidebar = window.innerWidth >= 768;
@@ -59,7 +63,6 @@ export default function SignalVisorPage() {
         }
     }, []);
 
-    // Effect to set initial active section
     useEffect(() => {
         if (flatSections.length > 0 && !activeSection) {
             setActiveSection(flatSections[0]);
@@ -98,11 +101,12 @@ export default function SignalVisorPage() {
         }
     }, [activeSection, flatSections, setActiveSection]);
 
+    // --- HTML Modal Handlers ---
     const handleOpenAddModal = () => {
         setModalMode('add');
         setHtmlToEdit('');
         setEditingBlockInfo(null); 
-        setIsModalOpen(true);
+        setIsHtmlModalOpen(true);
     };
     
     const handleOpenEditModal = (blockId: string) => {
@@ -113,7 +117,7 @@ export default function SignalVisorPage() {
         setModalMode('edit');
         setHtmlToEdit(blockToEdit.html);
         setEditingBlockInfo({ blockId });
-        setIsModalOpen(true);
+        setIsHtmlModalOpen(true);
     };
     
     const handleSaveFromModal = (htmlContent: string) => {
@@ -126,11 +130,46 @@ export default function SignalVisorPage() {
                 setSelectedBlockId(newBlock.id);
             }
         }
-        setIsModalOpen(false);
+        setIsHtmlModalOpen(false);
         setEditingBlockInfo(null);
         setHtmlToEdit('');
     };
 
+    // --- AI Modal Handlers ---
+    const handleOpenAiModal = () => {
+        if (!activeSection) return;
+        setIsAiModalOpen(true);
+    };
+
+    const handleGenerateWithAi = async (prompt: string) => {
+        if (!activeSection) return;
+        
+        setIsGenerating(true);
+        try {
+            const input: GenerateContentInput = {
+                topic: prompt,
+                context: activeSection.title
+            };
+            const result = await generateContent(input);
+            const newBlock = addBlock(activeSection.id, result.html);
+            if (newBlock) {
+                setSelectedBlockId(newBlock.id);
+            }
+            setIsAiModalOpen(false);
+        } catch (error) {
+            console.error("AI content generation failed:", error);
+            toast({
+                title: "Error de Generación",
+                description: "No se pudo generar el contenido con IA. Inténtalo de nuevo.",
+                variant: "destructive"
+            });
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
+
+    // --- Block Action Handlers ---
     const confirmDeleteBlock = (blockId: string) => {
         setBlockToDelete(blockId);
         setIsDeleteDialogOpen(true);
@@ -156,32 +195,42 @@ export default function SignalVisorPage() {
     // Effect for keyboard shortcuts
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || isModalOpen || isDeleteDialogOpen) return;
+            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || isHtmlModalOpen || isAiModalOpen || isDeleteDialogOpen) return;
             if (e.key === 'ArrowLeft') handleNavigate('prev');
             if (e.key === 'ArrowRight') handleNavigate('next');
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [activeSection, flatSections, isModalOpen, isDeleteDialogOpen, handleNavigate]);
+    }, [activeSection, flatSections, isHtmlModalOpen, isAiModalOpen, isDeleteDialogOpen, handleNavigate]);
 
     const getTooltipContent = () => {
         switch (savingStatus) {
             case 'saving': return <p>Guardando cambios...</p>;
             case 'saved': return <p>¡Guardado!</p>;
-            default: return <p>Guardar Respaldo (auto-guardado activado)</p>;
+            default: return <p>El contenido se guarda automáticamente.</p>;
         }
     };
 
     return (
         <div className="bg-background text-foreground h-screen w-screen flex antialiased font-body overflow-hidden">
             <HtmlAddModal 
-                isOpen={isModalOpen} 
-                onClose={() => setIsModalOpen(false)} 
+                isOpen={isHtmlModalOpen} 
+                onClose={() => setIsHtmlModalOpen(false)} 
                 onAdd={handleSaveFromModal}
                 initialContent={htmlToEdit}
                 modalTitle={modalMode === 'edit' ? "Editar Contenido HTML" : "Añadir Contenido HTML"}
                 confirmButtonText={modalMode === 'edit' ? "Guardar Cambios" : "Añadir"}
             />
+
+            {activeSection && (
+                 <AiGenerateModal
+                    isOpen={isAiModalOpen}
+                    onClose={() => setIsAiModalOpen(false)}
+                    onGenerate={handleGenerateWithAi}
+                    isGenerating={isGenerating}
+                    sectionTitle={activeSection.title}
+                 />
+            )}
 
             <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
                 <AlertDialogContent className="bg-card border-border text-card-foreground">
@@ -224,14 +273,12 @@ export default function SignalVisorPage() {
                          <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    onClick={saveContentToFile}
                                     variant="ghost"
                                     size="icon"
-                                    className="text-foreground hover:bg-accent hover:text-accent-foreground"
-                                    disabled={savingStatus === 'saving'}
+                                    className="text-foreground cursor-default hover:bg-transparent"
                                 >
                                     {savingStatus === 'saving' && <Loader2 size={18} className="animate-spin" />}
-                                    {savingStatus === 'saved' && <Check size={18} />}
+                                    {savingStatus === 'saved' && <Check size={18} className="text-green-500" />}
                                     {savingStatus === 'idle' && <Save size={18} />}
                                 </Button>
                             </TooltipTrigger>
@@ -264,6 +311,7 @@ export default function SignalVisorPage() {
                     onNavigate={handleNavigate}
                     flatSections={flatSections}
                     onOpenAddModal={handleOpenAddModal}
+                    onOpenAiModal={handleOpenAiModal}
                     isSidebarVisible={isSidebarVisible}
                     toggleSidebar={toggleSidebar}
                     selectedBlockId={selectedBlockId}
