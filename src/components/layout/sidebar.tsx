@@ -26,8 +26,9 @@ const SectionItem: React.FC<SectionItemProps> = ({ section, activeSection, onSec
     const hasSubsections = section.subsections && section.subsections.length > 0;
     
     const isSelected = activeSection?.id === section.id;
-    const isParentOfSelected = activeSection?.id.startsWith(section.id + '.');
+    const isParentOfSelected = hasSubsections && activeSection ? activeSection.id.startsWith(section.id + '.') : false;
 
+    // Filter subsections based on search term, recursively.
     const filterSubsections = (subsections: SectionType[]): SectionType[] => {
         if (!searchTerm) return subsections;
         return subsections.map(sub => {
@@ -55,7 +56,7 @@ const SectionItem: React.FC<SectionItemProps> = ({ section, activeSection, onSec
 
     if (hasSubsections) {
         return (
-            <Accordion type="single" collapsible className="w-full" defaultValue={ (isParentOfSelected || isInitiallyOpen) ? section.id : undefined }>
+            <Accordion type="single" collapsible className="w-full" defaultValue={ (isSelected || isParentOfSelected || isInitiallyOpen) ? section.id : undefined }>
                 <AccordionItem value={section.id} className="border-none">
                     <AccordionTrigger
                         className={cn(
@@ -144,21 +145,24 @@ const Sidebar: React.FC<SidebarProps> = ({ toc, activeSection, onSectionSelect }
 
     useEffect(() => {
         if (searchTerm) {
+            // If there's a search term, expand all chapters that have results.
             setExpandedChapters(filteredToc.map(c => c.chapter));
-        } else if (activeSection) {
-            const chapterNumber = activeSection.id.split('.')[0];
-            if (!expandedChapters.includes(chapterNumber)) {
-                 setExpandedChapters(prev => [...prev, chapterNumber]);
+        } else {
+            // If no search term, only expand the active chapter or the first one.
+            let chapterToExpand: string | undefined;
+            if (activeSection) {
+                chapterToExpand = activeSection.id.split('.')[0];
+            } else if (toc.length > 0) {
+                chapterToExpand = toc[0].chapter;
+            }
+            
+            if (chapterToExpand) {
+                setExpandedChapters([chapterToExpand]);
+            } else {
+                setExpandedChapters([]);
             }
         }
-    }, [activeSection, searchTerm, filteredToc]);
-
-    useEffect(() => {
-        if (toc.length > 0 && !searchTerm) {
-             const chapterNumber = activeSection ? activeSection.id.split('.')[0] : toc[0].chapter;
-             setExpandedChapters([chapterNumber]);
-        }
-    }, [toc, activeSection]);
+    }, [searchTerm, activeSection, toc, filteredToc]);
 
     return (
         <aside className="w-full md:w-80 lg:w-96 bg-sidebar text-sidebar-foreground flex flex-col h-full shadow-lg">
