@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -27,9 +26,11 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
     const [codeBlocksVisibility, setCodeBlocksVisibility] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
+        let isMounted = true;
         const container = blockRef.current;
         if (!container) return;
 
+        // Synchronous part: DOM preparation
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlString; 
 
@@ -51,7 +52,6 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
             idMap.forEach((newId, oldId) => {
                 const regex = new RegExp(`getElementById\\((['"])${oldId}\\1\\)`, 'g');
                 scriptContent = scriptContent.replace(regex, `getElementById('${newId}')`);
-
                 const querySelectorRegex = new RegExp(`querySelector\\((['"])#${oldId}\\1\\)`, 'g');
                 scriptContent = scriptContent.replace(querySelectorRegex, `querySelector('#${newId.replace(/[:.]/g, '\\$&')}')`);
             });
@@ -61,20 +61,16 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
         const pres = Array.from(tempDiv.querySelectorAll('pre'));
         const newCodeBlockDataCollector: { preId: string, placeholderId: string }[] = [];
         const initialVisibilityStateCollector: Record<string, boolean> = {};
-
         pres.forEach((pre, index) => {
             let preId = pre.id; 
             if (!preId) { 
                 preId = `${instanceId}__pre-${index}`;
                 pre.id = preId;
             }
-            
             const placeholderId = `${instanceId}__btn-placeholder-for-${preId.replace(/__/g, '-')}`;
             const placeholderDiv = document.createElement('div');
             placeholderDiv.id = placeholderId;
-            
             pre.parentNode?.insertBefore(placeholderDiv, pre);
-
             newCodeBlockDataCollector.push({ preId, placeholderId });
             initialVisibilityStateCollector[preId] = true; 
         });
@@ -82,52 +78,55 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
         const innerDiv = container.querySelector('.content-block-inner');
         if (innerDiv) {
             innerDiv.innerHTML = tempDiv.innerHTML;
+        } else {
+            return;
         }
         
         setCodeBlockData(newCodeBlockDataCollector);
         setCodeBlocksVisibility(initialVisibilityStateCollector);
+        // End of synchronous part
 
         const runScripts = () => {
-            const currentContainer = blockRef.current;
-            if (!currentContainer) return;
-            const scriptsToRun = Array.from(currentContainer.getElementsByTagName('script'));
+            if (!isMounted || !blockRef.current) return;
+            const scriptsToRun = Array.from(blockRef.current.getElementsByTagName('script'));
             scriptsToRun.forEach(originalScript => {
-                 if (!originalScript.closest('.content-block-inner')) return;
-                
+                if (!originalScript.closest('.content-block-inner')) return;
                 const newScript = document.createElement('script');
                 newScript.textContent = `(function() { try { ${originalScript.innerHTML} } catch (e) { console.error('Error executing script for ${instanceId}:', e); } })();`;
                 document.body.appendChild(newScript);
                 document.body.removeChild(newScript); 
-                 originalScript.remove(); 
+                originalScript.remove(); 
             });
         };
 
         const processContent = async () => {
-            // Wait for MathJax to be ready if it exists
-            if (window.MathJax && window.MathJax.startup) {
-                 await window.MathJax.startup.promise;
-            }
-            
-            // If component is still mounted after potential async operations, proceed.
-            if (blockRef.current) {
-                try {
-                    // Try to typeset with MathJax if it's available
-                    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
-                        await window.MathJax.typesetPromise([blockRef.current]);
-                    }
-                } catch(err) {
+            try {
+                if (window.MathJax && window.MathJax.startup) {
+                    await window.MathJax.startup.promise;
+                }
+                if (!isMounted) return;
+
+                if (window.MathJax && typeof window.MathJax.typesetPromise === 'function' && blockRef.current) {
+                    await window.MathJax.typesetPromise([blockRef.current]);
+                }
+                if (!isMounted) return;
+
+            } catch (err) {
+                if(isMounted) {
                     console.error("MathJax typesetting failed:", err);
-                } finally {
-                    // Always run scripts after attempting to typeset, but only if still mounted
-                    if(blockRef.current) {
-                        runScripts();
-                    }
+                }
+            } finally {
+                if (isMounted) {
+                    runScripts();
                 }
             }
         };
 
         processContent();
 
+        return () => {
+            isMounted = false;
+        };
     }, [htmlString, instanceId]);
 
 
