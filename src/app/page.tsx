@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
@@ -7,6 +8,7 @@ import ContentView from '@/components/content/content-view';
 import HtmlAddModal from '@/components/modals/html-add-modal';
 import AiGenerateModal from '@/components/modals/ai-generate-modal';
 import { generateContent, type GenerateContentInput } from '@/ai/flows/generate-content-flow';
+import { generateImage } from '@/ai/flows/generate-image-flow';
 import type { SectionType } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
@@ -38,6 +40,7 @@ export default function SignalVisorPage() {
     const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [blockToDelete, setBlockToDelete] = useState<string | null>(null);
+    const [generatingImageForBlock, setGeneratingImageForBlock] = useState<string | null>(null);
 
     const { toast } = useToast();
 
@@ -165,6 +168,38 @@ export default function SignalVisorPage() {
             });
         } finally {
             setIsGenerating(false);
+        }
+    };
+    
+    const getBlockTitle = (html: string): string => {
+        if (typeof window === 'undefined') return '';
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        const h2 = tempDiv.querySelector('h2');
+        return h2?.textContent || 'Signals and Systems concept';
+    };
+
+    const handleGenerateImage = async (blockId: string) => {
+        if (!activeSection) return;
+        const block = activeSection.content.find(b => b.id === blockId);
+        if (!block) return;
+        
+        setGeneratingImageForBlock(blockId);
+        try {
+            const topic = getBlockTitle(block.html);
+            const result = await generateImage({ topic });
+            const newHtml = `${block.html}<div class="my-4"><img src="${result.imageDataUri}" alt="AI generated image for ${topic}" class="w-full h-auto rounded-lg shadow-md" /></div>`;
+            editBlock(activeSection.id, blockId, newHtml);
+            toast({ title: "Imagen Generada", description: "La imagen generada por IA ha sido añadida a la diapositiva." });
+        } catch (error) {
+            console.error("AI image generation failed:", error);
+            toast({
+                title: "Error de Generación de Imagen",
+                description: "No se pudo generar la imagen con IA. Inténtalo de nuevo.",
+                variant: "destructive"
+            });
+        } finally {
+            setGeneratingImageForBlock(null);
         }
     };
 
@@ -319,8 +354,12 @@ export default function SignalVisorPage() {
                     onBlockEdit={handleOpenEditModal}
                     onBlockDelete={confirmDeleteBlock}
                     onBlockMove={handleMoveBlock}
+                    onGenerateImage={handleGenerateImage}
+                    generatingImageForBlock={generatingImageForBlock}
                 />
             </div>
         </div>
     );
 }
+
+    

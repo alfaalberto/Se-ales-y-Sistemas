@@ -1,7 +1,8 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Pencil, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { Pencil, Trash2, ArrowUpCircle, ArrowDownCircle, Image as ImageIcon, Loader2 } from 'lucide-react';
 import type { ContentBlockType } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,8 @@ interface HtmlBlockProps {
     onMove: (blockId: string, direction: 'up' | 'down') => void;
     canMoveUp: boolean;
     canMoveDown: boolean;
+    onGenerateImage: (blockId: string) => void;
+    isGeneratingImage: boolean;
 }
 
 declare global {
@@ -25,7 +28,7 @@ declare global {
     }
 }
 
-const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isActive, onEdit, onDelete, onMove, canMoveUp, canMoveDown }) => {
+const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isActive, onEdit, onDelete, onMove, canMoveUp, canMoveDown, onGenerateImage, isGeneratingImage }) => {
     const { id: blockId, html: htmlString } = block;
     const blockRef = useRef<HTMLDivElement>(null);
     const instanceId = useRef(`block-${crypto.randomUUID()}`).current;
@@ -198,10 +201,16 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
             aria-pressed={isActive}
             aria-label={`Diapositiva ${blockId}${isActive ? ', seleccionada' : ''}`}
         >
+             {isGeneratingImage && (
+                <div className="absolute inset-0 bg-background/80 flex flex-col items-center justify-center z-10 rounded-md">
+                    <Loader2 className="animate-spin h-8 w-8 text-primary" />
+                    <p className="mt-2 text-sm text-foreground">Generando imagen...</p>
+                </div>
+            )}
             <div className="content-block-inner relative">
                 {/* El HTML del usuario se inyectará aquí por el primer useEffect */}
             </div>
-            {isActive && (
+            {isActive && !isGeneratingImage && (
                 <div className="absolute top-2 right-2 flex items-center space-x-1 bg-background/80 backdrop-blur-sm rounded-md p-1">
                      <TooltipProvider delayDuration={100}>
                         <Tooltip>
@@ -211,6 +220,14 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent><p>Editar</p></TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button onClick={(e) => handleActionClick(e, () => onGenerateImage(blockId))} variant="ghost" size="icon-sm" className="text-foreground hover:bg-accent hover:text-accent-foreground">
+                                    <ImageIcon size={16} />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent><p>Generar Imagen con IA</p></TooltipContent>
                         </Tooltip>
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -245,3 +262,5 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
 
 HtmlBlock.displayName = 'HtmlBlock';
 export default HtmlBlock;
+
+    

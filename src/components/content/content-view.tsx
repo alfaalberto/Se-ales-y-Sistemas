@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -21,6 +22,8 @@ interface ContentViewProps {
     onBlockEdit: (blockId: string) => void;
     onBlockDelete: (blockId: string) => void;
     onBlockMove: (blockId: string, direction: 'up' | 'down') => void;
+    onGenerateImage: (blockId: string) => void;
+    generatingImageForBlock: string | null;
 }
 
 const ContentView: React.FC<ContentViewProps> = ({ 
@@ -35,7 +38,9 @@ const ContentView: React.FC<ContentViewProps> = ({
     onBlockSelect,
     onBlockEdit,
     onBlockDelete,
-    onBlockMove
+    onBlockMove,
+    onGenerateImage,
+    generatingImageForBlock
 }) => {
     const contentRef = React.useRef<HTMLDivElement>(null);
     const [isFullscreen, setIsFullscreen] = React.useState(false);
@@ -195,6 +200,8 @@ const ContentView: React.FC<ContentViewProps> = ({
                                 onMove={onBlockMove}
                                 canMoveUp={canMoveUp}
                                 canMoveDown={canMoveDown}
+                                onGenerateImage={onGenerateImage}
+                                isGeneratingImage={generatingImageForBlock === block.id}
                             />
                         )
                     })}
@@ -211,3 +218,5 @@ declare module '@/components/ui/button' {
   }
 
 export default ContentView;
+
+    
