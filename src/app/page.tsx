@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
@@ -30,6 +29,21 @@ export default function SignalVisorPage() {
 
 
     const { toast } = useToast();
+
+    const findSectionById = (sections: SectionType[], id: string): SectionType | undefined => {
+        for (const section of sections) {
+            if (section.id === id) {
+                return section;
+            }
+            if (section.subsections) {
+                const found = findSectionById(section.subsections, id);
+                if (found) {
+                    return found;
+                }
+            }
+        }
+        return undefined;
+    };
 
     const flattenSections = (sections: SectionType[]): SectionType[] => {
         let flatList: SectionType[] = [];
@@ -237,19 +251,35 @@ export default function SignalVisorPage() {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [activeSection, flatSections, isModalOpen, isDeleteDialogOpen, handleNavigate]);
 
-    const handleDownloadBackup = () => {
-        const jsonData = JSON.stringify(toc, null, 2);
-        const blob = new Blob([jsonData], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'signalVisorContent.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        toast({ title: "Descarga Iniciada", description: "El archivo de respaldo se está descargando." });
+    const handleSaveContentToFile = async () => {
+        try {
+            const response = await fetch('/api/save-content', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(toc, null, 2),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to save file on server.');
+            }
+
+            toast({
+                title: "Respaldo Guardado",
+                description: "El archivo 'content-backup.json' se ha guardado en la raíz del proyecto.",
+            });
+        } catch (error) {
+            console.error("Error saving content to file:", error);
+            toast({
+                title: "Error al Guardar",
+                description: error instanceof Error ? error.message : "No se pudo guardar el archivo en el servidor.",
+                variant: "destructive",
+            });
+        }
     };
+
 
     const handleTriggerUpload = () => {
         fileInputRef.current?.click();
@@ -430,7 +460,7 @@ export default function SignalVisorPage() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    onClick={handleDownloadBackup}
+                                    onClick={handleSaveContentToFile}
                                     variant="ghost"
                                     size="icon"
                                     className="text-foreground hover:bg-accent hover:text-accent-foreground"
@@ -438,7 +468,7 @@ export default function SignalVisorPage() {
                                     <Save size={18} />
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent><p>Descargar Respaldo JSON</p></TooltipContent>
+                            <TooltipContent><p>Guardar Respaldo en Archivo</p></TooltipContent>
                         </Tooltip>
                         <Tooltip>
                             <TooltipTrigger asChild>
