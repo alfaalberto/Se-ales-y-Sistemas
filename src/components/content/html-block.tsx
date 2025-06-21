@@ -102,31 +102,31 @@ const HtmlBlock: React.FC<HtmlBlockProps> = React.memo(({ block, onSelect, isAct
             });
         };
 
-        if (window.MathJax) {
-            window.MathJax.startup.promise
-                .then(() => {
+        const processContent = async () => {
+            // Wait for MathJax to be ready if it exists
+            if (window.MathJax && window.MathJax.startup) {
+                 await window.MathJax.startup.promise;
+            }
+            
+            // If component is still mounted after potential async operations, proceed.
+            if (blockRef.current) {
+                try {
+                    // Try to typeset with MathJax if it's available
                     if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
-                        const currentContainerForMathJax = blockRef.current;
-                        if (currentContainerForMathJax && document.body.contains(currentContainerForMathJax)) {
-                            window.MathJax.typesetPromise([currentContainerForMathJax])
-                                .catch((err: any) => console.error('MathJax typesetting failed:', err))
-                                .finally(runScripts);
-                        } else {
-                             console.warn('MathJax: blockRef.current no longer in DOM, skipping typesetting and script execution.');
-                        }
-                    } else {
-                        console.warn('MathJax.typesetPromise not found after startup.');
-                        runScripts(); 
+                        await window.MathJax.typesetPromise([blockRef.current]);
                     }
-                })
-                .catch((err: any) => {
-                    console.error('MathJax startup promise failed:', err);
-                    runScripts(); 
-                });
-        } else {
-            console.warn('MathJax object not found, running scripts directly.');
-            runScripts(); 
-        }
+                } catch(err) {
+                    console.error("MathJax typesetting failed:", err);
+                } finally {
+                    // Always run scripts after attempting to typeset, but only if still mounted
+                    if(blockRef.current) {
+                        runScripts();
+                    }
+                }
+            }
+        };
+
+        processContent();
 
     }, [htmlString, instanceId]);
 
