@@ -10,13 +10,13 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
-export const GenerateContentInputSchema = z.object({
+const GenerateContentInputSchema = z.object({
   topic: z.string().describe('The specific topic or question the user wants content for. For example, "Explain the concept of convolution".'),
   context: z.string().describe('The title of the section this content will be part of, to provide context. For example, "Propiedades básicas de los sistemas".'),
 });
 export type GenerateContentInput = z.infer<typeof GenerateContentInputSchema>;
 
-export const GenerateContentOutputSchema = z.object({
+const GenerateContentOutputSchema = z.object({
   html: z.string().describe('The generated content as a single, well-formatted HTML string. It MUST use <h2> for the main title, <p> for paragraphs. For mathematical formulas, it MUST use MathJax format, enclosed in $$...$$.'),
 });
 export type GenerateContentOutput = z.infer<typeof GenerateContentOutputSchema>;

@@ -11,12 +11,12 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
-export const GenerateImageInputSchema = z.object({
+const GenerateImageInputSchema = z.object({
   topic: z.string().describe('The concept or title for which to generate an image.'),
 });
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
 
-export const GenerateImageOutputSchema = z.object({
+const GenerateImageOutputSchema = z.object({
   imageDataUri: z.string().describe("The generated image as a Base64 data URI. Expected format: 'data:image/png;base64,<encoded_data>'."),
 });
 export type GenerateImageOutput = z.infer<typeof GenerateImageOutputSchema>;
